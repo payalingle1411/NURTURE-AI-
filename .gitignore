@@ -1,0 +1,22 @@
+# Node
+node_modules/
+
+# React Native
+android/.gradle/
+android/app/build/
+ios/build/
+
+# Java
+target/
+*.class
+
+# Environment
+.env
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
