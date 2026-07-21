@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   FaEye,
   FaEyeSlash,
@@ -7,9 +7,12 @@ import {
   FaLock,
 } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
+import axios from "axios";
 import "./login.css";
 
 function Login() {
+  const navigate = useNavigate();
+
   const [showPassword, setShowPassword] = useState(false);
 
   const [formData, setFormData] = useState({
@@ -17,6 +20,8 @@ function Login() {
     password: "",
     remember: false,
   });
+
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -27,13 +32,40 @@ function Login() {
     });
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+ const handleSubmit = async (e) => {
+  e.preventDefault();
+  setLoading(true);
 
-    console.log("Login Data:", formData);
+  try {
+    const response = await axios.post(
+      "http://localhost:8080/api/auth/login",
+      {
+        email: formData.email,
+        password: formData.password,
+      }
+    );
 
-    // Backend API will be added here
-  };
+    console.log(response.data);
+
+    if (response.data === "Login Successful") {
+      alert("Login Successful ✅");
+      navigate("/dashboard");
+    } else {
+      alert(response.data); // User not found / Invalid password
+    }
+
+  } catch (error) {
+    console.error(error);
+
+    if (error.response) {
+      alert(error.response.data);
+    } else {
+      alert("Unable to connect to server.");
+    }
+  } finally {
+    setLoading(false);
+  }
+};
 
   return (
     <div className="login-container">
@@ -45,9 +77,10 @@ function Login() {
           <h2>Welcome Back!</h2>
 
           <p>
-            Your trusted pregnancy wellness companion. Stay healthy, track your
-            baby's growth, receive AI-powered guidance, and keep your family
-            connected throughout your motherhood journey.
+            Your trusted pregnancy wellness companion. Stay healthy,
+            track your baby's growth, receive AI-powered guidance,
+            and keep your family connected throughout your motherhood
+            journey.
           </p>
         </div>
       </div>
@@ -55,6 +88,7 @@ function Login() {
       {/* Right Section */}
       <div className="login-right">
         <form className="login-form" onSubmit={handleSubmit}>
+
           <h2>Login</h2>
 
           <p className="subtitle">
@@ -63,13 +97,12 @@ function Login() {
 
           {/* Email */}
           <div className="input-group">
-            <label htmlFor="email">Email Address</label>
+            <label>Email Address</label>
 
             <div className="input-box">
               <FaEnvelope className="input-icon" />
 
               <input
-                id="email"
                 type="email"
                 name="email"
                 placeholder="Enter your email"
@@ -82,13 +115,12 @@ function Login() {
 
           {/* Password */}
           <div className="input-group">
-            <label htmlFor="password">Password</label>
+            <label>Password</label>
 
             <div className="input-box">
               <FaLock className="input-icon" />
 
               <input
-                id="password"
                 type={showPassword ? "text" : "password"}
                 name="password"
                 placeholder="Enter your password"
@@ -100,14 +132,20 @@ function Login() {
               <button
                 type="button"
                 className="show-btn"
-                onClick={() => setShowPassword(!showPassword)}
+                onClick={() =>
+                  setShowPassword(!showPassword)
+                }
               >
-                {showPassword ? <FaEyeSlash /> : <FaEye />}
+                {showPassword ? (
+                  <FaEyeSlash />
+                ) : (
+                  <FaEye />
+                )}
               </button>
             </div>
           </div>
 
-          {/* Remember Me */}
+          {/* Remember */}
           <div className="remember">
             <label>
               <input
@@ -125,8 +163,12 @@ function Login() {
           </div>
 
           {/* Login Button */}
-          <button type="submit" className="login-btn">
-            Login
+          <button
+            type="submit"
+            className="login-btn"
+            disabled={loading}
+          >
+            {loading ? "Logging in..." : "Login"}
           </button>
 
           {/* Divider */}
@@ -134,8 +176,11 @@ function Login() {
             <span>OR</span>
           </div>
 
-          {/* Google Login */}
-          <button type="button" className="google-btn">
+          {/* Google */}
+          <button
+            type="button"
+            className="google-btn"
+          >
             <FcGoogle className="google-icon" />
             <span>Continue with Google</span>
           </button>
@@ -143,8 +188,12 @@ function Login() {
           {/* Register */}
           <p className="register-link">
             Don't have an account?
-            <Link to="/register"> Create Account</Link>
+            <Link to="/register">
+              {" "}
+              Create Account
+            </Link>
           </p>
+
         </form>
       </div>
     </div>
