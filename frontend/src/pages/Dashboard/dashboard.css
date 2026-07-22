@@ -2,53 +2,35 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  font-family: Arial, sans-serif;
 }
 
-.dashboard-container {
-  height: 100vh;
+.dashboard {
   display: flex;
-  justify-content: center;
-  align-items: center;
-  background: linear-gradient(135deg, #1e3c72, #2a5298);
-  font-family: "Poppins", sans-serif;
+  background: #fff7fb;
 }
 
-.dashboard-card {
-  width: 420px;
-  background: rgba(255, 255, 255, 0.12);
-  backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 18px;
+.main-content {
+  margin-left: 240px;
+  width: calc(100% - 240px);
+  min-height: 100vh;
+}
+
+.welcome-section {
+  margin: 30px;
+  background: white;
   padding: 40px;
-  text-align: center;
-  color: #fff;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+  border-radius: 15px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.08);
 }
 
-.dashboard-card h1 {
-  font-size: 2rem;
+.welcome-section h1 {
+  color: #ff5c8a;
   margin-bottom: 15px;
 }
 
-.dashboard-card p {
-  font-size: 1rem;
-  color: #e6e6e6;
-  margin-bottom: 30px;
-}
-
-.dashboard-btn {
-  padding: 12px 28px;
-  border: none;
-  border-radius: 8px;
-  background: #00d4ff;
-  color: #000;
-  font-size: 1rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: 0.3s;
-}
-
-.dashboard-btn:hover {
-  background: #00b4d8;
-  transform: translateY(-3px);
+.welcome-section p {
+  margin-top: 10px;
+  color: #666;
+  font-size: 18px;
 }

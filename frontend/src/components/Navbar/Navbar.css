@@ -1,0 +1,32 @@
+.navbar {
+  height: 70px;
+  background: #ffffff;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 30px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+.navbar h2 {
+  color: #ff5c8a;
+}
+
+.navbar-right {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.nav-icon,
+.profile-icon {
+  font-size: 24px;
+  cursor: pointer;
+  color: #555;
+  transition: 0.3s;
+}
+
+.nav-icon:hover,
+.profile-icon:hover {
+  color: #ff5c8a;
+}
