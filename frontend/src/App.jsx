@@ -5,11 +5,13 @@ import Register from "./pages/Register/register.jsx";
 import Dashboard from "./pages/Dashboard/dashboard.jsx";
 import Navbar from "./components/Navbar/Navbar.jsx";
 import Sidebar from "./components/sidebar/Sidebar.jsx";
+import Welcome from "./pages/Welcome page/welcome.jsx"
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
+        <Route path="/" element={<Welcome />}/>
         <Route path="/" element={<Login />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
