@@ -1,34 +1,20 @@
-import Navbar from "../../components/Navbar/Navbar";
 import Sidebar from "../../components/Sidebar/Sidebar";
+import Navbar from "../../components/Navbar/Navbar";
+import WelcomeCard from "../../components/WelcomeCard/WelcomeCard";
+import HealthSummary from "../../components/HealthSummary/HealthSummary";
 import "./dashboard.css";
 
 function Dashboard() {
   return (
-    <div className="dashboard">
-
+    <>
       <Sidebar />
+      <Navbar />
 
-      <div className="main-content">
-
-        <Navbar />
-
-        <div className="welcome-section">
-
-          <h1>👋 Welcome Back!</h1>
-
-          <p>
-            Welcome to <strong>Nurture AI</strong>
-          </p>
-
-          <p>
-            Your Pregnancy Wellness & Family Support Platform ❤️
-          </p>
-
-        </div>
-
+      <div style={{ marginLeft: "250px", padding: "20px" }}>
+        <WelcomeCard />
+        <HealthSummary />
       </div>
-
-    </div>
+    </>
   );
 }
 

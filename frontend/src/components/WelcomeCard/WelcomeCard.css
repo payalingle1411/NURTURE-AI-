@@ -1,0 +1,142 @@
+.welcome-card {
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 20px 25px;
+    margin: 20px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.welcome-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 25px;
+}
+
+.welcome-text {
+    flex: 1;
+}
+
+.welcome-text h2 {
+    color: #333;
+    font-size: 26px;
+    margin-bottom: 6px;
+    font-weight: 600;
+}
+
+.welcome-text p {
+    color: #666;
+    font-size: 15px;
+    margin-bottom: 18px;
+}
+
+.welcome-text span {
+    color: #6C63FF;
+    font-weight: 600;
+}
+
+.welcome-info {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.info-box {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: #f8f9ff;
+    padding: 12px 16px;
+    border-radius: 12px;
+    min-width: 180px;
+}
+
+.info-icon {
+    font-size: 22px;
+    color: #6C63FF;
+}
+
+.info-box h4 {
+    margin: 0;
+    font-size: 15px;
+    color: #333;
+    font-weight: 600;
+}
+
+.info-box p {
+    margin: 2px 0 0;
+    font-size: 13px;
+    color: #777;
+}
+
+/* Right Side */
+
+.welcome-right {
+    background: #f8f9ff;
+    padding: 18px;
+    border-radius: 12px;
+    min-width: 220px;
+}
+
+.welcome-right h3 {
+    margin: 0;
+    color: #6C63FF;
+    font-size: 18px;
+}
+
+.welcome-right p {
+    margin-top: 8px;
+    color: #555;
+    font-size: 14px;
+    line-height: 1.4;
+}
+
+/* Tablet */
+
+@media (max-width: 900px) {
+
+    .welcome-card {
+        margin: 15px;
+        padding: 18px;
+    }
+
+    .welcome-content {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .welcome-info {
+        width: 100%;
+    }
+
+    .welcome-right {
+        width: 100%;
+    }
+
+}
+
+/* Mobile */
+
+@media (max-width: 600px) {
+
+    .welcome-text h2 {
+        font-size: 22px;
+    }
+
+    .welcome-text p {
+        font-size: 14px;
+    }
+
+    .welcome-info {
+        flex-direction: column;
+    }
+
+    .info-box {
+        width: 100%;
+    }
+
+    .welcome-right {
+        width: 100%;
+    }
+
+}

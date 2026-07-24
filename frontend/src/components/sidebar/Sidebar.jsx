@@ -1,39 +1,81 @@
 import "./Sidebar.css";
 import {
   FaHome,
-  FaUser,
-  FaHeartbeat,
-  FaCalendarAlt,
   FaRobot,
+  FaUser,
+  FaAppleAlt,
+  FaPills,
+  FaCalendarAlt,
+  FaChartBar,
+  FaUsers,
+  FaCog,
+  FaSignOutAlt,
 } from "react-icons/fa";
 
 function Sidebar() {
   return (
-    <aside className="sidebar">
-      <h2 className="logo">🌸 Nurture AI</h2>
+    <div className="sidebar">
 
-      <ul>
-        <li>
-          <FaHome /> Dashboard
+      <div className="logo">
+        <h2>Nurture AI</h2>
+        <p>Pregnancy Wellness</p>
+      </div>
+
+      <ul className="menu">
+
+        <li className="active">
+          <FaHome className="icon" />
+          <span>Dashboard</span>
         </li>
 
         <li>
-          <FaUser /> Profile
+          <FaRobot className="icon" />
+          <span>AI Assistant</span>
         </li>
 
         <li>
-          <FaHeartbeat /> Health
+          <FaUser className="icon" />
+          <span>Pregnancy Profile</span>
         </li>
 
         <li>
-          <FaCalendarAlt /> Appointments
+          <FaAppleAlt className="icon" />
+          <span>Nutrition</span>
         </li>
 
         <li>
-          <FaRobot /> AI Assistant
+          <FaPills className="icon" />
+          <span>Medicine</span>
         </li>
+
+        <li>
+          <FaCalendarAlt className="icon" />
+          <span>Appointments</span>
+        </li>
+
+        <li>
+          <FaChartBar className="icon" />
+          <span>Reports</span>
+        </li>
+
+        <li>
+          <FaUsers className="icon" />
+          <span>Family Dashboard</span>
+        </li>
+
+        <li>
+          <FaCog className="icon" />
+          <span>Settings</span>
+        </li>
+
       </ul>
-    </aside>
+
+      <div className="logout">
+        <FaSignOutAlt className="icon" />
+        <span>Logout</span>
+      </div>
+
+    </div>
   );
 }
 
