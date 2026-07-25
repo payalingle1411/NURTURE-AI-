@@ -1,0 +1,21 @@
+user_id,member_name,relationship,age
+1,Rohit Sharma,Husband,31
+1,Aarav Sharma,Son,4
+2,Amit Verma,Husband,33
+2,Anaya Verma,Daughter,3
+3,Kunal Patil,Husband,34
+3,Vihaan Patil,Son,6
+4,Rahul Gupta,Husband,30
+4,Seema Gupta,Mother-in-law,56
+5,Arjun Iyer,Husband,32
+5,Diya Iyer,Daughter,5
+6,Vikas Singh,Husband,31
+6,Renu Singh,Mother-in-law,58
+7,Nikhil Joshi,Husband,35
+7,Aditi Joshi,Daughter,7
+8,Aditya Kulkarni,Husband,32
+8,Om Kulkarni,Son,2
+9,Rakesh Nair,Husband,34
+9,Ira Nair,Daughter,5
+10,Karan Rao,Husband,33
+10,Savitri Rao,Mother-in-law,57

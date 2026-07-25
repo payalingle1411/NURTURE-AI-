@@ -1,0 +1,11 @@
+user_id,diabetes,hypertension,thyroid,pcos,asthma,heart_disease,other_disease
+1,false,false,true,false,false,false,Vitamin D Deficiency
+2,false,false,false,false,false,false,
+3,true,false,false,false,false,false,Gestational Diabetes
+4,false,false,false,true,false,false,
+5,false,true,false,false,false,false,Mild Hypertension
+6,false,false,true,false,false,false,
+7,false,false,false,false,true,false,Seasonal Asthma
+8,false,false,false,false,false,false,
+9,true,true,false,false,false,false,High Blood Sugar
+10,false,false,false,false,false,false,

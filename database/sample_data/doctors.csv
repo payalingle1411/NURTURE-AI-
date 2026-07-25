@@ -1,0 +1,16 @@
+user_id,doctor_name,specialization,hospital_name,hospital_address,phone_number,next_appointment
+1,Dr. Anjali Mehta,Gynecologist,Kingsway Hospital,Nagpur,9876520001,2026-07-30
+2,Dr. Vivek Kulkarni,Obstetrician,Ruby Hall Clinic,Pune,9876520002,2026-08-02
+3,Dr. Snehal Deshpande,Gynecologist,Kokilaben Hospital,Mumbai,9876520003,2026-07-29
+4,Dr. Pooja Shah,Obstetrician,Wockhardt Hospital,Nashik,9876520004,2026-08-05
+5,Dr. Rohan Patil,Gynecologist,Life Care Hospital,Amravati,9876520005,2026-08-01
+6,Dr. Neha Joshi,Fertility Specialist,Care Hospital,Akola,9876520006,2026-08-04
+7,Dr. Sameer Gupta,Maternal-Fetal Medicine,Apollo Hospital,Chandrapur,9876520007,2026-07-31
+8,Dr. Shweta Kulkarni,Gynecologist,District Hospital,Wardha,9876520008,2026-08-03
+9,Dr. Rajesh Nair,Obstetrician,Lotus Hospital,Yavatmal,9876520009,2026-08-06
+10,Dr. Meenal Rao,Gynecologist,United CIIGMA Hospital,Aurangabad,9876520010,2026-08-07
+3,Dr. Kiran More,Diabetologist,Kokilaben Hospital,Mumbai,9876520011,2026-08-10
+5,Dr. Ashish Jain,Cardiologist,Life Care Hospital,Amravati,9876520012,2026-08-11
+7,Dr. Nitin Bansal,Pulmonologist,Apollo Hospital,Chandrapur,9876520013,2026-08-09
+9,Dr. Priyanka Patil,Endocrinologist,Lotus Hospital,Yavatmal,9876520014,2026-08-12
+6,Dr. Kavita Sharma,Nutritionist,Care Hospital,Akola,9876520015,2026-08-08
