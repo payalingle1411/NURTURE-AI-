@@ -15,11 +15,51 @@ body{
 /* ================= CONTAINER ================= */
 
 .register-container{
+    position: relative;
     width:100%;
     min-height:100vh;
     display:flex;
+    overflow:hidden;
 }
 
+/* ================= HOME BUTTON ================= */
+/* ================= HOME BUTTON ================= */
+
+.home-btn{
+    position: fixed;
+    top: 20px;
+    left: 20px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+
+    width: 55px;
+    height: 55px;
+
+    background: #ffffff;
+    color: #6b4eff;
+
+    border-radius: 50%;
+
+    text-decoration: none;
+
+    font-size: 24px;
+    font-weight: 600;
+
+    box-shadow: 0 8px 25px rgba(0,0,0,.18);
+
+    transition: all .3s ease;
+
+    z-index: 99999;
+}
+
+.home-btn:hover{
+    background:#6b4eff;
+    color:#fff;
+    transform:scale(1.1);
+}
 /* ================= LEFT SIDE ================= */
 
 .register-left{
@@ -60,6 +100,7 @@ body{
     font-size:18px;
     line-height:1.8;
 }
+
 
 /* ================= RIGHT SIDE ================= */
 
@@ -283,50 +324,59 @@ body{
 }
 
 /* ================= RESPONSIVE ================= */
+/* ================= RESPONSIVE ================= */
 
-@media(max-width:950px){
+@media (max-width:950px){
 
-.register-container{
-    flex-direction:column;
-}
+    .register-container{
+        flex-direction:column;
+    }
 
-.register-left{
+    .register-left{
+        min-height:320px;
+        text-align:center;
+        padding:40px;
+    }
 
-    min-height:320px;
+    .register-left p{
+        width:100%;
+    }
 
-    text-align:center;
+    .register-right{
+        padding:25px;
+    }
 
-    padding:40px;
-}
-
-.register-left p{
-    width:100%;
-}
-
-.register-right{
-    padding:25px;
-}
-
-.register-form{
-
-    width:100%;
-    max-width:420px;
-}
+    .register-form{
+        width:100%;
+        max-width:420px;
+    }
 
 }
 
-@media(max-width:500px){
+@media (max-width:768px){
 
-.register-form{
-    padding:25px;
+    .home-btn{
+        width:48px;
+        height:48px;
+        top:15px;
+        left:15px;
+        font-size:20px;
+    }
+
 }
 
-.register-left h1{
-    font-size:38px;
-}
+@media (max-width:500px){
 
-.register-left h2{
-    font-size:28px;
-}
+    .register-form{
+        padding:25px;
+    }
+
+    .register-left h1{
+        font-size:38px;
+    }
+
+    .register-left h2{
+        font-size:28px;
+    }
 
 }

@@ -8,25 +8,25 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserService {
 
-    private final LoginRepository userRepository;
+    private final LoginRepository loginRepository;
 
-    public UserService(LoginRepository userRepository) {
-        this.userRepository = userRepository;
+    public UserService(LoginRepository loginRepository) {
+        this.loginRepository = loginRepository;
     }
 
-    public String login(LoginRequest request) {
+    public Login login(LoginRequest request) {
 
-        Login user = userRepository.findByEmail(request.getEmail())
+        Login user = loginRepository.findByEmail(request.getEmail())
                 .orElse(null);
 
         if (user == null) {
-            return "User not found";
+            return null;
         }
 
         if (!user.getPassword().equals(request.getPassword())) {
-            return "Invalid password";
+            return null;
         }
 
-        return "Login Successful";
+        return user;
     }
 }

@@ -1,0 +1,11 @@
+user_id,food_allergy,medicine_allergy,other_allergy
+1,Peanuts,,
+2,,Penicillin,
+3,Seafood,,Dust Allergy
+4,,,
+5,Milk,,
+6,,Sulfa Drugs,
+7,,,Pollen Allergy
+8,Eggs,,
+9,,,Latex Allergy
+10,,,

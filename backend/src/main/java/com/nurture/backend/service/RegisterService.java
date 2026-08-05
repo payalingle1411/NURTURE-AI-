@@ -24,9 +24,9 @@ public class RegisterService {
 
         user.setFullName(request.getFullName());
         user.setEmail(request.getEmail());
-        user.setMobile(request.getMobile());
-        user.setRole(request.getRole());
         user.setPassword(request.getPassword());
+        user.setPhoneNumber(request.getPhoneNumber());
+        user.setRole(request.getRole());
 
         loginRepository.save(user);
 

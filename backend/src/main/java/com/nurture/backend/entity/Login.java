@@ -3,27 +3,36 @@ package com.nurture.backend.entity;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.time.LocalDateTime;
+
 @Entity
-@Data
 @Table(name = "users")
+@Data
 public class Login {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "user_id")
     private Long id;
 
-    @Column(nullable = false)
+    @Column(name = "full_name", nullable = false)
     private String fullName;
 
-    @Column(unique = true, nullable =false)
+    @Column(name = "email", nullable = false, unique = true)
     private String email;
 
-    @Column(nullable = false)
-    private String mobile;
+    @Column(name = "password", nullable = false)
+    private String password;
 
-    @Column(nullable = false)
+    @Column(name = "phone_number", nullable = false, unique = true)
+    private String phoneNumber;
+
+    @Column(name = "role")
     private String role;
 
-    @Column(nullable = false)
-    private String password;
+    @Column(name = "created_at", insertable = false, updatable = false)
+    private LocalDateTime createdAt;
+
+    @Column(name = "updated_at", insertable = false, updatable = false)
+    private LocalDateTime updatedAt;
 }

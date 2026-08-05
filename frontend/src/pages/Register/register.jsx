@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -9,6 +10,7 @@ import {
   FaLock,
   FaEye,
   FaEyeSlash,
+  FaHome,
 } from "react-icons/fa";
 import "./Register.css";
 
@@ -20,7 +22,7 @@ function Register() {
   const [formData, setFormData] = useState({
     fullName: "",
     email: "",
-    mobile: "",
+    phoneNumber: "",
     role: "",
     password: "",
     confirmPassword: "",
@@ -34,64 +36,61 @@ function Register() {
   };
 
   const handleSubmit = async (e) => {
-  e.preventDefault();
+    e.preventDefault();
 
-  if (formData.password !== formData.confirmPassword) {
-    alert("Passwords do not match.");
-    return;
-  }
+    if (formData.password !== formData.confirmPassword) {
+      alert("Passwords do not match.");
+      return;
+    }
 
-  try {
-    const response = await axios.post(
-      "http://localhost:8080/api/auth/register",
-      {
-        fullName: formData.fullName,
-        email: formData.email,
-        mobile: formData.mobile,
-        role: formData.role,
-        password: formData.password,
+    try {
+      const response = await axios.post(
+        "http://localhost:8080/api/auth/register",
+        {
+          fullName: formData.fullName,
+          email: formData.email,
+          phoneNumber: formData.phoneNumber,
+          role: formData.role,
+          password: formData.password,
+        }
+      );
+
+      console.log(response.data);
+
+      if (response.data === "Registration Successful") {
+        alert("Registration Successful ✅");
+
+        setFormData({
+          fullName: "",
+          email: "",
+          phoneNumber: "",
+          role: "",
+          password: "",
+          confirmPassword: "",
+        });
+
+        navigate("/dashboard");
+      } else {
+        alert(response.data);
       }
-    );
 
-    console.log(response.data);
+    } catch (error) {
+      console.error(error);
 
-    // If registration is successful
-    if (response.data === "Registration Successful") {
-      alert("Registration Successful ✅");
-
-      // Clear form
-      setFormData({
-        fullName: "",
-        email: "",
-        mobile: "",
-        role: "",
-        password: "",
-        confirmPassword: "",
-      });
-
-      // Temporary navigation
-      navigate("/dashboard");
-
-      // Later replace with:
-      // navigate("/user-details");
-    } else {
-      alert(response.data);
+      if (error.response) {
+        alert(error.response.data);
+      } else {
+        alert("Unable to connect to the server.");
+      }
     }
-
-  } catch (error) {
-    console.error(error);
-
-    if (error.response) {
-      alert(error.response.data);
-    } else {
-      alert("Unable to connect to the server.");
-    }
-  }
-};
+  };
 
   return (
     <div className="register-container">
-      {/* Left Section */}
+      <Link to="/" className="home-btn">
+        <FaHome />
+      </Link>
+
       <div className="register-left">
         <div className="overlay">
           <h1>🤱 Nurture AI</h1>
@@ -106,15 +105,17 @@ function Register() {
         </div>
       </div>
 
-      {/* Right Section */}
 
       <div className="register-right">
+
         <form className="register-form" onSubmit={handleSubmit}>
+
           <h2>Register</h2>
 
           <p className="subtitle">
             Create your account to begin your pregnancy journey.
           </p>
+
 
           {/* Full Name */}
 
@@ -135,6 +136,7 @@ function Register() {
             </div>
           </div>
 
+
           {/* Email */}
 
           <div className="input-group">
@@ -154,25 +156,27 @@ function Register() {
             </div>
           </div>
 
-          {/* Mobile */}
+
+          {/* Phone Number */}
 
           <div className="input-group">
-            <label>Mobile Number</label>
+            <label>Phone Number</label>
 
             <div className="input-box">
               <FaPhone className="input-icon" />
 
               <input
                 type="tel"
-                name="mobile"
-                value={formData.mobile}
+                name="phoneNumber"
+                value={formData.phoneNumber}
                 onChange={handleChange}
-                placeholder="Enter your mobile number"
+                placeholder="Enter your phone number"
                 maxLength="10"
                 required
               />
             </div>
           </div>
+
 
           {/* Role */}
 
@@ -190,17 +194,23 @@ function Register() {
               >
                 <option value="">Select Role</option>
                 <option value="Mother">Mother</option>
-                <option value="Family Member">Family Member</option>
+                <option value="Family Member">
+                  Family Member
+                </option>
               </select>
+
             </div>
           </div>
+
 
           {/* Password */}
 
           <div className="input-group">
+
             <label>Password</label>
 
             <div className="input-box">
+
               <FaLock className="input-icon" />
 
               <input
@@ -212,22 +222,32 @@ function Register() {
                 required
               />
 
+
               <button
                 type="button"
                 className="show-btn"
                 onClick={() => setShowPassword(!showPassword)}
               >
-                {showPassword ? <FaEyeSlash /> : <FaEye />}
+                {
+                  showPassword 
+                  ? <FaEyeSlash /> 
+                  : <FaEye />
+                }
               </button>
+
             </div>
+
           </div>
+
 
           {/* Confirm Password */}
 
           <div className="input-group">
+
             <label>Confirm Password</label>
 
             <div className="input-box">
+
               <FaLock className="input-icon" />
 
               <input
@@ -238,40 +258,58 @@ function Register() {
                 placeholder="Confirm Password"
                 required
               />
+
             </div>
+
           </div>
+
 
           {/* Terms */}
 
           <div className="terms">
+
             <label>
+
               <input type="checkbox" required />
 
-              I agree to the <a href="/">Terms & Conditions</a>
+              I agree to the 
+              <a href="/"> Terms & Conditions</a>
+
             </label>
+
           </div>
 
-          {/* Register Button */}
+
+          {/* Button */}
 
           <button className="register-btn" type="submit">
             Create Account
           </button>
 
-          {/* Login Link */}
+
+          {/* Login */}
 
           <p className="login-link">
+
             Already have an account?
-            <Link to="/login"> Login</Link>
+
+            <Link to="/login">
+              Login
+            </Link>
+
           </p>
 
-          {/* Quote */}
 
           <p className="quote">
             ❤️ Every mother deserves personalized care because every pregnancy
             is unique.
           </p>
+
+
         </form>
+
       </div>
+
     </div>
   );
 }
