@@ -1,35 +1,38 @@
-import axios from "axios";
+import API from "./api";
 
-const API = axios.create({
-  baseURL: "http://10.157.64.217:8080/api",
-  headers: {
-    "Content-Type": "application/json",
-  },
-  timeout: 10000,
-});
+// =========================================================
+// GET PERSONAL INFORMATION
+// =========================================================
 
-// Save personal information
-export const savePersonalInfo = async (data) => {
-  try {
-    const response = await API.post("/profile/personal-info", data);
-    return response;
-  } catch (error) {
-    console.error("Error saving personal information:", error);
-    throw error;
-  }
-};
-
-// Get personal information
 export const getPersonalInfo = async (userId) => {
-  try {
-    const response = await API.get(
-      `/profile/personal-info/${userId}`
-    );
-    return response;
-  } catch (error) {
-    console.error("Error fetching personal information:", error);
-    throw error;
-  }
+  return await API.get(
+    `/profile/personal-info/${userId}`
+  );
 };
 
-export default API;
+
+// =========================================================
+// CREATE PERSONAL INFORMATION
+// =========================================================
+
+export const savePersonalInfo = async (data) => {
+  return await API.post(
+    "/profile/personal-info",
+    data
+  );
+};
+
+
+// =========================================================
+// UPDATE PERSONAL INFORMATION
+// =========================================================
+
+export const updatePersonalInfo = async (
+  userId,
+  data
+) => {
+  return await API.put(
+    `/profile/personal-info/${userId}`,
+    data
+  );
+};
