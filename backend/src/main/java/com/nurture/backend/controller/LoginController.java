@@ -29,12 +29,16 @@ public class LoginController {
                     .body("Invalid Email or Password");
         }
 
+        // Check whether the pregnancy profile already exists
+        boolean profileCompleted = userService.isProfileCompleted(user.getId());
+
         LoginResponse response = new LoginResponse(
                 user.getId(),
                 user.getFullName(),
                 user.getEmail(),
                 user.getRole(),
-                "Login Successful"
+                "Login Successful",
+                profileCompleted
         );
 
         return ResponseEntity.ok(response);
