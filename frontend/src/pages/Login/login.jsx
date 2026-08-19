@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import {
   FaEye,
@@ -14,6 +14,7 @@ function Login() {
   const navigate = useNavigate();
 
   const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const [formData, setFormData] = useState({
     email: "",
@@ -21,73 +22,179 @@ function Login() {
     remember: false,
   });
 
-  const [loading, setLoading] = useState(false);
-
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
 
-    setFormData({
-      ...formData,
+    setFormData((prev) => ({
+      ...prev,
       [name]: type === "checkbox" ? checked : value,
-    });
+    }));
   };
 
- const handleSubmit = async (e) => {
-  e.preventDefault();
-  setLoading(true);
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-  try {
-    const response = await axios.post(
-      "http://localhost:8080/api/auth/login",
-      {
-        email: formData.email,
-        password: formData.password,
+    // Validation
+    if (!formData.email.trim() || !formData.password.trim()) {
+      alert("Please enter email and password.");
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      // ==============================
+      // SPRING BOOT LOGIN API
+      // ==============================
+
+      const response = await axios.post(
+        "http://localhost:8080/api/auth/login",
+        {
+          email: formData.email.trim(),
+          password: formData.password,
+        }
+      );
+
+      console.log("Login Response:", response.data);
+
+      // ==============================
+      // LOGIN SUCCESS
+      // ==============================
+
+      if (response.status === 200) {
+        const data = response.data;
+
+        console.log("User ID:", data.userId);
+        console.log("User Name:", data.fullName);
+        console.log("Email:", data.email);
+        console.log("Role:", data.role);
+        console.log("Profile Completed:", data.profileCompleted);
+
+        // --------------------------------
+        // Save logged-in user information
+        // --------------------------------
+
+        localStorage.setItem(
+          "userId",
+          data.userId.toString()
+        );
+
+        localStorage.setItem(
+          "userName",
+          data.fullName || ""
+        );
+
+        localStorage.setItem(
+          "userEmail",
+          data.email || ""
+        );
+
+        localStorage.setItem(
+          "userRole",
+          data.role || ""
+        );
+
+        localStorage.setItem(
+          "profileCompleted",
+          data.profileCompleted.toString()
+        );
+
+        // Remember Me
+        localStorage.setItem(
+          "rememberMe",
+          formData.remember.toString()
+        );
+
+        alert(data.message || "Login Successful ✅");
+
+        // ==========================================
+        // CHECK PERSONAL INFORMATION
+        // ==========================================
+
+        if (data.profileCompleted === true) {
+          // Profile already completed
+          navigate("/dashboard", { replace: true });
+        } else {
+          // Profile is not completed
+          navigate("/personal-info", { replace: true });
+        }
       }
-    );
 
-    console.log(response.data);
+    } catch (error) {
+      console.error("Login Error:", error);
 
-    if (response.data === "Login Successful") {
-      alert("Login Successful ✅");
-      navigate("/dashboard");
-    } else {
-      alert(response.data); // User not found / Invalid password
+      // Spring Boot returned an error
+      if (error.response) {
+        console.log(
+          "Backend Error:",
+          error.response.data
+        );
+
+        if (typeof error.response.data === "string") {
+          alert(error.response.data);
+        } else {
+          alert(
+            error.response.data?.message ||
+            "Invalid email or password."
+          );
+        }
+      }
+
+      // Request reached nowhere
+      else if (error.request) {
+        alert(
+          "Unable to connect to Spring Boot backend.\n\n" +
+          "Please make sure your backend is running on port 8080."
+        );
+      }
+
+      // Other error
+      else {
+        alert("Something went wrong. Please try again.");
+      }
+
+    } finally {
+      setLoading(false);
     }
-
-  } catch (error) {
-    console.error(error);
-
-    if (error.response) {
-      alert(error.response.data);
-    } else {
-      alert("Unable to connect to server.");
-    }
-  } finally {
-    setLoading(false);
-  }
-};
+  };
 
   return (
     <div className="login-container">
-      {/* Left Section */}
+
+      {/* ======================================
+          LEFT SECTION
+      ====================================== */}
+
       <div className="login-left">
+
         <div className="overlay">
+
           <h1>🤱 Nurture AI</h1>
 
           <h2>Welcome Back!</h2>
 
           <p>
-            Your trusted pregnancy wellness companion. Stay healthy,
-            track your baby's growth, receive AI-powered guidance,
-            and keep your family connected throughout your motherhood
+            Your trusted pregnancy wellness companion.
+            Stay healthy, track your baby's growth,
+            receive AI-powered guidance, and keep your
+            family connected throughout your motherhood
             journey.
           </p>
+
         </div>
+
       </div>
 
-      {/* Right Section */}
+      {/* ======================================
+          RIGHT SECTION
+      ====================================== */}
+
       <div className="login-right">
-        <form className="login-form" onSubmit={handleSubmit}>
+
+        <form
+          className="login-form"
+          onSubmit={handleSubmit}
+        >
 
           <h2>Login</h2>
 
@@ -95,11 +202,16 @@ function Login() {
             Sign in to continue your pregnancy journey.
           </p>
 
-          {/* Email */}
+          {/* ======================================
+              EMAIL
+          ====================================== */}
+
           <div className="input-group">
+
             <label>Email Address</label>
 
             <div className="input-box">
+
               <FaEnvelope className="input-icon" />
 
               <input
@@ -108,24 +220,37 @@ function Login() {
                 placeholder="Enter your email"
                 value={formData.email}
                 onChange={handleChange}
+                autoComplete="email"
                 required
               />
+
             </div>
+
           </div>
 
-          {/* Password */}
+          {/* ======================================
+              PASSWORD
+          ====================================== */}
+
           <div className="input-group">
+
             <label>Password</label>
 
             <div className="input-box">
+
               <FaLock className="input-icon" />
 
               <input
-                type={showPassword ? "text" : "password"}
+                type={
+                  showPassword
+                    ? "text"
+                    : "password"
+                }
                 name="password"
                 placeholder="Enter your password"
                 value={formData.password}
                 onChange={handleChange}
+                autoComplete="current-password"
                 required
               />
 
@@ -133,7 +258,9 @@ function Login() {
                 type="button"
                 className="show-btn"
                 onClick={() =>
-                  setShowPassword(!showPassword)
+                  setShowPassword(
+                    !showPassword
+                  )
                 }
               >
                 {showPassword ? (
@@ -142,60 +269,100 @@ function Login() {
                   <FaEye />
                 )}
               </button>
+
             </div>
+
           </div>
 
-          {/* Remember */}
+          {/* ======================================
+              REMEMBER ME
+          ====================================== */}
+
           <div className="remember">
+
             <label>
+
               <input
                 type="checkbox"
                 name="remember"
                 checked={formData.remember}
                 onChange={handleChange}
               />
-              <span>Remember Me</span>
+
+              <span>
+                Remember Me
+              </span>
+
             </label>
 
             <Link to="/forgot-password">
               Forgot Password?
             </Link>
+
           </div>
 
-          {/* Login Button */}
+          {/* ======================================
+              LOGIN BUTTON
+          ====================================== */}
+
           <button
             type="submit"
             className="login-btn"
             disabled={loading}
           >
-            {loading ? "Logging in..." : "Login"}
+
+            {loading
+              ? "Logging in..."
+              : "Login"}
+
           </button>
 
-          {/* Divider */}
+          {/* ======================================
+              DIVIDER
+          ====================================== */}
+
           <div className="divider">
+
             <span>OR</span>
+
           </div>
 
-          {/* Google */}
+          {/* ======================================
+              GOOGLE
+          ====================================== */}
+
           <button
             type="button"
             className="google-btn"
           >
+
             <FcGoogle className="google-icon" />
-            <span>Continue with Google</span>
+
+            <span>
+              Continue with Google
+            </span>
+
           </button>
 
-          {/* Register */}
+          {/* ======================================
+              REGISTER
+          ====================================== */}
+
           <p className="register-link">
+
             Don't have an account?
+
             <Link to="/register">
               {" "}
               Create Account
             </Link>
+
           </p>
 
         </form>
+
       </div>
+
     </div>
   );
 }

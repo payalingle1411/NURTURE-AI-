@@ -1,0 +1,1240 @@
+/* =========================================================
+   NURTURE AI
+   PERSONAL INFORMATION
+   Premium Maternal Wellness UI
+   Deep Plum • Rose • Lavender • Warm Beige
+========================================================= */
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  margin: 0;
+  min-height: 100%;
+  font-family:
+    Inter,
+    "Segoe UI",
+    Arial,
+    sans-serif;
+}
+
+
+/* =========================================================
+   PAGE BACKGROUND
+========================================================= */
+
+.personal-page {
+  min-height: 100vh;
+
+  padding: 45px 20px 75px;
+
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+
+  position: relative;
+
+  overflow: hidden;
+
+  background:
+
+    /* pink glow */
+    radial-gradient(
+      circle at 8% 12%,
+      rgba(235, 145, 177, 0.42),
+      transparent 25%
+    ),
+
+    /* lavender glow */
+    radial-gradient(
+      circle at 92% 8%,
+      rgba(157, 136, 205, 0.42),
+      transparent 27%
+    ),
+
+    /* beige glow */
+    radial-gradient(
+      circle at 90% 88%,
+      rgba(218, 183, 140, 0.38),
+      transparent 27%
+    ),
+
+    /* dark plum atmosphere */
+    radial-gradient(
+      circle at 45% 110%,
+      rgba(71, 45, 70, 0.14),
+      transparent 32%
+    ),
+
+    linear-gradient(
+      135deg,
+      #fff5f6 0%,
+      #f9f0f6 30%,
+      #f4f0fa 65%,
+      #f8f1e9 100%
+    );
+}
+
+
+/* =========================================================
+   DECORATIVE BACKGROUND SHAPES
+========================================================= */
+
+.personal-page::before {
+  content: "";
+
+  position: absolute;
+
+  width: 470px;
+  height: 470px;
+
+  top: -270px;
+  left: -190px;
+
+  border-radius: 50%;
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(204, 102, 143, 0.30),
+      rgba(204, 102, 143, 0.08) 48%,
+      transparent 70%
+    );
+
+  box-shadow:
+    160px 120px 0 -45px rgba(100, 69, 104, 0.08);
+
+  pointer-events: none;
+}
+
+
+.personal-page::after {
+  content: "";
+
+  position: absolute;
+
+  width: 540px;
+  height: 540px;
+
+  right: -300px;
+  bottom: -310px;
+
+  border-radius: 50%;
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(126, 106, 175, 0.28),
+      rgba(126, 106, 175, 0.07) 50%,
+      transparent 72%
+    );
+
+  pointer-events: none;
+}
+
+
+/* =========================================================
+   FLOATING DECORATIVE DOTS
+========================================================= */
+
+.personal-page {
+  --plum: #51334f;
+  --deep-plum: #3e263d;
+  --rose: #bd718d;
+  --pink: #e4a1b5;
+  --lavender: #9d8bc4;
+  --beige: #d6b486;
+}
+
+
+/* =========================================================
+   MAIN CARD
+========================================================= */
+
+.personal-card {
+  width: 100%;
+
+  max-width: 980px;
+
+  position: relative;
+
+  z-index: 5;
+
+  padding: 48px 58px 52px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255, 255, 255, 0.98),
+      rgba(255, 248, 250, 0.97) 48%,
+      rgba(249, 246, 252, 0.97)
+    );
+
+  border: 1px solid rgba(214, 185, 202, 0.75);
+
+  border-radius: 30px;
+
+  box-shadow:
+    0 35px 90px rgba(61, 37, 58, 0.18),
+    0 12px 35px rgba(83, 56, 78, 0.10),
+    inset 0 1px 0 rgba(255, 255, 255, 1);
+
+  backdrop-filter: blur(20px);
+
+  animation: cardEnter 0.65s ease-out;
+}
+
+
+/* =========================================================
+   PREMIUM TOP ACCENT
+========================================================= */
+
+.personal-card::before {
+  content: "";
+
+  position: absolute;
+
+  top: 0;
+  left: 7%;
+
+  width: 86%;
+
+  height: 5px;
+
+  border-radius: 0 0 20px 20px;
+
+  background:
+    linear-gradient(
+      90deg,
+      #d889a4 0%,
+      #b56f8d 25%,
+      #8f7ab5 55%,
+      #b8a0d2 72%,
+      #d7b58b 100%
+    );
+
+  box-shadow:
+    0 4px 18px rgba(133, 81, 111, 0.25);
+}
+
+
+/* Inner decorative glow */
+
+.personal-card::after {
+  content: "";
+
+  position: absolute;
+
+  top: 20px;
+  right: 25px;
+
+  width: 110px;
+  height: 110px;
+
+  border-radius: 50%;
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(181, 150, 204, 0.20),
+      transparent 70%
+    );
+
+  pointer-events: none;
+}
+
+
+@keyframes cardEnter {
+
+  from {
+    opacity: 0;
+    transform:
+      translateY(28px)
+      scale(0.985);
+  }
+
+  to {
+    opacity: 1;
+    transform:
+      translateY(0)
+      scale(1);
+  }
+}
+
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.personal-header {
+  text-align: center;
+
+  margin-bottom: 36px;
+
+  position: relative;
+
+  z-index: 3;
+}
+
+
+/* =========================================================
+   HEADER ICON
+========================================================= */
+
+.header-icon {
+  width: 88px;
+  height: 88px;
+
+  margin: 0 auto 20px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  position: relative;
+
+  border-radius: 50%;
+
+  background:
+    linear-gradient(
+      145deg,
+      #f0cbd8 0%,
+      #dfb4c8 35%,
+      #c5b3dc 72%,
+      #afa0ce 100%
+    );
+
+  border: 7px solid rgba(255, 255, 255, 0.94);
+
+  color: #4c3049;
+
+  font-size: 34px;
+
+  box-shadow:
+    0 16px 35px rgba(102, 57, 83, 0.24),
+    0 5px 14px rgba(101, 75, 114, 0.13),
+    inset 0 2px 5px rgba(255, 255, 255, 0.8);
+
+  animation: motherFloat 4s ease-in-out infinite;
+}
+
+
+/* small decorative dots */
+
+.header-icon::before {
+  content: "";
+
+  position: absolute;
+
+  width: 10px;
+  height: 10px;
+
+  top: 2px;
+  right: 9px;
+
+  border-radius: 50%;
+
+  background: #d7819d;
+
+  box-shadow:
+    19px 17px 0 -2px #9b86bd;
+}
+
+
+.header-icon::after {
+  content: "";
+
+  position: absolute;
+
+  width: 7px;
+  height: 7px;
+
+  bottom: 7px;
+  left: 8px;
+
+  border-radius: 50%;
+
+  background: #d3ad7d;
+}
+
+
+@keyframes motherFloat {
+
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+
+/* =========================================================
+   TITLE
+========================================================= */
+
+.personal-header h1 {
+  margin: 0;
+
+  color: #3d293c;
+
+  font-size: 33px;
+
+  line-height: 1.2;
+
+  font-weight: 800;
+
+  letter-spacing: -1px;
+}
+
+
+.personal-header h1::after {
+  content: "";
+
+  display: block;
+
+  width: 65px;
+  height: 4px;
+
+  margin: 13px auto 0;
+
+  border-radius: 20px;
+
+  background:
+    linear-gradient(
+      90deg,
+      #c97b98,
+      #9a84bf,
+      #d0a978
+    );
+
+  box-shadow:
+    0 3px 10px rgba(143, 103, 130, 0.20);
+}
+
+
+/* =========================================================
+   DESCRIPTION
+========================================================= */
+
+.personal-header p {
+  max-width: 650px;
+
+  margin: 15px auto 0;
+
+  color: #716874;
+
+  font-size: 14px;
+
+  line-height: 1.75;
+}
+
+
+/* =========================================================
+   QUOTE
+========================================================= */
+
+.personal-quote {
+  max-width: 710px;
+
+  margin: 23px auto 0;
+
+  padding: 18px 28px 18px 38px;
+
+  position: relative;
+
+  background:
+    linear-gradient(
+      105deg,
+      #fff0f3 0%,
+      #f8eff7 50%,
+      #faf3e9 100%
+    );
+
+  border: 1px solid rgba(213, 182, 197, 0.85);
+
+  border-radius: 17px;
+
+  color: #5d515d;
+
+  font-size: 13px;
+
+  line-height: 1.7;
+
+  font-style: italic;
+
+  text-align: center;
+
+  box-shadow:
+    0 10px 28px rgba(88, 57, 79, 0.08);
+}
+
+
+.personal-quote::before {
+  content: "“";
+
+  position: absolute;
+
+  left: 14px;
+  top: -8px;
+
+  color: #c67893;
+
+  font-size: 42px;
+
+  font-family: Georgia, serif;
+}
+
+
+.personal-quote span {
+  color: #9a607a;
+
+  font-size: 20px;
+
+  font-weight: 700;
+}
+
+
+/* =========================================================
+   FORM AREA
+========================================================= */
+
+.personal-card form {
+  margin-top: 35px;
+
+  padding-top: 32px;
+
+  border-top: 1px solid #eadde5;
+
+  position: relative;
+}
+
+
+/* =========================================================
+   ERROR
+========================================================= */
+
+.error-message {
+  display: flex;
+
+  align-items: center;
+
+  gap: 11px;
+
+  margin-bottom: 25px;
+
+  padding: 14px 17px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #fff1f3,
+      #fff9fa
+    );
+
+  border: 1px solid #edc8d0;
+
+  border-left: 5px solid #c76d82;
+
+  border-radius: 12px;
+
+  color: #984858;
+
+  font-size: 13px;
+
+  box-shadow:
+    0 8px 22px rgba(176, 81, 106, 0.08);
+}
+
+
+/* =========================================================
+   FORM GROUP
+========================================================= */
+
+.form-group {
+  margin-bottom: 23px;
+}
+
+
+.form-group label {
+  display: flex;
+
+  align-items: center;
+
+  margin-bottom: 9px;
+
+  color: #3f3340;
+
+  font-size: 13px;
+
+  font-weight: 700;
+}
+
+
+.form-group label span {
+  margin-left: 4px;
+
+  color: #c36d89;
+
+  font-size: 14px;
+}
+
+
+/* =========================================================
+   INPUTS
+========================================================= */
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  width: 100%;
+
+  border: 1px solid #d8ccd6;
+
+  background:
+    linear-gradient(
+      135deg,
+      #fffefe,
+      #fbf8fc
+    );
+
+  border-radius: 13px;
+
+  padding: 13px 15px;
+
+  color: #382f39;
+
+  font-size: 14px;
+
+  outline: none;
+
+  transition:
+    border-color 0.25s ease,
+    box-shadow 0.25s ease,
+    background 0.25s ease,
+    transform 0.2s ease;
+}
+
+
+.form-group input,
+.form-group select {
+  height: 51px;
+}
+
+
+.form-group textarea {
+  min-height: 110px;
+
+  resize: vertical;
+
+  font-family: inherit;
+
+  line-height: 1.6;
+}
+
+
+.form-group input::placeholder,
+.form-group textarea::placeholder {
+  color: #aaa0ab;
+}
+
+
+/* =========================================================
+   HOVER
+========================================================= */
+
+.form-group input:hover,
+.form-group select:hover,
+.form-group textarea:hover {
+  border-color: #bca7b8;
+
+  background: #ffffff;
+}
+
+
+/* =========================================================
+   FOCUS
+========================================================= */
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  border-color: #a77eb0;
+
+  background: #ffffff;
+
+  box-shadow:
+    0 0 0 4px rgba(165, 126, 176, 0.14),
+    0 9px 22px rgba(80, 51, 78, 0.07);
+
+  transform: translateY(-1px);
+}
+
+
+/* =========================================================
+   DATE
+========================================================= */
+
+.form-group input[type="date"] {
+  color: #443a45;
+
+  cursor: pointer;
+}
+
+
+.form-group input[type="date"]::-webkit-calendar-picker-indicator {
+  cursor: pointer;
+
+  opacity: 0.55;
+}
+
+
+/* =========================================================
+   SELECT
+========================================================= */
+
+.form-group select {
+  cursor: pointer;
+}
+
+
+/* =========================================================
+   READONLY AGE
+========================================================= */
+
+.readonly-input {
+  width: 100%;
+  height: 51px;
+
+  display: flex;
+
+  align-items: center;
+
+  padding: 0 15px;
+
+  position: relative;
+
+  background:
+    linear-gradient(
+      135deg,
+      #f7edf2,
+      #f0ebf7
+    );
+
+  border: 1px solid #ded1dc;
+
+  border-radius: 13px;
+
+  color: #746a76;
+
+  font-size: 14px;
+
+  box-shadow:
+    inset 0 1px 3px rgba(91, 66, 86, 0.04);
+}
+
+
+.readonly-input::after {
+  content: "AUTO";
+
+  position: absolute;
+
+  right: 12px;
+
+  padding: 5px 10px;
+
+  border-radius: 20px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #dfc8d7,
+      #d8d0e9
+    );
+
+  color: #684f68;
+
+  font-size: 9px;
+
+  font-weight: 800;
+
+  letter-spacing: 0.8px;
+}
+
+
+/* =========================================================
+   TWO COLUMN
+========================================================= */
+
+.form-row {
+  display: grid;
+
+  grid-template-columns: 1fr 1fr;
+
+  gap: 23px;
+}
+
+
+/* =========================================================
+   SECTION TITLE
+========================================================= */
+
+.section-title {
+  display: flex;
+
+  align-items: center;
+
+  gap: 12px;
+
+  margin: 39px 0 23px;
+
+  padding-bottom: 14px;
+
+  position: relative;
+
+  color: #3b2c3a;
+
+  font-size: 17px;
+
+  font-weight: 750;
+
+  border-bottom: 1px solid #e8dce4;
+}
+
+
+.section-title::after {
+  content: "";
+
+  position: absolute;
+
+  left: 0;
+  bottom: -1px;
+
+  width: 105px;
+  height: 4px;
+
+  border-radius: 20px;
+
+  background:
+    linear-gradient(
+      90deg,
+      #c77895,
+      #9c86be,
+      #d2ad79
+    );
+
+  box-shadow:
+    0 3px 8px rgba(145, 96, 125, 0.15);
+}
+
+
+.section-title span {
+  width: 40px;
+  height: 40px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 13px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #f6dce4,
+      #eee4f6
+    );
+
+  border: 1px solid #e2d2df;
+
+  color: #70546d;
+
+  font-size: 18px;
+
+  box-shadow:
+    0 7px 17px rgba(99, 64, 92, 0.10);
+}
+
+
+/* =========================================================
+   BUTTON AREA
+========================================================= */
+
+.button-container {
+  display: flex;
+
+  gap: 15px;
+
+  margin-top: 41px;
+
+  padding-top: 28px;
+
+  border-top: 1px solid #e9dfe5;
+}
+
+
+/* =========================================================
+   BUTTON BASE
+========================================================= */
+
+.skip-button,
+.next-button {
+  height: 55px;
+
+  border-radius: 13px;
+
+  font-size: 14px;
+
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition:
+    transform 0.22s ease,
+    box-shadow 0.22s ease,
+    background 0.22s ease,
+    border-color 0.22s ease;
+}
+
+
+/* =========================================================
+   SKIP BUTTON
+========================================================= */
+
+.skip-button {
+  width: 30%;
+
+  background:
+    linear-gradient(
+      135deg,
+      #fffefe,
+      #f9f3f7
+    );
+
+  color: #604f5f;
+
+  border: 1px solid #d5c4d2;
+}
+
+
+.skip-button:hover {
+  background:
+    linear-gradient(
+      135deg,
+      #fff5f7,
+      #f4eff9
+    );
+
+  color: #4f3c4d;
+
+  border-color: #b99caf;
+
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 10px 24px rgba(84, 52, 76, 0.10);
+}
+
+
+/* =========================================================
+   NEXT BUTTON
+========================================================= */
+
+.next-button {
+  width: 70%;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 10px;
+
+  border: none;
+
+  background:
+    linear-gradient(
+      110deg,
+      #9b526f 0%,
+      #ad6f8d 28%,
+      #8e79b7 68%,
+      #7763a5 100%
+    );
+
+  color: #ffffff;
+
+  box-shadow:
+    0 13px 30px rgba(113, 70, 101, 0.30);
+}
+
+
+.next-button:hover {
+  background:
+    linear-gradient(
+      110deg,
+      #893f5e,
+      #9e5e7d,
+      #8068aa,
+      #695494
+    );
+
+  transform: translateY(-3px);
+
+  box-shadow:
+    0 17px 36px rgba(91, 53, 82, 0.36);
+}
+
+
+.next-button:active {
+  transform: translateY(0);
+}
+
+
+/* =========================================================
+   DISABLED
+========================================================= */
+
+.next-button:disabled,
+.skip-button:disabled {
+  opacity: 0.55;
+
+  cursor: not-allowed;
+
+  transform: none;
+
+  box-shadow: none;
+}
+
+
+/* =========================================================
+   SPINNER
+========================================================= */
+
+.button-spinner {
+  width: 17px;
+  height: 17px;
+
+  border-radius: 50%;
+
+  border: 2px solid rgba(255, 255, 255, 0.35);
+
+  border-top-color: #ffffff;
+
+  animation: spin 0.7s linear infinite;
+}
+
+
+/* =========================================================
+   LOADING
+========================================================= */
+
+.personal-loading {
+  min-height: 100vh;
+
+  display: flex;
+
+  flex-direction: column;
+
+  justify-content: center;
+
+  align-items: center;
+
+  background:
+    radial-gradient(
+      circle at 20% 20%,
+      rgba(224, 139, 170, 0.35),
+      transparent 30%
+    ),
+    radial-gradient(
+      circle at 80% 80%,
+      rgba(152, 131, 195, 0.30),
+      transparent 30%
+    ),
+    linear-gradient(
+      135deg,
+      #fff5f6,
+      #f3edf7
+    );
+
+  color: #714b68;
+}
+
+
+.loading-spinner {
+  width: 47px;
+  height: 47px;
+
+  border-radius: 50%;
+
+  border: 3px solid #ead9e4;
+
+  border-top-color: #ad6584;
+
+  border-right-color: #9380b9;
+
+  animation: spin 0.75s linear infinite;
+}
+
+
+.personal-loading p {
+  margin-top: 16px;
+
+  color: #685d68;
+
+  font-size: 14px;
+}
+
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media (max-width: 768px) {
+
+  .personal-page {
+    padding: 28px 15px 45px;
+  }
+
+  .personal-card {
+    padding: 38px 29px 42px;
+
+    border-radius: 25px;
+  }
+
+  .personal-header h1 {
+    font-size: 28px;
+  }
+
+  .form-row {
+    grid-template-columns: 1fr;
+
+    gap: 0;
+  }
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 480px) {
+
+  .personal-page {
+    padding: 14px 9px 32px;
+  }
+
+  .personal-card {
+    padding: 31px 18px 34px;
+
+    border-radius: 21px;
+  }
+
+  .personal-card::before {
+    left: 7%;
+
+    width: 86%;
+  }
+
+  .header-icon {
+    width: 70px;
+    height: 70px;
+
+    font-size: 28px;
+  }
+
+  .personal-header h1 {
+    font-size: 24px;
+  }
+
+  .personal-header p {
+    font-size: 13px;
+  }
+
+  .personal-quote {
+    padding: 14px 16px 14px 24px;
+
+    font-size: 12px;
+  }
+
+  .personal-card form {
+    margin-top: 28px;
+
+    padding-top: 25px;
+  }
+
+  .form-group input,
+  .form-group select {
+    height: 49px;
+
+    font-size: 14px;
+  }
+
+  .section-title {
+    font-size: 15px;
+
+    margin-top: 31px;
+  }
+
+  .button-container {
+    flex-direction: column-reverse;
+
+    gap: 10px;
+
+    margin-top: 33px;
+  }
+
+  .skip-button,
+  .next-button {
+    width: 100%;
+
+    height: 52px;
+  }
+}
+
+
+/* =========================================================
+   SMALL MOBILE
+========================================================= */
+
+@media (max-width: 360px) {
+
+  .personal-card {
+    padding: 26px 14px 29px;
+  }
+
+  .personal-header h1 {
+    font-size: 21px;
+  }
+
+  .personal-header p {
+    font-size: 12px;
+  }
+
+  .personal-quote {
+    font-size: 11.5px;
+  }
+
+  .form-group input,
+  .form-group select {
+    height: 47px;
+  }
+
+  .next-button,
+  .skip-button {
+    height: 50px;
+  }
+}

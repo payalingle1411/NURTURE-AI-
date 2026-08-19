@@ -10,9 +10,9 @@ public class UserProfile {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // Relationship with users table
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false)
+    // One User -> One Profile
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false, unique = true)
     private Login user;
 
     @Column(name = "date_of_birth")
@@ -53,10 +53,6 @@ public class UserProfile {
 
     public UserProfile() {
     }
-
-    // ==========================
-    // Getters and Setters
-    // ==========================
 
     public Long getId() {
         return id;

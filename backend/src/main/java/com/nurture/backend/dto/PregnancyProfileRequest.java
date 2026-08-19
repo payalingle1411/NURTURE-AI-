@@ -1,81 +1,40 @@
-package com.nurture.backend.entity;
-
-import jakarta.persistence.*;
+package com.nurture.backend.dto;
 
 import java.time.LocalDate;
 
-@Entity
-@Table(name = "pregnancy_details")
-public class PregnancyProfile {
+public class PregnancyProfileRequest {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "pregnancy_id")
-    private Long pregnancyId;
+    private Long userId;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false, unique = true)
-    private Login user;
-
-    @Column(name = "due_date", nullable = false)
     private String dueDate;
-
-    @Column(name = "pregnancy_week")
     private Integer pregnancyWeek;
-
-    @Column(name = "trimester")
     private String trimester;
 
-    @Column(name = "last_menstrual_period")
+    // New Fields
     private LocalDate lastMenstrualPeriod;
-
-    @Column(name = "pregnancy_type")
     private String pregnancyType;
-
-    @Column(name = "baby_count")
     private Integer babyCount;
-
-    @Column(name = "doctor_notes", columnDefinition = "TEXT")
     private String doctorNotes;
 
-    @Column(name = "first_pregnancy")
+    // Existing Fields
     private Boolean firstPregnancy;
-
-    @Column(name = "previous_pregnancies")
     private Integer previousPregnancies;
-
-    @Column(name = "live_births")
     private Integer liveBirths;
-
-    @Column(name = "miscarriages")
     private Integer miscarriages;
 
-    @Column(name = "high_risk")
     private Boolean highRisk;
-
-    @Column(name = "ivf_pregnancy")
     private Boolean ivfPregnancy;
-
-    @Column(name = "multiple_pregnancy")
     private Boolean multiplePregnancy;
 
-    public PregnancyProfile() {
+    public PregnancyProfileRequest() {
     }
 
-    public Long getPregnancyId() {
-        return pregnancyId;
+    public Long getUserId() {
+        return userId;
     }
 
-    public void setPregnancyId(Long pregnancyId) {
-        this.pregnancyId = pregnancyId;
-    }
-
-    public Login getUser() {
-        return user;
-    }
-
-    public void setUser(Login user) {
-        this.user = user;
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 
     public String getDueDate() {

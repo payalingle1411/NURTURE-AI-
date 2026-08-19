@@ -1,382 +1,994 @@
-/* Google Font */
+/* =========================================================
+   GOOGLE FONT
+========================================================= */
+
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap");
 
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-    font-family:"Poppins",sans-serif;
+
+/* =========================================================
+   GLOBAL
+========================================================= */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
 }
 
-body{
-    background:linear-gradient(135deg,#ffe8f2,#f8f7ff,#eaf6ff);
+html,
+body,
+#root {
+  width: 100%;
+  min-height: 100%;
 }
 
-/* ================= CONTAINER ================= */
-
-.register-container{
-    position: relative;
-    width:100%;
-    min-height:100vh;
-    display:flex;
-    overflow:hidden;
+body {
+  margin: 0;
+  background: linear-gradient(
+    135deg,
+    #ffe8f2 0%,
+    #f8f7ff 50%,
+    #eaf6ff 100%
+  );
 }
 
-/* ================= HOME BUTTON ================= */
-/* ================= HOME BUTTON ================= */
 
-.home-btn{
-    position: fixed;
-    top: 20px;
-    left: 20px;
+/* =========================================================
+   MAIN CONTAINER
+========================================================= */
 
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
+.register-container {
+  position: relative;
 
-    width: 55px;
-    height: 55px;
+  width: 100%;
+  min-height: 100vh;
 
-    background: #ffffff;
-    color: #6b4eff;
+  display: flex;
 
-    border-radius: 50%;
-
-    text-decoration: none;
-
-    font-size: 24px;
-    font-weight: 600;
-
-    box-shadow: 0 8px 25px rgba(0,0,0,.18);
-
-    transition: all .3s ease;
-
-    z-index: 99999;
+  overflow-x: hidden;
 }
 
-.home-btn:hover{
-    background:#6b4eff;
-    color:#fff;
-    transform:scale(1.1);
-}
-/* ================= LEFT SIDE ================= */
 
-.register-left{
-    flex:0.9;
-    background:
-    linear-gradient(rgba(255,126,179,.78),rgba(138,123,255,.78)),
+/* =========================================================
+   HOME BUTTON
+========================================================= */
+
+.home-btn {
+  position: fixed;
+
+  top: 20px;
+  left: 20px;
+
+  width: 52px;
+  height: 52px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: #ffffff;
+
+  color: #6b4eff;
+
+  border-radius: 50%;
+
+  text-decoration: none;
+
+  font-size: 21px;
+
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+
+  transition: all 0.3s ease;
+
+  z-index: 99999;
+}
+
+.home-btn:hover {
+  background: #6b4eff;
+  color: #ffffff;
+
+  transform: scale(1.08);
+}
+
+
+/* =========================================================
+   LEFT SECTION
+========================================================= */
+
+.register-left {
+  width: 45%;
+  min-height: 100vh;
+
+  background:
+    linear-gradient(
+      rgba(255, 126, 179, 0.78),
+      rgba(138, 123, 255, 0.78)
+    ),
     url("https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?auto=format&fit=crop&w=1200&q=80");
 
-    background-size:cover;
-    background-position:center;
+  background-size: cover;
+  background-position: center;
 
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    padding:60px;
-}
+  display: flex;
 
-.overlay{
-    background:rgba(255,255,255,.08);
-    backdrop-filter:blur(10px);
-    padding:40px;
-    border-radius:24px;
-    color:white;
-}
+  align-items: center;
+  justify-content: center;
 
-.register-left h1{
-    font-size:48px;
-    margin-bottom:20px;
-}
-
-.register-left h2{
-    font-size:34px;
-    margin-bottom:20px;
-}
-
-.register-left p{
-    width:80%;
-    font-size:18px;
-    line-height:1.8;
+  padding: 60px;
 }
 
 
-/* ================= RIGHT SIDE ================= */
+/* =========================================================
+   LEFT OVERLAY
+========================================================= */
 
-.register-right{
-    flex:1.1;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    background:#fcfcfc;
-    padding:40px;
+.overlay {
+  width: 100%;
+  max-width: 550px;
+
+  padding: 45px;
+
+  background: rgba(255, 255, 255, 0.10);
+
+  border: 1px solid rgba(255, 255, 255, 0.20);
+
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+
+  border-radius: 25px;
+
+  color: #ffffff;
 }
 
-.register-form{
+.register-left h1 {
+  font-size: 42px;
 
-    width:420px;
+  font-weight: 700;
 
-    background:rgba(255,255,255,.96);
-
-    backdrop-filter:blur(12px);
-
-    border-radius:22px;
-
-    padding:30px;
-
-    box-shadow:
-    0 20px 45px rgba(0,0,0,.08),
-    0 8px 18px rgba(255,120,180,.15);
+  margin-bottom: 45px;
 }
 
-.register-form h2{
-    text-align:center;
-    color:#6b4eff;
-    font-size:30px;
+.register-left h2 {
+  font-size: 34px;
+
+  font-weight: 600;
+
+  margin-bottom: 20px;
 }
 
-.subtitle{
-    text-align:center;
-    color:#777;
-    margin:8px 0 25px;
-    font-size:14px;
+.register-left p {
+  width: 100%;
+
+  font-size: 16px;
+
+  line-height: 1.8;
+
+  color: rgba(255, 255, 255, 0.95);
 }
 
-/* ================= INPUTS ================= */
 
-.input-group{
-    margin-bottom:18px;
+/* =========================================================
+   RIGHT SECTION
+========================================================= */
+
+.register-right {
+  width: 55%;
+  min-height: 100vh;
+
+  display: flex;
+
+  align-items: flex-start;
+  justify-content: center;
+
+  padding: 45px 40px;
+
+  background: #fcfcfc;
+
+  overflow-y: auto;
 }
 
-.input-group label{
-    display:block;
-    margin-bottom:8px;
-    font-size:15px;
-    font-weight:600;
-    color:#333;
+
+/* =========================================================
+   REGISTER FORM
+========================================================= */
+
+.register-form {
+  width: 100%;
+  max-width: 520px;
+
+  padding: 32px;
+
+  background: rgba(255, 255, 255, 0.98);
+
+  border-radius: 22px;
+
+  box-shadow:
+    0 20px 45px rgba(0, 0, 0, 0.08),
+    0 8px 18px rgba(255, 120, 180, 0.12);
 }
 
-.input-box{
-    position:relative;
+
+/* =========================================================
+   TITLE
+========================================================= */
+
+.register-form h2 {
+  text-align: center;
+
+  color: #6b4eff;
+
+  font-size: 30px;
+
+  font-weight: 700;
+
+  margin-bottom: 5px;
 }
 
-.input-box input,
-.input-box select{
+.subtitle {
+  text-align: center;
 
-    width:100%;
-    height:52px;
+  color: #777;
 
-    border:2px solid #e5e7eb;
-    border-radius:14px;
+  margin: 8px 0 25px;
 
-    background:#f8fbff;
+  font-size: 14px;
 
-    outline:none;
-
-    padding:0 18px 0 50px;
-
-    font-size:15px;
-
-    transition:.3s;
+  line-height: 1.5;
 }
 
-.input-box input:focus,
-.input-box select:focus{
 
-    border-color:#8a7bff;
-    background:white;
+/* =========================================================
+   INPUT GROUP
+========================================================= */
 
-    box-shadow:0 0 10px rgba(138,123,255,.15);
+.input-group {
+  width: 100%;
+
+  margin-bottom: 17px;
 }
 
-.input-icon{
+.input-group label {
+  display: block;
 
-    position:absolute;
+  margin-bottom: 7px;
 
-    left:18px;
-    top:50%;
+  font-size: 14px;
 
-    transform:translateY(-50%);
+  font-weight: 600;
 
-    color:#888;
+  color: #333;
 }
 
-/* Password */
 
-.show-btn{
+/* =========================================================
+   INPUT BOX
+========================================================= */
 
-    position:absolute;
+.input-box {
+  width: 100%;
+  height: 52px;
 
-    right:18px;
-    top:50%;
+  position: relative;
 
-    transform:translateY(-50%);
+  display: flex;
+  align-items: center;
 
-    border:none;
-    background:transparent;
+  border: 2px solid #e5e7eb;
 
-    color:#7b6cff;
+  border-radius: 14px;
 
-    cursor:pointer;
+  background: #f8fbff;
 
-    font-size:18px;
+  transition: all 0.25s ease;
+
+  overflow: hidden;
 }
 
-.show-btn:hover{
-    color:#5d49ff;
+.input-box:focus-within {
+  border-color: #8a7bff;
+
+  background: #ffffff;
+
+  box-shadow:
+    0 0 10px rgba(138, 123, 255, 0.15);
 }
 
-/* ================= TERMS ================= */
 
-.terms{
+/* =========================================================
+   INPUT ICON
+========================================================= */
 
-    display:flex;
-    align-items:center;
+.input-icon {
+  flex-shrink: 0;
 
-    gap:10px;
+  margin-left: 16px;
+  margin-right: 12px;
 
-    margin:18px 0 25px;
+  color: #8a7bff;
 
-    font-size:14px;
-    color:#555;
+  font-size: 17px;
+
+  z-index: 2;
 }
 
-.terms a{
 
-    color:#7b6cff;
+/* =========================================================
+   TEXT INPUT
+========================================================= */
 
-    text-decoration:none;
-    font-weight:600;
+.input-box input {
+  flex: 1;
+
+  min-width: 0;
+
+  width: 100%;
+  height: 100%;
+
+  border: none;
+  outline: none;
+
+  background: transparent;
+
+  padding: 0 14px 0 0;
+
+  font-size: 14px;
+
+  color: #333;
 }
 
-/* ================= REGISTER BUTTON ================= */
-
-.register-btn{
-
-    width:100%;
-    height:52px;
-
-    border:none;
-
-    border-radius:14px;
-
-    background:
-    linear-gradient(135deg,#ff7eb3,#b06cff,#6c8cff);
-
-    color:white;
-
-    font-size:18px;
-
-    font-weight:600;
-
-    cursor:pointer;
-
-    transition:.3s;
+.input-box input::placeholder {
+  color: #999;
 }
 
-.register-btn:hover{
 
-    transform:translateY(-3px);
+/* =========================================================
+   SELECT
+========================================================= */
 
-    box-shadow:0 10px 25px rgba(176,108,255,.35);
+.input-box select {
+  flex: 1;
+
+  min-width: 0;
+
+  width: 100%;
+  height: 100%;
+
+  border: none;
+  outline: none;
+
+  background: transparent;
+
+  padding: 0 14px 0 0;
+
+  font-size: 14px;
+
+  color: #333;
+
+  cursor: pointer;
 }
 
-/* ================= LOGIN LINK ================= */
 
-.login-link{
+/* =========================================================
+   PASSWORD SHOW BUTTON
+========================================================= */
 
-    text-align:center;
+.show-btn {
+  flex-shrink: 0;
 
-    margin-top:22px;
+  width: 45px;
+  height: 100%;
 
-    color:#666;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border: none;
+
+  background: transparent;
+
+  color: #7b6cff;
+
+  cursor: pointer;
+
+  font-size: 17px;
+
+  padding: 0;
 }
 
-.login-link a{
-
-    color:#7b6cff;
-
-    text-decoration:none;
-
-    font-weight:700;
+.show-btn:hover {
+  color: #5d49ff;
 }
 
-.login-link a:hover{
-    text-decoration:underline;
+
+/* =========================================================
+   OTP BUTTON
+========================================================= */
+
+.otp-btn {
+  flex-shrink: 0;
+
+  width: 90px;
+  min-width: 90px;
+
+  height: 100%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 0 8px;
+
+  border: none;
+
+  border-left: 1px solid #e5e7eb;
+
+  background: transparent;
+
+  color: #ff5f8f;
+
+  font-family: "Poppins", sans-serif;
+
+  font-size: 12px;
+
+  font-weight: 700;
+
+  line-height: 1;
+
+  cursor: pointer;
+
+  white-space: nowrap;
+
+  transition: all 0.2s ease;
 }
 
-/* ================= QUOTE ================= */
+.otp-btn:hover:not(:disabled) {
+  background: rgba(255, 95, 143, 0.08);
 
-.quote{
-
-    margin-top:25px;
-
-    text-align:center;
-
-    color:#777;
-
-    font-size:14px;
-
-    font-style:italic;
-
-    line-height:1.7;
+  color: #e94c7d;
 }
 
-/* ================= RESPONSIVE ================= */
-/* ================= RESPONSIVE ================= */
+.otp-btn:active:not(:disabled) {
+  background: rgba(255, 95, 143, 0.15);
+}
 
-@media (max-width:950px){
+.otp-btn:disabled {
+  background: #f5f5f5;
 
-    .register-container{
-        flex-direction:column;
-    }
+  color: #999;
 
-    .register-left{
-        min-height:320px;
-        text-align:center;
-        padding:40px;
-    }
+  cursor: not-allowed;
 
-    .register-left p{
-        width:100%;
-    }
+  opacity: 1;
+}
 
-    .register-right{
-        padding:25px;
-    }
 
-    .register-form{
-        width:100%;
-        max-width:420px;
-    }
+/* =========================================================
+   OTP INFORMATION
+========================================================= */
+
+.otp-info {
+  margin-top: 6px;
+
+  color: #6c63ff;
+
+  font-size: 11px;
+
+  line-height: 1.4;
+}
+
+
+/* =========================================================
+   OTP REQUIRED
+========================================================= */
+
+.otp-required {
+  margin-top: 8px;
+
+  text-align: center;
+
+  color: #999;
+
+  font-size: 11px;
+
+  line-height: 1.5;
+}
+
+
+/* =========================================================
+   SMALL LOADER
+========================================================= */
+
+.small-loader {
+  display: inline-block;
+
+  width: 14px;
+  height: 14px;
+
+  border: 2px solid #ffd5e2;
+
+  border-top-color: #ff5f8f;
+
+  border-radius: 50%;
+
+  animation: registerSpin 0.7s linear infinite;
+}
+
+
+/* =========================================================
+   TERMS
+========================================================= */
+
+.terms {
+  display: flex;
+
+  align-items: center;
+
+  margin: 16px 0 20px;
+
+  font-size: 12px;
+
+  color: #555;
+}
+
+.terms label {
+  display: flex;
+
+  align-items: center;
+
+  gap: 7px;
+
+  cursor: pointer;
+}
+
+.terms input {
+  width: 15px;
+  height: 15px;
+
+  accent-color: #7b6cff;
+
+  cursor: pointer;
+}
+
+.terms a {
+  color: #7b6cff;
+
+  text-decoration: none;
+
+  font-weight: 600;
+}
+
+.terms a:hover {
+  text-decoration: underline;
+}
+
+
+/* =========================================================
+   REGISTER BUTTON
+========================================================= */
+
+.register-btn {
+  width: 100%;
+
+  min-height: 52px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  gap: 10px;
+
+  border: none;
+
+  border-radius: 14px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #ff7eb3,
+      #b06cff,
+      #6c8cff
+    );
+
+  color: #ffffff;
+
+  font-family: "Poppins", sans-serif;
+
+  font-size: 15px;
+
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition: all 0.3s ease;
+}
+
+.register-btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 10px 25px
+    rgba(176, 108, 255, 0.35);
+}
+
+.register-btn:disabled {
+  opacity: 0.55;
+
+  cursor: not-allowed;
+
+  transform: none;
+}
+
+
+/* =========================================================
+   BUTTON LOADER
+========================================================= */
+
+.button-loader {
+  width: 16px;
+  height: 16px;
+
+  flex-shrink: 0;
+
+  border-radius: 50%;
+
+  border: 2px solid rgba(255, 255, 255, 0.4);
+
+  border-top-color: #ffffff;
+
+  animation: registerSpin 0.7s linear infinite;
+}
+
+
+/* =========================================================
+   GOOGLE DIVIDER
+========================================================= */
+
+.divider {
+  width: 100%;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 12px;
+
+  margin: 20px 0;
+}
+
+.divider::before,
+.divider::after {
+  content: "";
+
+  flex: 1;
+
+  height: 1px;
+
+  background: #e5e5e5;
+}
+
+.divider span {
+  color: #999;
+
+  font-size: 11px;
+
+  font-weight: 500;
+}
+
+
+/* =========================================================
+   GOOGLE BUTTON
+========================================================= */
+
+.google-btn {
+  width: 100%;
+
+  height: 48px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  gap: 10px;
+
+  border: 1px solid #dedee5;
+
+  border-radius: 12px;
+
+  background: #ffffff;
+
+  color: #444;
+
+  font-family: "Poppins", sans-serif;
+
+  font-size: 13px;
+
+  cursor: pointer;
+
+  transition: all 0.2s ease;
+}
+
+.google-btn:hover {
+  background: #fafafa;
+
+  border-color: #ccc;
+}
+
+.google-icon {
+  font-size: 20px;
+}
+
+
+/* =========================================================
+   LOGIN LINK
+========================================================= */
+
+.login-link {
+  text-align: center;
+
+  margin-top: 20px;
+
+  color: #666;
+
+  font-size: 13px;
+}
+
+.login-link a {
+  margin-left: 5px;
+
+  color: #7b6cff;
+
+  text-decoration: none;
+
+  font-weight: 700;
+}
+
+.login-link a:hover {
+  text-decoration: underline;
+}
+
+
+/* =========================================================
+   QUOTE
+========================================================= */
+
+.quote {
+  margin-top: 18px;
+
+  text-align: center;
+
+  color: #777;
+
+  font-size: 11px;
+
+  font-style: italic;
+
+  line-height: 1.6;
+}
+
+
+/* =========================================================
+   ANIMATION
+========================================================= */
+
+@keyframes registerSpin {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+
+/* =========================================================
+   LARGE TABLET
+========================================================= */
+
+@media (max-width: 1100px) {
+
+  .register-left {
+    width: 42%;
+
+    padding: 40px;
+  }
+
+  .register-right {
+    width: 58%;
+
+    padding: 35px 25px;
+  }
+
+  .overlay {
+    padding: 30px;
+  }
+
+  .register-left h1 {
+    font-size: 36px;
+  }
+
+  .register-left h2 {
+    font-size: 28px;
+  }
 
 }
 
-@media (max-width:768px){
 
-    .home-btn{
-        width:48px;
-        height:48px;
-        top:15px;
-        left:15px;
-        font-size:20px;
-    }
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media (max-width: 850px) {
+
+  .register-container {
+    flex-direction: column;
+  }
+
+  .register-left {
+    width: 100%;
+
+    min-height: 300px;
+
+    padding: 40px 25px;
+  }
+
+  .overlay {
+    max-width: 650px;
+
+    text-align: center;
+
+    padding: 30px;
+  }
+
+  .register-left h1 {
+    font-size: 34px;
+
+    margin-bottom: 20px;
+  }
+
+  .register-left h2 {
+    font-size: 27px;
+  }
+
+  .register-left p {
+    font-size: 14px;
+  }
+
+  .register-right {
+    width: 100%;
+
+    min-height: auto;
+
+    padding: 35px 20px;
+  }
+
+  .register-form {
+    max-width: 520px;
+  }
 
 }
 
-@media (max-width:500px){
 
-    .register-form{
-        padding:25px;
-    }
+/* =========================================================
+   MOBILE
+========================================================= */
 
-    .register-left h1{
-        font-size:38px;
-    }
+@media (max-width: 500px) {
 
-    .register-left h2{
-        font-size:28px;
-    }
+  .home-btn {
+    width: 44px;
+    height: 44px;
+
+    top: 12px;
+    left: 12px;
+
+    font-size: 18px;
+  }
+
+  .register-left {
+    min-height: 270px;
+
+    padding: 25px 15px;
+  }
+
+  .overlay {
+    padding: 25px 20px;
+
+    border-radius: 20px;
+  }
+
+  .register-left h1 {
+    font-size: 28px;
+  }
+
+  .register-left h2 {
+    font-size: 23px;
+
+    margin-bottom: 12px;
+  }
+
+  .register-left p {
+    font-size: 12px;
+
+    line-height: 1.6;
+  }
+
+  .register-right {
+    padding: 20px 12px;
+  }
+
+  .register-form {
+    padding: 24px 18px;
+
+    border-radius: 18px;
+  }
+
+  .register-form h2 {
+    font-size: 26px;
+  }
+
+  .subtitle {
+    font-size: 12px;
+
+    margin-bottom: 20px;
+  }
+
+  .input-box {
+    height: 50px;
+  }
+
+  .input-box input,
+  .input-box select {
+    font-size: 13px;
+  }
+
+  .input-icon {
+    margin-left: 13px;
+    margin-right: 9px;
+  }
+
+  .otp-btn {
+    width: 75px;
+    min-width: 75px;
+
+    padding: 0 5px;
+
+    font-size: 10px;
+  }
+
+  .register-btn {
+    font-size: 13px;
+  }
+
+}
+
+
+/* =========================================================
+   VERY SMALL MOBILE
+========================================================= */
+
+@media (max-width: 360px) {
+
+  .register-form {
+    padding: 20px 14px;
+  }
+
+  .input-box {
+    height: 48px;
+  }
+
+  .otp-btn {
+    width: 68px;
+    min-width: 68px;
+
+    font-size: 9px;
+  }
+
+  .register-btn {
+    font-size: 12px;
+  }
 
 }

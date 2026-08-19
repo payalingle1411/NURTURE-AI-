@@ -22,7 +22,9 @@ public class UserProfileService {
         Login user = loginRepository.findById(request.getUserId())
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
-        UserProfile profile = new UserProfile();
+        // Find existing profile or create a new one
+        UserProfile profile = repository.findByUser(user)
+                .orElse(new UserProfile());
 
         profile.setUser(user);
 
@@ -37,7 +39,9 @@ public class UserProfileService {
         profile.setAddress(request.getAddress());
         profile.setPincode(request.getPincode());
         profile.setProfilePicture(request.getProfilePicture());
-        profile.setProfileCompleted(false);
+
+        // Profile is completed after saving
+        profile.setProfileCompleted(true);
 
         return repository.save(profile);
     }
