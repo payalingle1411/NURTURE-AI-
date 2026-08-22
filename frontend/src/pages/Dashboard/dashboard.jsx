@@ -1,4 +1,4 @@
-import Sidebar from "../../components/Sidebar/Sidebar";
+import Sidebar from "../../components/sidebar/Sidebar";
 import Navbar from "../../components/Navbar/Navbar";
 import WelcomeCard from "../../components/WelcomeCard/WelcomeCard";
 import HealthSummary from "../../components/HealthSummary/HealthSummary";

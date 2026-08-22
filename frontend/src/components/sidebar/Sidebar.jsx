@@ -63,11 +63,11 @@ function Sidebar() {
         {/* Pregnancy Profile */}
         <li
           className={
-            location.pathname === "/pregnancy-profile"
+            location.pathname === "/profile"
               ? "active"
               : ""
           }
-          onClick={() => navigate("/pregnancy-profile")}
+          onClick={() => navigate("/profile")}
         >
           <FaUser className="icon" />
           <span>Pregnancy Profile</span>

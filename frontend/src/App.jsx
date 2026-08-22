@@ -16,6 +16,8 @@ import PregnancyDetails from "./pages/Form/PregnancyDetails/pregnancyDetails.jsx
 import Appointment from "./pages/Appointment/Appointment";
 import AppointmentHistory from "./pages/Appointment/AppointmentHistory.jsx";
 
+import Profile from "./pages/Profile/Profile.jsx";
+
 function App() {
   return (
     <BrowserRouter>
@@ -40,21 +42,13 @@ function App() {
         <Route path="/pregnancy-details" element={<PregnancyDetails />} />
 
         {/* Pregnancy Profile */}
-        <Route
-          path="/pregnancy-profile"
-          element={<PregnancyDetails />}
-        />
+        <Route path="/pregnancy-profile" element={<PregnancyDetails />} />
 
         {/* Appointments */}
-        <Route
-          path="/appointment"
-          element={<Appointment />}
-        />
+        <Route path="/appointment" element={<Appointment />} />
+        <Route path="/appointment-history" element={<AppointmentHistory />} />
 
-        <Route
-          path="/appointment-history"
-          element={<AppointmentHistory />}
-        />
+        <Route path="/profile" element={<Profile />} />
 
       </Routes>
     </BrowserRouter>
