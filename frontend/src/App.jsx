@@ -10,6 +10,7 @@ import PersonalInfo from "./pages/Form/PersonalInfo/personalInfo.jsx";
 import PregnancyDetails from "./pages/Form/PregnancyDetails/pregnancyDetails.jsx";
 
 
+
 function App() {
   return (
     <BrowserRouter>
@@ -28,8 +29,7 @@ function App() {
         <Route path="/Sidebar" element={<Sidebar />} />
         <Route path="/personal-info" element={<PersonalInfo />} />
         <Route path="/pregnancy-details" element={<PregnancyDetails />} />
-
-      </Routes>
+        <Route path="/pregnancy-profile" element={<PregnancyDetails />} />        </Routes>
     </BrowserRouter>
   );
 }

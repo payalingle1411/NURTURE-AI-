@@ -1,4 +1,5 @@
 import "./Sidebar.css";
+import { useNavigate } from "react-router-dom";
 import {
   FaHome,
   FaRobot,
@@ -13,6 +14,8 @@ import {
 } from "react-icons/fa";
 
 function Sidebar() {
+    const navigate = useNavigate();
+
   return (
     <div className="sidebar">
 
@@ -33,7 +36,7 @@ function Sidebar() {
           <span>AI Assistant</span>
         </li>
 
-        <li>
+        <li onClick={() => navigate("/pregnancy-profile")}>
           <FaUser className="icon" />
           <span>Pregnancy Profile</span>
         </li>
