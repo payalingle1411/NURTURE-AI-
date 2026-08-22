@@ -741,7 +741,7 @@ const PersonalInfo = () => {
 
     saveToSession(formData);
 
-    navigate("/home");
+    navigate("/dashboard");
 
   };
 
@@ -758,7 +758,7 @@ const PersonalInfo = () => {
 
     if (confirmSkip) {
 
-      navigate("/home", {
+      navigate("/dashboard", {
         replace: true,
       });
 

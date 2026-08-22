@@ -1,36 +1,331 @@
+/* =========================================================
+   NURTURE AI - MAIN DASHBOARD
+========================================================= */
+
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: Arial, sans-serif;
 }
 
-.dashboard {
-  display: flex;
-  background: #fff7fb;
-}
-
-.main-content {
-  margin-left: 240px;
-  width: calc(100% - 240px);
+.dashboard-layout {
   min-height: 100vh;
+  background: #f6f8fc;
+  color: #1e293b;
+  font-family: "Inter", "Segoe UI", Arial, sans-serif;
 }
+
+/* =========================================================
+   MAIN DASHBOARD AREA
+========================================================= */
+
+.dashboard-main {
+  margin-left: 250px;
+  min-height: 100vh;
+  width: calc(100% - 250px);
+}
+
+/* =========================================================
+   DASHBOARD CONTENT
+========================================================= */
+
+.dashboard-content {
+  width: 100%;
+  padding: 25px 30px 50px;
+}
+
+/* =========================================================
+   WELCOME SECTION
+   Supports your existing .welcome-section
+========================================================= */
 
 .welcome-section {
-  margin: 30px;
-  background: white;
-  padding: 40px;
-  border-radius: 15px;
-  box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+  position: relative;
+  overflow: hidden;
+
+  margin: 0 0 25px;
+  padding: 32px 36px;
+
+  min-height: 180px;
+
+  border-radius: 22px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #ffffff 0%,
+      #f8fbff 55%,
+      #eef5ff 100%
+    );
+
+  border: 1px solid #e7edf6;
+
+  box-shadow:
+    0 8px 30px rgba(15, 23, 42, 0.06);
 }
 
+/* Decorative circle */
+
+.welcome-section::before {
+  content: "";
+
+  position: absolute;
+
+  width: 190px;
+  height: 190px;
+
+  right: -70px;
+  top: -80px;
+
+  border-radius: 50%;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(59, 130, 246, 0.12),
+      rgba(6, 182, 212, 0.05)
+    );
+}
+
+/* Second decorative circle */
+
+.welcome-section::after {
+  content: "";
+
+  position: absolute;
+
+  width: 90px;
+  height: 90px;
+
+  right: 100px;
+  bottom: -50px;
+
+  border-radius: 50%;
+
+  background: rgba(59, 130, 246, 0.05);
+}
+
+/* =========================================================
+   WELCOME CONTENT
+========================================================= */
+
 .welcome-section h1 {
-  color: #ff5c8a;
-  margin-bottom: 15px;
+  position: relative;
+  z-index: 2;
+
+  color: #172554;
+
+  font-size: 30px;
+  font-weight: 750;
+
+  margin-bottom: 10px;
+
+  letter-spacing: -0.5px;
+}
+
+.welcome-section h1 span {
+  color: #2563eb;
 }
 
 .welcome-section p {
-  margin-top: 10px;
-  color: #666;
-  font-size: 18px;
+  position: relative;
+  z-index: 2;
+
+  max-width: 700px;
+
+  color: #64748b;
+
+  font-size: 15px;
+  line-height: 1.7;
+
+  margin-top: 8px;
+}
+
+/* =========================================================
+   COMMON SECTION SPACING
+========================================================= */
+
+.dashboard-content > * {
+  margin-bottom: 25px;
+}
+
+.dashboard-content > *:last-child {
+  margin-bottom: 0;
+}
+
+/* =========================================================
+   HEALTH SUMMARY SUPPORT
+========================================================= */
+
+.health-summary {
+  width: 100%;
+}
+
+/* If HealthSummary contains cards */
+
+.health-summary-container {
+  display: grid;
+
+  grid-template-columns: repeat(4, 1fr);
+
+  gap: 20px;
+}
+
+/* =========================================================
+   DASHBOARD CARD HOVER
+========================================================= */
+
+.dashboard-content .card {
+  background: #ffffff;
+
+  border: 1px solid #e7edf6;
+
+  border-radius: 20px;
+
+  box-shadow:
+    0 8px 25px rgba(15, 23, 42, 0.05);
+
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+.dashboard-content .card:hover {
+  transform: translateY(-3px);
+
+  box-shadow:
+    0 14px 35px rgba(15, 23, 42, 0.08);
+}
+
+/* =========================================================
+   SCROLLBAR
+========================================================= */
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* =========================================================
+   LARGE SCREEN
+========================================================= */
+
+@media (max-width: 1200px) {
+
+  .dashboard-main {
+    margin-left: 230px;
+
+    width: calc(100% - 230px);
+  }
+
+  .dashboard-content {
+    padding: 22px 24px 40px;
+  }
+
+  .welcome-section {
+    padding: 28px 30px;
+  }
+
+  .welcome-section h1 {
+    font-size: 27px;
+  }
+
+}
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media (max-width: 900px) {
+
+  .dashboard-main {
+    margin-left: 0;
+
+    width: 100%;
+  }
+
+  .dashboard-content {
+    padding: 20px;
+  }
+
+  .welcome-section {
+    padding: 25px;
+  }
+
+  .welcome-section h1 {
+    font-size: 25px;
+  }
+
+}
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 600px) {
+
+  .dashboard-content {
+    padding: 15px;
+  }
+
+  .welcome-section {
+    padding: 22px;
+
+    min-height: 150px;
+
+    border-radius: 18px;
+  }
+
+  .welcome-section h1 {
+    font-size: 22px;
+
+    line-height: 1.3;
+  }
+
+  .welcome-section p {
+    font-size: 14px;
+
+    line-height: 1.6;
+  }
+
+  .dashboard-content > * {
+    margin-bottom: 18px;
+  }
+
+}
+
+/* =========================================================
+   SMALL MOBILE
+========================================================= */
+
+@media (max-width: 400px) {
+
+  .dashboard-content {
+    padding: 12px;
+  }
+
+  .welcome-section {
+    padding: 18px;
+  }
+
+  .welcome-section h1 {
+    font-size: 20px;
+  }
+
+  .welcome-section p {
+    font-size: 13px;
+  }
+
 }

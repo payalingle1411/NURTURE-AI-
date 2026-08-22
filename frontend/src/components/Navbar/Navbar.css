@@ -1,36 +1,64 @@
-/* Navbar Container */
+/* =========================================================
+   NAVBAR
+   NURTURE AI
+========================================================= */
+
 .navbar {
     height: 70px;
+
+    width: 100%;
+
     background: #ffffff;
+
     display: flex;
+
     justify-content: space-between;
+
     align-items: center;
 
     padding: 0 30px;
 
-    margin-left: 250px;
-
     border-bottom: 1px solid #e5e5e5;
 
     position: sticky;
+
     top: 0;
 
     z-index: 100;
+
+    box-sizing: border-box;
 }
 
-/* Left */
+
+/* =========================================================
+   LEFT
+========================================================= */
+
+.navbar-left {
+    min-width: 200px;
+}
+
 
 .navbar-left h2 {
+    margin: 0;
+
     color: #333;
+
     font-size: 28px;
+
+    font-weight: 700;
 }
 
-/* Search */
+
+/* =========================================================
+   SEARCH
+========================================================= */
 
 .navbar-search {
     width: 380px;
 
     display: flex;
+
     align-items: center;
 
     background: #f4f6fa;
@@ -38,14 +66,21 @@
     padding: 10px 15px;
 
     border-radius: 30px;
+
+    box-sizing: border-box;
 }
+
 
 .search-icon {
     color: gray;
+
+    flex-shrink: 0;
 }
+
 
 .navbar-search input {
     border: none;
+
     outline: none;
 
     background: transparent;
@@ -57,16 +92,27 @@
     font-size: 15px;
 }
 
-/* Right */
+
+/* =========================================================
+   RIGHT
+========================================================= */
 
 .navbar-right {
     display: flex;
+
     align-items: center;
 
     gap: 30px;
+
+    min-width: 200px;
+
+    justify-content: flex-end;
 }
 
-/* Notification */
+
+/* =========================================================
+   NOTIFICATION
+========================================================= */
 
 .notification {
     position: relative;
@@ -78,31 +124,41 @@
     color: #444;
 }
 
+
 .badge {
     position: absolute;
 
     top: -8px;
+
     right: -8px;
 
     width: 18px;
+
     height: 18px;
 
     border-radius: 50%;
 
     background: red;
+
     color: white;
 
     font-size: 11px;
 
     display: flex;
+
     justify-content: center;
+
     align-items: center;
 }
 
-/* Profile */
+
+/* =========================================================
+   PROFILE
+========================================================= */
 
 .profile {
     display: flex;
+
     align-items: center;
 
     gap: 10px;
@@ -110,19 +166,74 @@
     cursor: pointer;
 }
 
+
 .profile-icon {
     font-size: 42px;
+
     color: #6C63FF;
 }
 
+
 .profile h4 {
     margin: 0;
+
     color: #222;
+
     font-size: 16px;
 }
 
+
 .profile p {
     margin: 0;
+
     color: gray;
+
     font-size: 13px;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 900px) {
+
+    .navbar-search {
+        width: 280px;
+    }
+
+}
+
+
+@media (max-width: 700px) {
+
+    .navbar {
+        padding: 0 18px;
+    }
+
+    .navbar-search {
+        display: none;
+    }
+
+    .navbar-left {
+        min-width: auto;
+    }
+
+    .navbar-left h2 {
+        font-size: 22px;
+    }
+
+}
+
+
+@media (max-width: 450px) {
+
+    .profile div {
+        display: none;
+    }
+
+    .navbar-right {
+        min-width: auto;
+    }
+
 }

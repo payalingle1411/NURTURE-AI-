@@ -1,0 +1,1341 @@
+/* =========================================================
+   APPOINTMENT HISTORY
+   NURTURE AI
+========================================================= */
+
+
+/* =========================================================
+   MAIN LAYOUT
+========================================================= */
+
+.appointment-history-layout {
+  min-height: 100vh;
+
+  margin-left: 250px;
+  width: calc(100% - 250px);
+
+  display: flex;
+
+  box-sizing: border-box;
+
+  background:
+    radial-gradient(
+      circle at 85% 10%,
+      rgba(219, 234, 254, 0.45),
+      transparent 28%
+    ),
+    #f6f8fc;
+}
+
+
+.appointment-history-main {
+  flex: 1;
+
+  min-width: 0;
+
+  width: 100%;
+
+  box-sizing: border-box;
+}
+
+
+.appointment-history-content {
+  width: 100%;
+
+  max-width: 1500px;
+
+  margin: 0 auto;
+
+  padding: 30px 32px 45px;
+
+  box-sizing: border-box;
+}
+/* =========================================================
+   HEADER
+========================================================= */
+
+.history-header {
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  gap: 25px;
+
+  margin-bottom: 28px;
+}
+
+
+.history-heading {
+  display: flex;
+
+  align-items: center;
+
+  gap: 16px;
+}
+
+
+.history-title-icon {
+  width: 58px;
+  height: 58px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 17px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #eff6ff,
+      #dbeafe
+    );
+
+  border: 1px solid #dbeafe;
+
+  box-shadow:
+    0 8px 20px rgba(37, 99, 235, 0.10);
+
+  font-size: 27px;
+}
+
+
+.history-heading h1 {
+  margin: 0;
+
+  color: #172554;
+
+  font-size: 28px;
+
+  font-weight: 750;
+
+  letter-spacing: -0.6px;
+}
+
+
+.history-heading p {
+  margin: 6px 0 0;
+
+  color: #64748b;
+
+  font-size: 13px;
+}
+
+
+/* =========================================================
+   ADD BUTTON
+========================================================= */
+
+.add-history-btn {
+  height: 46px;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 9px;
+
+  padding: 0 18px;
+
+  border: 1px solid #2563eb;
+
+  border-radius: 11px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #2563eb,
+      #3b82f6
+    );
+
+  color: white;
+
+  font-size: 12px;
+
+  font-weight: 700;
+
+  cursor: pointer;
+
+  box-shadow:
+    0 8px 18px rgba(37, 99, 235, 0.20);
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+
+.add-history-btn:hover {
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 12px 24px rgba(37, 99, 235, 0.25);
+}
+
+
+.add-history-icon {
+  width: 21px;
+  height: 21px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 6px;
+
+  background: rgba(255, 255, 255, 0.18);
+
+  font-size: 17px;
+}
+
+
+/* =========================================================
+   MINI STATISTICS
+========================================================= */
+
+.history-mini-stats {
+  display: grid;
+
+  grid-template-columns:
+    repeat(4, minmax(0, 1fr));
+
+  gap: 16px;
+
+  margin-bottom: 25px;
+}
+
+
+.mini-stat {
+  min-height: 82px;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 13px;
+
+  padding: 15px 17px;
+
+  border: 1px solid #e5eaf2;
+
+  border-radius: 15px;
+
+  background: rgba(255, 255, 255, 0.88);
+
+  box-shadow:
+    0 7px 24px rgba(15, 23, 42, 0.045);
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+
+.mini-stat:hover {
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 11px 28px rgba(15, 23, 42, 0.07);
+}
+
+
+.mini-stat-icon {
+  width: 43px;
+  height: 43px;
+
+  flex-shrink: 0;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 12px;
+
+  font-size: 19px;
+
+  font-weight: 700;
+}
+
+
+.mini-stat span {
+  display: block;
+
+  margin-bottom: 4px;
+
+  color: #94a3b8;
+
+  font-size: 10px;
+
+  font-weight: 600;
+
+  text-transform: uppercase;
+
+  letter-spacing: 0.5px;
+}
+
+
+.mini-stat strong {
+  display: block;
+
+  color: #1e293b;
+
+  font-size: 21px;
+
+  line-height: 1;
+}
+
+
+/* Total */
+
+.total-stat .mini-stat-icon {
+  background: #eff6ff;
+
+  color: #2563eb;
+}
+
+
+/* Completed */
+
+.completed-stat .mini-stat-icon {
+  background: #ecfdf5;
+
+  color: #16a34a;
+}
+
+
+/* Upcoming */
+
+.upcoming-stat .mini-stat-icon {
+  background: #fff7ed;
+
+  color: #f59e0b;
+}
+
+
+/* Cancelled */
+
+.cancelled-stat .mini-stat-icon {
+  background: #fef2f2;
+
+  color: #ef4444;
+}
+
+
+/* =========================================================
+   ERROR
+========================================================= */
+
+.history-error {
+  display: flex;
+
+  align-items: center;
+
+  gap: 13px;
+
+  margin-bottom: 22px;
+
+  padding: 14px 17px;
+
+  border: 1px solid #fecaca;
+
+  border-radius: 13px;
+
+  background: #fff7f7;
+}
+
+
+.error-icon {
+  width: 35px;
+  height: 35px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  flex-shrink: 0;
+
+  border-radius: 50%;
+
+  background: #fee2e2;
+
+  color: #dc2626;
+
+  font-size: 17px;
+
+  font-weight: 800;
+}
+
+
+.history-error strong {
+  display: block;
+
+  color: #991b1b;
+
+  font-size: 12px;
+}
+
+
+.history-error p {
+  margin: 3px 0 0;
+
+  color: #b91c1c;
+
+  font-size: 11px;
+}
+
+
+.history-error button {
+  margin-left: auto;
+
+  padding: 7px 13px;
+
+  border: 1px solid #fecaca;
+
+  border-radius: 7px;
+
+  background: white;
+
+  color: #dc2626;
+
+  font-size: 11px;
+
+  font-weight: 700;
+
+  cursor: pointer;
+}
+
+
+/* =========================================================
+   LOADING
+========================================================= */
+
+.history-loading {
+  min-height: 350px;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+
+  justify-content: center;
+
+  border: 1px solid #e5eaf2;
+
+  border-radius: 18px;
+
+  background: white;
+
+  box-shadow:
+    0 8px 30px rgba(15, 23, 42, 0.04);
+}
+
+
+.loading-animation {
+  display: flex;
+
+  align-items: center;
+
+  gap: 6px;
+
+  margin-bottom: 16px;
+}
+
+
+.loading-animation span {
+  width: 8px;
+  height: 8px;
+
+  border-radius: 50%;
+
+  background: #3b82f6;
+
+  animation:
+    loadingBounce 1.2s infinite ease-in-out;
+}
+
+
+.loading-animation span:nth-child(2) {
+  animation-delay: 0.15s;
+}
+
+
+.loading-animation span:nth-child(3) {
+  animation-delay: 0.3s;
+}
+
+
+@keyframes loadingBounce {
+
+  0%,
+  60%,
+  100% {
+    transform: translateY(0);
+
+    opacity: 0.5;
+  }
+
+  30% {
+    transform: translateY(-7px);
+
+    opacity: 1;
+  }
+}
+
+
+.history-loading h3 {
+  margin: 0;
+
+  color: #334155;
+
+  font-size: 15px;
+}
+
+
+.history-loading p {
+  margin: 6px 0 0;
+
+  color: #94a3b8;
+
+  font-size: 11px;
+}
+
+
+/* =========================================================
+   EMPTY STATE
+========================================================= */
+
+.history-empty {
+  min-height: 390px;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+
+  justify-content: center;
+
+  padding: 40px;
+
+  border: 1px solid #e2e8f0;
+
+  border-radius: 20px;
+
+  background:
+    radial-gradient(
+      circle at 50% 20%,
+      #eff6ff,
+      transparent 35%
+    ),
+    white;
+
+  box-shadow:
+    0 10px 35px rgba(15, 23, 42, 0.05);
+
+  text-align: center;
+}
+
+
+.empty-calendar {
+  position: relative;
+
+  width: 78px;
+  height: 78px;
+
+  margin-bottom: 19px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 23px;
+
+  background: #eff6ff;
+
+  border: 1px solid #dbeafe;
+
+  box-shadow:
+    0 10px 25px rgba(37, 99, 235, 0.10);
+}
+
+
+.calendar-top {
+  position: absolute;
+
+  top: 0;
+  left: 0;
+  right: 0;
+
+  height: 15px;
+
+  border-radius:
+    22px 22px 0 0;
+
+  background:
+    linear-gradient(
+      90deg,
+      #2563eb,
+      #60a5fa
+    );
+}
+
+
+.calendar-body {
+  margin-top: 9px;
+
+  font-size: 29px;
+}
+
+
+.history-empty h2 {
+  margin: 0;
+
+  color: #334155;
+
+  font-size: 20px;
+
+  font-weight: 750;
+}
+
+
+.history-empty p {
+  max-width: 390px;
+
+  margin: 8px 0 21px;
+
+  color: #94a3b8;
+
+  font-size: 12px;
+
+  line-height: 1.6;
+}
+
+
+.empty-add-btn {
+  display: flex;
+
+  align-items: center;
+
+  gap: 8px;
+
+  height: 41px;
+
+  padding: 0 17px;
+
+  border: none;
+
+  border-radius: 9px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #2563eb,
+      #3b82f6
+    );
+
+  color: white;
+
+  font-size: 11px;
+
+  font-weight: 700;
+
+  cursor: pointer;
+
+  box-shadow:
+    0 7px 16px rgba(37, 99, 235, 0.18);
+
+  transition: 0.2s;
+}
+
+
+.empty-add-btn:hover {
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 10px 20px rgba(37, 99, 235, 0.23);
+}
+
+
+.empty-add-btn span {
+  font-size: 17px;
+}
+
+
+/* =========================================================
+   APPOINTMENT SECTION
+========================================================= */
+
+.appointments-section {
+  margin-top: 4px;
+}
+
+
+.appointments-section-header {
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  margin-bottom: 15px;
+}
+
+
+.appointments-section-header h2 {
+  margin: 0;
+
+  color: #1e293b;
+
+  font-size: 18px;
+
+  font-weight: 750;
+}
+
+
+.appointments-section-header p {
+  margin: 4px 0 0;
+
+  color: #94a3b8;
+
+  font-size: 11px;
+}
+
+
+.appointment-count {
+  padding: 7px 11px;
+
+  border: 1px solid #dbeafe;
+
+  border-radius: 20px;
+
+  background: #eff6ff;
+
+  color: #2563eb;
+
+  font-size: 10px;
+
+  font-weight: 700;
+}
+
+
+/* =========================================================
+   APPOINTMENT LIST
+========================================================= */
+
+.appointment-list {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 14px;
+}
+
+
+/* =========================================================
+   APPOINTMENT CARD
+========================================================= */
+
+.history-appointment-card {
+  display: grid;
+
+  grid-template-columns:
+    145px minmax(0, 1fr) auto;
+
+  align-items: center;
+
+  gap: 22px;
+
+  min-height: 145px;
+
+  padding: 18px;
+
+  border: 1px solid #e3e8f0;
+
+  border-radius: 17px;
+
+  background: rgba(255, 255, 255, 0.95);
+
+  box-shadow:
+    0 7px 25px rgba(15, 23, 42, 0.045);
+
+  transition:
+    transform 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+
+.history-appointment-card:hover {
+  transform: translateY(-2px);
+
+  border-color: #cbdaf5;
+
+  box-shadow:
+    0 12px 30px rgba(15, 23, 42, 0.075);
+}
+
+
+/* =========================================================
+   DATE BLOCK
+========================================================= */
+
+.appointment-date-block {
+  min-height: 105px;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+
+  justify-content: center;
+
+  border-radius: 14px;
+
+  background:
+    linear-gradient(
+      145deg,
+      #f8fbff,
+      #eef5ff
+    );
+
+  border: 1px solid #dbeafe;
+
+  text-align: center;
+}
+
+
+.date-icon {
+  width: 35px;
+  height: 35px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  margin-bottom: 7px;
+
+  border-radius: 10px;
+
+  background: white;
+
+  box-shadow:
+    0 4px 12px rgba(37, 99, 235, 0.08);
+
+  font-size: 18px;
+}
+
+
+.appointment-date-block strong {
+  color: #1e3a8a;
+
+  font-size: 13px;
+
+  font-weight: 750;
+}
+
+
+.appointment-date-block > span {
+  margin-top: 4px;
+
+  color: #64748b;
+
+  font-size: 11px;
+
+  font-weight: 600;
+}
+
+
+/* =========================================================
+   DOCTOR ROW
+========================================================= */
+
+.doctor-row {
+  display: flex;
+
+  align-items: center;
+
+  gap: 11px;
+
+  margin-bottom: 18px;
+}
+
+
+.history-doctor-avatar {
+  width: 45px;
+  height: 45px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  flex-shrink: 0;
+
+  border-radius: 50%;
+
+  background:
+    linear-gradient(
+      135deg,
+      #eff6ff,
+      #dbeafe
+    );
+
+  border: 1px solid #dbeafe;
+
+  font-size: 22px;
+}
+
+
+.history-doctor-info {
+  min-width: 0;
+}
+
+
+.history-doctor-info h3 {
+  margin: 0;
+
+  color: #1e293b;
+
+  font-size: 14px;
+
+  font-weight: 750;
+}
+
+
+.history-doctor-info p {
+  margin: 3px 0 0;
+
+  color: #94a3b8;
+
+  font-size: 10px;
+}
+
+
+.history-status {
+  display: inline-flex;
+
+  align-items: center;
+
+  gap: 6px;
+
+  margin-left: auto;
+
+  padding: 6px 10px;
+
+  border-radius: 20px;
+
+  font-size: 9px;
+
+  font-weight: 750;
+
+  letter-spacing: 0.3px;
+}
+
+
+.status-dot {
+  width: 16px;
+  height: 16px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  font-size: 10px;
+}
+
+
+.history-status.completed {
+  background: #ecfdf5;
+
+  color: #15803d;
+}
+
+
+.history-status.completed .status-dot {
+  background: #dcfce7;
+}
+
+
+.history-status.upcoming {
+  background: #fff7ed;
+
+  color: #c2410c;
+}
+
+
+.history-status.upcoming .status-dot {
+  background: #ffedd5;
+}
+
+
+.history-status.cancelled {
+  background: #fef2f2;
+
+  color: #b91c1c;
+}
+
+
+.history-status.cancelled .status-dot {
+  background: #fee2e2;
+}
+
+
+/* =========================================================
+   DETAILS
+========================================================= */
+
+.appointment-details-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(3, minmax(130px, 1fr));
+
+  gap: 12px;
+}
+
+
+.appointment-detail {
+  display: flex;
+
+  align-items: center;
+
+  gap: 8px;
+
+  min-width: 0;
+
+  padding: 9px 10px;
+
+  border-radius: 9px;
+
+  background: #f8fafc;
+}
+
+
+.detail-icon {
+  width: 28px;
+  height: 28px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  flex-shrink: 0;
+
+  border-radius: 7px;
+
+  background: white;
+
+  font-size: 13px;
+}
+
+
+.appointment-detail small {
+  display: block;
+
+  margin-bottom: 3px;
+
+  color: #94a3b8;
+
+  font-size: 8px;
+
+  font-weight: 650;
+
+  text-transform: uppercase;
+
+  letter-spacing: 0.4px;
+}
+
+
+.appointment-detail strong {
+  display: block;
+
+  overflow: hidden;
+
+  color: #475569;
+
+  font-size: 10px;
+
+  font-weight: 650;
+
+  text-overflow: ellipsis;
+
+  white-space: nowrap;
+}
+
+
+/* =========================================================
+   CARD ACTIONS
+========================================================= */
+
+.history-card-action {
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: stretch;
+
+  gap: 8px;
+
+  min-width: 90px;
+}
+
+
+.history-card-action button {
+  height: 34px;
+
+  padding: 0 12px;
+
+  border-radius: 8px;
+
+  font-size: 10px;
+
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition: 0.2s;
+}
+
+
+.view-small-btn {
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 7px;
+
+  border: 1px solid #2563eb;
+
+  background: #2563eb;
+
+  color: white;
+}
+
+
+.view-small-btn:hover {
+  background: #1d4ed8;
+
+  transform: translateY(-1px);
+}
+
+
+.view-small-btn span {
+  font-size: 14px;
+}
+
+
+.reschedule-small-btn {
+  border: 1px solid #dbeafe;
+
+  background: #eff6ff;
+
+  color: #2563eb;
+}
+
+
+.reschedule-small-btn:hover {
+  background: #dbeafe;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 1100px) {
+
+  .history-mini-stats {
+    grid-template-columns:
+      repeat(2, 1fr);
+  }
+
+
+  .history-appointment-card {
+    grid-template-columns:
+      120px minmax(0, 1fr);
+  }
+
+
+  .history-card-action {
+    grid-column: 2;
+
+    flex-direction: row;
+
+    justify-content: flex-end;
+  }
+
+}
+
+
+@media (max-width: 800px) {
+
+  .appointment-history-content {
+    padding: 22px 20px 35px;
+  }
+
+
+  .history-header {
+    align-items: flex-start;
+
+    flex-direction: column;
+  }
+
+
+  .add-history-btn {
+    width: 100%;
+
+    justify-content: center;
+  }
+
+
+  .history-appointment-card {
+    grid-template-columns: 1fr;
+
+    gap: 16px;
+  }
+
+
+  .appointment-date-block {
+    min-height: 90px;
+
+    flex-direction: row;
+
+    gap: 12px;
+
+    justify-content: flex-start;
+
+    padding: 12px 15px;
+
+    text-align: left;
+  }
+
+
+  .date-icon {
+    margin: 0;
+  }
+
+
+  .appointment-date-block strong,
+  .appointment-date-block > span {
+    margin: 0;
+  }
+
+
+  .doctor-row {
+    flex-wrap: wrap;
+  }
+
+
+  .history-status {
+    margin-left: auto;
+  }
+
+
+  .appointment-details-grid {
+    grid-template-columns: 1fr;
+  }
+
+
+  .history-card-action {
+    grid-column: auto;
+
+    flex-direction: row;
+
+    width: 100%;
+  }
+
+
+  .history-card-action button {
+    flex: 1;
+  }
+
+}
+
+
+@media (max-width: 520px) {
+
+  .appointment-history-content {
+    padding: 18px 14px 30px;
+  }
+
+
+  .history-heading {
+    align-items: flex-start;
+  }
+
+
+  .history-title-icon {
+    width: 48px;
+    height: 48px;
+
+    border-radius: 14px;
+
+    font-size: 22px;
+  }
+
+
+  .history-heading h1 {
+    font-size: 22px;
+  }
+
+
+  .history-heading p {
+    font-size: 11px;
+  }
+
+
+  .history-mini-stats {
+    gap: 10px;
+  }
+
+
+  .mini-stat {
+    min-height: 72px;
+
+    padding: 11px;
+  }
+
+
+  .mini-stat-icon {
+    width: 36px;
+    height: 36px;
+
+    font-size: 16px;
+  }
+
+
+  .mini-stat strong {
+    font-size: 18px;
+  }
+
+
+  .history-status {
+    width: 100%;
+
+    justify-content: center;
+
+    margin-left: 0;
+  }
+
+
+  .doctor-row {
+    align-items: flex-start;
+  }
+
+}

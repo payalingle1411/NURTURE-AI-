@@ -14,21 +14,61 @@ public class PregnancyProfileController {
     @Autowired
     private PregnancyProfileService service;
 
-    // Save or Update Pregnancy Profile
-    @PostMapping("/save")
-    public PregnancyProfile save(@RequestBody PregnancyProfileRequest request) {
+    /*
+     * =========================================================
+     * SAVE PREGNANCY PROFILE
+     * POST /api/pregnancy
+     * =========================================================
+     */
+    @PostMapping
+    public PregnancyProfile save(
+            @RequestBody PregnancyProfileRequest request) {
+
         return service.save(request);
     }
 
-    // Get Pregnancy Profile by User ID
-    @GetMapping("/{userId}")
-    public PregnancyProfile getProfile(@PathVariable Long userId) {
+    /*
+     * =========================================================
+     * GET PREGNANCY PROFILE
+     * GET /api/pregnancy/user/{userId}
+     * =========================================================
+     */
+    @GetMapping("/user/{userId}")
+    public PregnancyProfile getProfile(
+            @PathVariable Long userId) {
+
         return service.getProfile(userId);
     }
 
-    // Check if Pregnancy Profile Exists
+    /*
+     * =========================================================
+     * CHECK IF PROFILE EXISTS
+     * GET /api/pregnancy/exists/{userId}
+     * =========================================================
+     */
     @GetMapping("/exists/{userId}")
-    public boolean exists(@PathVariable Long userId) {
+    public boolean exists(
+            @PathVariable Long userId) {
+
         return service.exists(userId);
+    }
+
+    /*
+     * =========================================================
+     * UPDATE PREGNANCY PROFILE
+     * PUT /api/pregnancy/user/{userId}
+     * =========================================================
+     */
+    @PutMapping("/user/{userId}")
+    public PregnancyProfile update(
+            @PathVariable Long userId,
+            @RequestBody PregnancyProfileRequest request) {
+
+        /*
+         * Make sure the request uses the correct user.
+         */
+        request.setUserId(userId);
+
+        return service.save(request);
     }
 }

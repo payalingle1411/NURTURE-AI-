@@ -1,20 +1,28 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+
 import {
   FaEye,
   FaEyeSlash,
   FaEnvelope,
   FaLock,
 } from "react-icons/fa";
+
 import { FcGoogle } from "react-icons/fc";
+
 import axios from "axios";
+
 import "./login.css";
 
 function Login() {
+
   const navigate = useNavigate();
 
-  const [showPassword, setShowPassword] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] =
+    useState(false);
+
+  const [loading, setLoading] =
+    useState(false);
 
   const [formData, setFormData] = useState({
     email: "",
@@ -22,172 +30,262 @@ function Login() {
     remember: false,
   });
 
-  const handleChange = (e) => {
-    const { name, value, type, checked } = e.target;
 
-    setFormData((prev) => ({
-      ...prev,
-      [name]: type === "checkbox" ? checked : value,
+  // =========================================================
+  // HANDLE INPUT
+  // =========================================================
+
+  const handleChange = (e) => {
+
+    const {
+      name,
+      value,
+      type,
+      checked,
+    } = e.target;
+
+    setFormData((previous) => ({
+      ...previous,
+
+      [name]:
+        type === "checkbox"
+          ? checked
+          : value,
     }));
   };
 
+
+  // =========================================================
+  // LOGIN
+  // =========================================================
+
   const handleSubmit = async (e) => {
+
     e.preventDefault();
 
-    // Validation
-    if (!formData.email.trim() || !formData.password.trim()) {
-      alert("Please enter email and password.");
+    if (
+      !formData.email.trim() ||
+      !formData.password.trim()
+    ) {
+
+      alert(
+        "Please enter email and password."
+      );
+
       return;
     }
 
+
     setLoading(true);
 
+
     try {
-      // ==============================
-      // SPRING BOOT LOGIN API
-      // ==============================
 
       const response = await axios.post(
+
         "http://localhost:8080/api/auth/login",
+
         {
-          email: formData.email.trim(),
-          password: formData.password,
+          email:
+            formData.email.trim(),
+
+          password:
+            formData.password,
+        },
+
+        {
+          // VERY IMPORTANT
+          // Allows browser to receive/store
+          // Spring Boot session cookie.
+          withCredentials: true,
         }
       );
 
-      console.log("Login Response:", response.data);
 
-      // ==============================
-      // LOGIN SUCCESS
-      // ==============================
+      console.log(
+        "Login Response:",
+        response.data
+      );
+
 
       if (response.status === 200) {
-        const data = response.data;
 
-        console.log("User ID:", data.userId);
-        console.log("User Name:", data.fullName);
-        console.log("Email:", data.email);
-        console.log("Role:", data.role);
-        console.log("Profile Completed:", data.profileCompleted);
+        const data =
+          response.data;
 
-        // --------------------------------
-        // Save logged-in user information
-        // --------------------------------
 
-        localStorage.setItem(
-          "userId",
-          data.userId.toString()
+        console.log(
+          "User ID:",
+          data.userId
         );
 
-        localStorage.setItem(
-          "userName",
-          data.fullName || ""
+        console.log(
+          "User Name:",
+          data.fullName
         );
 
-        localStorage.setItem(
-          "userEmail",
-          data.email || ""
+        console.log(
+          "Email:",
+          data.email
         );
 
-        localStorage.setItem(
-          "userRole",
-          data.role || ""
+        console.log(
+          "Role:",
+          data.role
         );
 
-        localStorage.setItem(
-          "profileCompleted",
-          data.profileCompleted.toString()
+        console.log(
+          "Profile Completed:",
+          data.profileCompleted
         );
 
-        // Remember Me
-        localStorage.setItem(
-          "rememberMe",
-          formData.remember.toString()
+
+        alert(
+          data.message ||
+          "Login Successful ✅"
         );
 
-        alert(data.message || "Login Successful ✅");
 
-        // ==========================================
-        // CHECK PERSONAL INFORMATION
-        // ==========================================
+        // =====================================================
+        // IMPORTANT
+        //
+        // NO localStorage
+        // NO sessionStorage
+        //
+        // User ID is stored in the SERVER SESSION.
+        // =====================================================
 
-        if (data.profileCompleted === true) {
-          // Profile already completed
-          navigate("/dashboard", { replace: true });
+
+        if (
+          data.profileCompleted === true
+        ) {
+
+          navigate(
+            "/dashboard",
+            {
+              replace: true,
+            }
+          );
+
         } else {
-          // Profile is not completed
-          navigate("/personal-info", { replace: true });
+
+          navigate(
+            "/personal-info",
+            {
+              replace: true,
+            }
+          );
         }
       }
 
     } catch (error) {
-      console.error("Login Error:", error);
 
-      // Spring Boot returned an error
+      console.error(
+        "Login Error:",
+        error
+      );
+
+
+      // =====================================================
+      // BACKEND ERROR
+      // =====================================================
+
       if (error.response) {
+
         console.log(
           "Backend Error:",
           error.response.data
         );
 
-        if (typeof error.response.data === "string") {
-          alert(error.response.data);
+
+        if (
+          typeof error.response.data ===
+          "string"
+        ) {
+
+          alert(
+            error.response.data
+          );
+
         } else {
+
           alert(
             error.response.data?.message ||
             "Invalid email or password."
           );
         }
+
       }
 
-      // Request reached nowhere
+      // =====================================================
+      // NETWORK ERROR
+      // =====================================================
+
       else if (error.request) {
+
         alert(
           "Unable to connect to Spring Boot backend.\n\n" +
           "Please make sure your backend is running on port 8080."
         );
+
       }
 
-      // Other error
+      // =====================================================
+      // OTHER ERROR
+      // =====================================================
+
       else {
-        alert("Something went wrong. Please try again.");
+
+        alert(
+          "Something went wrong. Please try again."
+        );
       }
 
     } finally {
+
       setLoading(false);
     }
   };
 
+
   return (
+
     <div className="login-container">
 
-      {/* ======================================
+
+      {/* =====================================================
           LEFT SECTION
-      ====================================== */}
+      ===================================================== */}
 
       <div className="login-left">
 
         <div className="overlay">
 
-          <h1>🤱 Nurture AI</h1>
+          <h1>
+            🤱 Nurture AI
+          </h1>
 
-          <h2>Welcome Back!</h2>
+          <h2>
+            Welcome Back!
+          </h2>
 
           <p>
-            Your trusted pregnancy wellness companion.
-            Stay healthy, track your baby's growth,
-            receive AI-powered guidance, and keep your
-            family connected throughout your motherhood
-            journey.
+            Your trusted pregnancy wellness
+            companion. Stay healthy, track
+            your baby's growth, receive
+            AI-powered guidance, and keep
+            your family connected throughout
+            your motherhood journey.
           </p>
 
         </div>
 
       </div>
 
-      {/* ======================================
+
+      {/* =====================================================
           RIGHT SECTION
-      ====================================== */}
+      ===================================================== */}
 
       <div className="login-right">
 
@@ -196,23 +294,30 @@ function Login() {
           onSubmit={handleSubmit}
         >
 
-          <h2>Login</h2>
+          <h2>
+            Login
+          </h2>
 
           <p className="subtitle">
             Sign in to continue your pregnancy journey.
           </p>
 
-          {/* ======================================
+
+          {/* =================================================
               EMAIL
-          ====================================== */}
+          ================================================= */}
 
           <div className="input-group">
 
-            <label>Email Address</label>
+            <label>
+              Email Address
+            </label>
 
             <div className="input-box">
 
-              <FaEnvelope className="input-icon" />
+              <FaEnvelope
+                className="input-icon"
+              />
 
               <input
                 type="email"
@@ -228,17 +333,22 @@ function Login() {
 
           </div>
 
-          {/* ======================================
+
+          {/* =================================================
               PASSWORD
-          ====================================== */}
+          ================================================= */}
 
           <div className="input-group">
 
-            <label>Password</label>
+            <label>
+              Password
+            </label>
 
             <div className="input-box">
 
-              <FaLock className="input-icon" />
+              <FaLock
+                className="input-icon"
+              />
 
               <input
                 type={
@@ -263,20 +373,23 @@ function Login() {
                   )
                 }
               >
+
                 {showPassword ? (
                   <FaEyeSlash />
                 ) : (
                   <FaEye />
                 )}
+
               </button>
 
             </div>
 
           </div>
 
-          {/* ======================================
+
+          {/* =================================================
               REMEMBER ME
-          ====================================== */}
+          ================================================= */}
 
           <div className="remember">
 
@@ -285,8 +398,12 @@ function Login() {
               <input
                 type="checkbox"
                 name="remember"
-                checked={formData.remember}
-                onChange={handleChange}
+                checked={
+                  formData.remember
+                }
+                onChange={
+                  handleChange
+                }
               />
 
               <span>
@@ -295,15 +412,17 @@ function Login() {
 
             </label>
 
+
             <Link to="/forgot-password">
               Forgot Password?
             </Link>
 
           </div>
 
-          {/* ======================================
+
+          {/* =================================================
               LOGIN BUTTON
-          ====================================== */}
+          ================================================= */}
 
           <button
             type="submit"
@@ -317,26 +436,32 @@ function Login() {
 
           </button>
 
-          {/* ======================================
+
+          {/* =================================================
               DIVIDER
-          ====================================== */}
+          ================================================= */}
 
           <div className="divider">
 
-            <span>OR</span>
+            <span>
+              OR
+            </span>
 
           </div>
 
-          {/* ======================================
+
+          {/* =================================================
               GOOGLE
-          ====================================== */}
+          ================================================= */}
 
           <button
             type="button"
             className="google-btn"
           >
 
-            <FcGoogle className="google-icon" />
+            <FcGoogle
+              className="google-icon"
+            />
 
             <span>
               Continue with Google
@@ -344,9 +469,10 @@ function Login() {
 
           </button>
 
-          {/* ======================================
+
+          {/* =================================================
               REGISTER
-          ====================================== */}
+          ================================================= */}
 
           <p className="register-link">
 
@@ -365,6 +491,6 @@ function Login() {
 
     </div>
   );
-}
+} 
 
 export default Login;

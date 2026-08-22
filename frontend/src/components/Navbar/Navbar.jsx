@@ -1,43 +1,195 @@
-import "./Navbar.css";
+import { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
+
 import {
   FaBell,
   FaSearch,
   FaUserCircle,
 } from "react-icons/fa";
 
+import "./Navbar.css";
+
 function Navbar() {
+  const location = useLocation();
+
+  // =========================================================
+  // USER DATA
+  // =========================================================
+
+  const [user, setUser] = useState({
+    name: "",
+    role: "",
+  });
+
+  // =========================================================
+  // GET LOGGED-IN USER DATA
+  // =========================================================
+
+  useEffect(() => {
+    const userName = localStorage.getItem("userName");
+    const userRole = localStorage.getItem("userRole");
+
+    console.log("Navbar User Name:", userName);
+    console.log("Navbar User Role:", userRole);
+
+    setUser({
+      name: userName || "User",
+      role: userRole || "",
+    });
+  }, []);
+
+  // =========================================================
+  // NAVBAR TITLE
+  // =========================================================
+
+  const getNavbarTitle = () => {
+    if (
+      location.pathname === "/appointment" ||
+      location.pathname === "/appointment-history" ||
+      location.pathname.startsWith("/appointment/")
+    ) {
+      return "Appointments";
+    }
+
+    if (location.pathname === "/ai-assistant") {
+      return "AI Assistant";
+    }
+
+    if (location.pathname === "/pregnancy-profile") {
+      return "Pregnancy Profile";
+    }
+
+    if (location.pathname === "/nutrition") {
+      return "Nutrition";
+    }
+
+    if (location.pathname === "/medicine") {
+      return "Medicine";
+    }
+
+    if (location.pathname === "/reports") {
+      return "Reports";
+    }
+
+    if (location.pathname === "/family-dashboard") {
+      return "Family Dashboard";
+    }
+
+    if (location.pathname === "/settings") {
+      return "Settings";
+    }
+
+    if (location.pathname === "/dashboard") {
+      return "Dashboard";
+    }
+
+    return "Dashboard";
+  };
+
+  // =========================================================
+  // FORMAT ROLE
+  // =========================================================
+
+  const formatRole = (role) => {
+    if (!role) {
+      return "";
+    }
+
+    // Example:
+    // MOTHER -> Mother
+    // mother -> Mother
+    // FAMILY_MEMBER -> Family Member
+
+    return role
+      .toLowerCase()
+      .split("_")
+      .map(
+        (word) =>
+          word.charAt(0).toUpperCase() +
+          word.slice(1)
+      )
+      .join(" ");
+  };
+
+  // =========================================================
+  // RETURN
+  // =========================================================
+
   return (
     <header className="navbar">
 
-      {/* Left Section */}
+      {/* =================================================
+          LEFT
+      ================================================= */}
+
       <div className="navbar-left">
-        <h2>Dashboard</h2>
+
+        <h2>
+          {getNavbarTitle()}
+        </h2>
+
       </div>
 
-      {/* Center Section */}
+
+      {/* =================================================
+          SEARCH
+      ================================================= */}
+
       <div className="navbar-search">
+
         <FaSearch className="search-icon" />
+
         <input
           type="text"
           placeholder="Search..."
         />
+
       </div>
 
-      {/* Right Section */}
+
+      {/* =================================================
+          RIGHT
+      ================================================= */}
+
       <div className="navbar-right">
 
+        {/* =================================================
+            NOTIFICATION
+        ================================================= */}
+
         <div className="notification">
+
           <FaBell />
-          <span className="badge">3</span>
+
+          <span className="badge">
+            3
+          </span>
+
         </div>
 
+
+        {/* =================================================
+            PROFILE
+        ================================================= */}
+
         <div className="profile">
+
           <FaUserCircle className="profile-icon" />
 
-          <div>
-            <h4>Chetan</h4>
-            <p>Mother</p>
+          <div className="profile-info">
+
+            <h4>
+              {user.name}
+            </h4>
+
+            {user.role && (
+              <p>
+                {formatRole(user.role)}
+              </p>
+            )}
+
           </div>
+
         </div>
 
       </div>
