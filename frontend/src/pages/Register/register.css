@@ -1,5 +1,6 @@
 /* =========================================================
-   GOOGLE FONT
+   NURTURE AI - REGISTER PAGE
+   Clean + Responsive + No Icon/Text Overlap
 ========================================================= */
 
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap");
@@ -25,12 +26,13 @@ body,
 
 body {
   margin: 0;
-  background: linear-gradient(
-    135deg,
-    #ffe8f2 0%,
-    #f8f7ff 50%,
-    #eaf6ff 100%
-  );
+  background:
+    linear-gradient(
+      135deg,
+      #ffe8f2 0%,
+      #f8f7ff 50%,
+      #eaf6ff 100%
+    );
 }
 
 
@@ -77,9 +79,13 @@ body {
 
   font-size: 21px;
 
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+  box-shadow:
+    0 8px 25px rgba(0, 0, 0, 0.15);
 
-  transition: all 0.3s ease;
+  transition:
+    background 0.3s ease,
+    color 0.3s ease,
+    transform 0.3s ease;
 
   z-index: 99999;
 }
@@ -87,7 +93,6 @@ body {
 .home-btn:hover {
   background: #6b4eff;
   color: #ffffff;
-
   transform: scale(1.08);
 }
 
@@ -100,6 +105,12 @@ body {
   width: 45%;
   min-height: 100vh;
 
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 60px;
+
   background:
     linear-gradient(
       rgba(255, 126, 179, 0.78),
@@ -109,13 +120,6 @@ body {
 
   background-size: cover;
   background-position: center;
-
-  display: flex;
-
-  align-items: center;
-  justify-content: center;
-
-  padding: 60px;
 }
 
 
@@ -123,7 +127,7 @@ body {
    LEFT OVERLAY
 ========================================================= */
 
-.overlay {
+.register-left .overlay {
   width: 100%;
   max-width: 550px;
 
@@ -143,7 +147,6 @@ body {
 
 .register-left h1 {
   font-size: 42px;
-
   font-weight: 700;
 
   margin-bottom: 45px;
@@ -151,7 +154,6 @@ body {
 
 .register-left h2 {
   font-size: 34px;
-
   font-weight: 600;
 
   margin-bottom: 20px;
@@ -161,7 +163,6 @@ body {
   width: 100%;
 
   font-size: 16px;
-
   line-height: 1.8;
 
   color: rgba(255, 255, 255, 0.95);
@@ -177,7 +178,6 @@ body {
   min-height: 100vh;
 
   display: flex;
-
   align-items: flex-start;
   justify-content: center;
 
@@ -219,13 +219,12 @@ body {
   color: #6b4eff;
 
   font-size: 30px;
-
   font-weight: 700;
 
   margin-bottom: 5px;
 }
 
-.subtitle {
+.register-form .subtitle {
   text-align: center;
 
   color: #777;
@@ -233,7 +232,6 @@ body {
   margin: 8px 0 25px;
 
   font-size: 14px;
-
   line-height: 1.5;
 }
 
@@ -242,19 +240,17 @@ body {
    INPUT GROUP
 ========================================================= */
 
-.input-group {
+.register-form .input-group {
   width: 100%;
-
   margin-bottom: 17px;
 }
 
-.input-group label {
+.register-form .input-group label {
   display: block;
 
   margin-bottom: 7px;
 
   font-size: 14px;
-
   font-weight: 600;
 
   color: #333;
@@ -265,11 +261,9 @@ body {
    INPUT BOX
 ========================================================= */
 
-.input-box {
+.register-form .input-box {
   width: 100%;
   height: 52px;
-
-  position: relative;
 
   display: flex;
   align-items: center;
@@ -280,12 +274,15 @@ body {
 
   background: #f8fbff;
 
-  transition: all 0.25s ease;
-
   overflow: hidden;
+
+  transition:
+    border-color 0.25s ease,
+    box-shadow 0.25s ease,
+    background 0.25s ease;
 }
 
-.input-box:focus-within {
+.register-form .input-box:focus-within {
   border-color: #8a7bff;
 
   background: #ffffff;
@@ -297,19 +294,32 @@ body {
 
 /* =========================================================
    INPUT ICON
+   FIXED AREA
+   PREVENTS TEXT OVERLAP
 ========================================================= */
 
-.input-icon {
-  flex-shrink: 0;
+.register-form .input-icon {
+  flex: 0 0 48px;
 
-  margin-left: 16px;
-  margin-right: 12px;
+  width: 48px;
+  min-width: 48px;
+  height: 100%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  margin: 0;
 
   color: #8a7bff;
 
   font-size: 17px;
 
-  z-index: 2;
+  pointer-events: none;
+
+  position: static;
+
+  z-index: 1;
 }
 
 
@@ -317,12 +327,12 @@ body {
    TEXT INPUT
 ========================================================= */
 
-.input-box input {
-  flex: 1;
+.register-form .input-box input {
+  flex: 1 1 0;
 
+  width: 0;
   min-width: 0;
 
-  width: 100%;
   height: 100%;
 
   border: none;
@@ -330,15 +340,18 @@ body {
 
   background: transparent;
 
-  padding: 0 14px 0 0;
+  padding: 0 12px 0 0;
+
+  font-family: "Poppins", sans-serif;
 
   font-size: 14px;
 
   color: #333;
 }
 
-.input-box input::placeholder {
+.register-form .input-box input::placeholder {
   color: #999;
+  opacity: 1;
 }
 
 
@@ -346,12 +359,12 @@ body {
    SELECT
 ========================================================= */
 
-.input-box select {
-  flex: 1;
+.register-form .input-box select {
+  flex: 1 1 0;
 
+  width: 0;
   min-width: 0;
 
-  width: 100%;
   height: 100%;
 
   border: none;
@@ -359,7 +372,9 @@ body {
 
   background: transparent;
 
-  padding: 0 14px 0 0;
+  padding: 0 12px 0 0;
+
+  font-family: "Poppins", sans-serif;
 
   font-size: 14px;
 
@@ -373,10 +388,12 @@ body {
    PASSWORD SHOW BUTTON
 ========================================================= */
 
-.show-btn {
-  flex-shrink: 0;
+.register-form .show-btn {
+  flex: 0 0 44px;
 
-  width: 45px;
+  width: 44px;
+  min-width: 44px;
+
   height: 100%;
 
   display: flex;
@@ -394,10 +411,17 @@ body {
   font-size: 17px;
 
   padding: 0;
+  margin: 0;
+
+  transition:
+    color 0.2s ease,
+    background 0.2s ease;
 }
 
-.show-btn:hover {
+.register-form .show-btn:hover {
   color: #5d49ff;
+
+  background: rgba(123, 108, 255, 0.05);
 }
 
 
@@ -405,8 +429,8 @@ body {
    OTP BUTTON
 ========================================================= */
 
-.otp-btn {
-  flex-shrink: 0;
+.register-form .otp-btn {
+  flex: 0 0 90px;
 
   width: 90px;
   min-width: 90px;
@@ -439,20 +463,22 @@ body {
 
   white-space: nowrap;
 
-  transition: all 0.2s ease;
+  transition:
+    background 0.2s ease,
+    color 0.2s ease;
 }
 
-.otp-btn:hover:not(:disabled) {
+.register-form .otp-btn:hover:not(:disabled) {
   background: rgba(255, 95, 143, 0.08);
 
   color: #e94c7d;
 }
 
-.otp-btn:active:not(:disabled) {
+.register-form .otp-btn:active:not(:disabled) {
   background: rgba(255, 95, 143, 0.15);
 }
 
-.otp-btn:disabled {
+.register-form .otp-btn:disabled {
   background: #f5f5f5;
 
   color: #999;
@@ -467,7 +493,7 @@ body {
    OTP INFORMATION
 ========================================================= */
 
-.otp-info {
+.register-form .otp-info {
   margin-top: 6px;
 
   color: #6c63ff;
@@ -482,7 +508,7 @@ body {
    OTP REQUIRED
 ========================================================= */
 
-.otp-required {
+.register-form .otp-required {
   margin-top: 8px;
 
   text-align: center;
@@ -521,7 +547,6 @@ body {
 
 .terms {
   display: flex;
-
   align-items: center;
 
   margin: 16px 0 20px;
@@ -533,7 +558,6 @@ body {
 
 .terms label {
   display: flex;
-
   align-items: center;
 
   gap: 7px;
@@ -573,7 +597,6 @@ body {
   min-height: 52px;
 
   display: flex;
-
   align-items: center;
   justify-content: center;
 
@@ -601,15 +624,17 @@ body {
 
   cursor: pointer;
 
-  transition: all 0.3s ease;
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease,
+    opacity 0.3s ease;
 }
 
 .register-btn:hover:not(:disabled) {
   transform: translateY(-2px);
 
   box-shadow:
-    0 10px 25px
-    rgba(176, 108, 255, 0.35);
+    0 10px 25px rgba(176, 108, 255, 0.35);
 }
 
 .register-btn:disabled {
@@ -642,14 +667,13 @@ body {
 
 
 /* =========================================================
-   GOOGLE DIVIDER
+   DIVIDER
 ========================================================= */
 
-.divider {
+.register-form .divider {
   width: 100%;
 
   display: flex;
-
   align-items: center;
 
   gap: 12px;
@@ -657,8 +681,8 @@ body {
   margin: 20px 0;
 }
 
-.divider::before,
-.divider::after {
+.register-form .divider::before,
+.register-form .divider::after {
   content: "";
 
   flex: 1;
@@ -668,7 +692,7 @@ body {
   background: #e5e5e5;
 }
 
-.divider span {
+.register-form .divider span {
   color: #999;
 
   font-size: 11px;
@@ -681,13 +705,11 @@ body {
    GOOGLE BUTTON
 ========================================================= */
 
-.google-btn {
+.register-form .google-btn {
   width: 100%;
-
   height: 48px;
 
   display: flex;
-
   align-items: center;
   justify-content: center;
 
@@ -707,16 +729,20 @@ body {
 
   cursor: pointer;
 
-  transition: all 0.2s ease;
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease;
 }
 
-.google-btn:hover {
+.register-form .google-btn:hover {
   background: #fafafa;
 
   border-color: #ccc;
 }
 
-.google-icon {
+.register-form .google-icon {
+  flex-shrink: 0;
+
   font-size: 20px;
 }
 
@@ -725,7 +751,7 @@ body {
    LOGIN LINK
 ========================================================= */
 
-.login-link {
+.register-form .login-link {
   text-align: center;
 
   margin-top: 20px;
@@ -735,7 +761,7 @@ body {
   font-size: 13px;
 }
 
-.login-link a {
+.register-form .login-link a {
   margin-left: 5px;
 
   color: #7b6cff;
@@ -745,7 +771,7 @@ body {
   font-weight: 700;
 }
 
-.login-link a:hover {
+.register-form .login-link a:hover {
   text-decoration: underline;
 }
 
@@ -754,7 +780,7 @@ body {
    QUOTE
 ========================================================= */
 
-.quote {
+.register-form .quote {
   margin-top: 18px;
 
   text-align: center;
@@ -792,17 +818,15 @@ body {
 
   .register-left {
     width: 42%;
-
     padding: 40px;
   }
 
   .register-right {
     width: 58%;
-
     padding: 35px 25px;
   }
 
-  .overlay {
+  .register-left .overlay {
     padding: 30px;
   }
 
@@ -813,7 +837,6 @@ body {
   .register-left h2 {
     font-size: 28px;
   }
-
 }
 
 
@@ -835,7 +858,7 @@ body {
     padding: 40px 25px;
   }
 
-  .overlay {
+  .register-left .overlay {
     max-width: 650px;
 
     text-align: center;
@@ -868,7 +891,6 @@ body {
   .register-form {
     max-width: 520px;
   }
-
 }
 
 
@@ -888,21 +910,25 @@ body {
     font-size: 18px;
   }
 
+
   .register-left {
     min-height: 270px;
 
     padding: 25px 15px;
   }
 
-  .overlay {
+
+  .register-left .overlay {
     padding: 25px 20px;
 
     border-radius: 20px;
   }
 
+
   .register-left h1 {
     font-size: 28px;
   }
+
 
   .register-left h2 {
     font-size: 23px;
@@ -910,15 +936,18 @@ body {
     margin-bottom: 12px;
   }
 
+
   .register-left p {
     font-size: 12px;
 
     line-height: 1.6;
   }
 
+
   .register-right {
     padding: 20px 12px;
   }
+
 
   .register-form {
     padding: 24px 18px;
@@ -926,31 +955,60 @@ body {
     border-radius: 18px;
   }
 
+
   .register-form h2 {
     font-size: 26px;
   }
 
-  .subtitle {
+
+  .register-form .subtitle {
     font-size: 12px;
 
     margin-bottom: 20px;
   }
 
-  .input-box {
+
+  .register-form .input-box {
     height: 50px;
   }
 
-  .input-box input,
-  .input-box select {
+
+  /* =======================================================
+     MOBILE ICON
+     FIXED AREA - NO OVERLAP
+  ======================================================= */
+
+  .register-form .input-icon {
+    flex: 0 0 44px;
+
+    width: 44px;
+    min-width: 44px;
+
+    height: 100%;
+
+    margin: 0;
+
+    font-size: 16px;
+  }
+
+
+  .register-form .input-box input,
+  .register-form .input-box select {
     font-size: 13px;
   }
 
-  .input-icon {
-    margin-left: 13px;
-    margin-right: 9px;
+
+  .register-form .show-btn {
+    flex: 0 0 40px;
+
+    width: 40px;
+    min-width: 40px;
   }
 
-  .otp-btn {
+
+  .register-form .otp-btn {
+    flex: 0 0 75px;
+
     width: 75px;
     min-width: 75px;
 
@@ -959,10 +1017,10 @@ body {
     font-size: 10px;
   }
 
+
   .register-btn {
     font-size: 13px;
   }
-
 }
 
 
@@ -976,19 +1034,49 @@ body {
     padding: 20px 14px;
   }
 
-  .input-box {
+
+  .register-form .input-box {
     height: 48px;
   }
 
-  .otp-btn {
+
+  .register-form .input-icon {
+    flex: 0 0 40px;
+
+    width: 40px;
+    min-width: 40px;
+
+    font-size: 15px;
+  }
+
+
+  .register-form .input-box input,
+  .register-form .input-box select {
+    font-size: 12px;
+
+    padding-right: 8px;
+  }
+
+
+  .register-form .show-btn {
+    flex: 0 0 36px;
+
+    width: 36px;
+    min-width: 36px;
+  }
+
+
+  .register-form .otp-btn {
+    flex: 0 0 68px;
+
     width: 68px;
     min-width: 68px;
 
     font-size: 9px;
   }
 
+
   .register-btn {
     font-size: 12px;
   }
-
 }

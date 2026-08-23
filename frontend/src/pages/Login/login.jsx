@@ -81,6 +81,10 @@ function Login() {
 
     try {
 
+      // =====================================================
+      // LOGIN API
+      // =====================================================
+
       const response = await axios.post(
 
         "http://localhost:8080/api/auth/login",
@@ -94,16 +98,16 @@ function Login() {
         },
 
         {
-          // VERY IMPORTANT
-          // Allows browser to receive/store
-          // Spring Boot session cookie.
           withCredentials: true,
         }
       );
 
 
       console.log(
-        "Login Response:",
+        "========== LOGIN RESPONSE =========="
+      );
+
+      console.log(
         response.data
       );
 
@@ -114,25 +118,112 @@ function Login() {
           response.data;
 
 
+        // ===================================================
+        // GET DYNAMIC USER ID FROM BACKEND
+        // ===================================================
+
+        const userId =
+          data.userId;
+
+
         console.log(
-          "User ID:",
-          data.userId
+          "User ID received from backend:",
+          userId
         );
+
+
+        // ===================================================
+        // IMPORTANT
+        // NEVER USE STATIC USER ID
+        // ===================================================
+
+        if (
+          userId === undefined ||
+          userId === null ||
+          userId === ""
+        ) {
+
+          console.error(
+            "Backend did not return userId:",
+            data
+          );
+
+          alert(
+            "Login successful, but the server did not return your user ID."
+          );
+
+          return;
+        }
+
+
+        // ===================================================
+        // SAVE DYNAMIC USER ID
+        // ===================================================
+
+        localStorage.setItem(
+          "userId",
+          String(userId)
+        );
+
+
+        // ===================================================
+        // SAVE OTHER USER INFORMATION
+        // ===================================================
+
+        if (data.fullName) {
+
+          localStorage.setItem(
+            "fullName",
+            data.fullName
+          );
+        }
+
+
+        if (data.email) {
+
+          localStorage.setItem(
+            "email",
+            data.email
+          );
+        }
+
+
+        if (data.role) {
+
+          localStorage.setItem(
+            "role",
+            data.role
+          );
+        }
+
+
+        // ===================================================
+        // VERIFY WHAT WAS STORED
+        // ===================================================
+
+        console.log(
+          "Dynamic User ID stored:",
+          localStorage.getItem("userId")
+        );
+
 
         console.log(
           "User Name:",
           data.fullName
         );
 
+
         console.log(
           "Email:",
           data.email
         );
 
+
         console.log(
           "Role:",
           data.role
         );
+
 
         console.log(
           "Profile Completed:",
@@ -140,21 +231,19 @@ function Login() {
         );
 
 
+        // ===================================================
+        // LOGIN SUCCESS
+        // ===================================================
+
         alert(
           data.message ||
           "Login Successful ✅"
         );
 
 
-        // =====================================================
-        // IMPORTANT
-        //
-        // NO localStorage
-        // NO sessionStorage
-        //
-        // User ID is stored in the SERVER SESSION.
-        // =====================================================
-
+        // ===================================================
+        // NAVIGATION
+        // ===================================================
 
         if (
           data.profileCompleted === true
@@ -176,6 +265,7 @@ function Login() {
             }
           );
         }
+
       }
 
     } catch (error) {
@@ -217,6 +307,7 @@ function Login() {
 
       }
 
+
       // =====================================================
       // NETWORK ERROR
       // =====================================================
@@ -229,6 +320,7 @@ function Login() {
         );
 
       }
+
 
       // =====================================================
       // OTHER ERROR
@@ -247,6 +339,10 @@ function Login() {
     }
   };
 
+
+  // =========================================================
+  // UI
+  // =========================================================
 
   return (
 
@@ -491,6 +587,6 @@ function Login() {
 
     </div>
   );
-} 
+}
 
 export default Login;

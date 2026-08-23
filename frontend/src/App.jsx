@@ -11,12 +11,13 @@ import Sidebar from "./components/sidebar/Sidebar.jsx";
 import Welcome from "./pages/Welcome page/welcome.jsx";
 
 import PersonalInfo from "./pages/Form/PersonalInfo/personalInfo.jsx";
-import PregnancyDetails from "./pages/Form/PregnancyDetails/pregnancyDetails.jsx";
+import PregnancyDetails from "./pages/Form/PregnancyDetails/PregnancyDetails.jsx";
 
 import Appointment from "./pages/Appointment/Appointment";
 import AppointmentHistory from "./pages/Appointment/AppointmentHistory.jsx";
 
 import Profile from "./pages/Profile/Profile.jsx";
+import BabyDevelopment from "./components/WelcomeCard/BabyDevelopment.jsx";
 
 function App() {
   return (
@@ -49,6 +50,8 @@ function App() {
         <Route path="/appointment-history" element={<AppointmentHistory />} />
 
         <Route path="/profile" element={<Profile />} />
+        <Route path="/baby-development" element={<BabyDevelopment />} />
+       
 
       </Routes>
     </BrowserRouter>

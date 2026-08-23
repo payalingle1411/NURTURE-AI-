@@ -1,5 +1,12 @@
+/* =========================================================
+   LOGIN PAGE - NURTURE AI
+   Clean icon + input alignment
+========================================================= */
+
 * {
   box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
 .login-container {
@@ -9,11 +16,13 @@
   display: flex;
 
   background: #fff6fa;
+  overflow-x: hidden;
 }
 
-/* =========================================
+
+/* =========================================================
    LEFT SECTION
-========================================= */
+========================================================= */
 
 .login-left {
   width: 50%;
@@ -34,26 +43,37 @@
   display: flex;
   align-items: center;
   justify-content: center;
+
+  padding: 50px;
 }
 
-.overlay {
+
+/* =========================================================
+   LEFT CONTENT
+========================================================= */
+
+.login-left .overlay {
   width: 80%;
-  color: white;
+  max-width: 600px;
+
+  color: #ffffff;
 }
 
-.overlay h1 {
+.login-left .overlay h1 {
   font-size: 38px;
-  margin-bottom: 70px;
-
   font-weight: 700;
+
+  margin-bottom: 70px;
 }
 
-.overlay h2 {
+.login-left .overlay h2 {
   font-size: 42px;
+  font-weight: 700;
+
   margin-bottom: 20px;
 }
 
-.overlay p {
+.login-left .overlay p {
   max-width: 600px;
 
   font-size: 17px;
@@ -62,9 +82,10 @@
   color: #ffffff;
 }
 
-/* =========================================
+
+/* =========================================================
    RIGHT SECTION
-========================================= */
+========================================================= */
 
 .login-right {
   width: 50%;
@@ -77,10 +98,20 @@
   padding: 40px;
 }
 
+
+/* =========================================================
+   LOGIN FORM
+========================================================= */
+
 .login-form {
   width: 100%;
   max-width: 460px;
 }
+
+
+/* =========================================================
+   TITLE
+========================================================= */
 
 .login-form h2 {
   margin: 0;
@@ -91,24 +122,28 @@
   font-weight: 700;
 }
 
-.subtitle {
+.login-form .subtitle {
   margin-top: 10px;
   margin-bottom: 35px;
 
   color: #77798b;
 
   font-size: 15px;
+  line-height: 1.6;
 }
 
-/* =========================================
-   INPUT GROUP
-========================================= */
 
-.input-group {
+/* =========================================================
+   INPUT GROUP
+========================================================= */
+
+.login-form .input-group {
+  width: 100%;
+
   margin-bottom: 22px;
 }
 
-.input-group label {
+.login-form .input-group label {
   display: block;
 
   margin-bottom: 8px;
@@ -119,85 +154,135 @@
   font-weight: 600;
 }
 
-.input-box {
+
+/* =========================================================
+   INPUT BOX
+========================================================= */
+
+.login-form .input-box {
+  width: 100%;
   height: 52px;
 
   display: flex;
   align-items: center;
 
   border: 1px solid #e1e2ea;
-
   border-radius: 10px;
 
   background: #ffffff;
 
-  padding: 0 14px;
+  padding: 0 8px 0 14px;
 
-  transition: 0.2s;
+  transition: all 0.2s ease;
+
+  overflow: hidden;
 }
 
-.input-box:focus-within {
+.login-form .input-box:focus-within {
   border-color: #ff5f8f;
 
   box-shadow:
-    0 0 0 3px
-    rgba(255, 95, 143, 0.1);
+    0 0 0 3px rgba(255, 95, 143, 0.1);
 }
 
-.input-icon {
+
+/* =========================================================
+   INPUT ICON
+   FIXED SPACE - PREVENTS OVERLAPPING
+========================================================= */
+
+.login-form .input-icon {
+  flex: 0 0 22px;
+
+  width: 22px;
+  min-width: 22px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
   color: #ff5f8f;
 
-  margin-right: 12px;
+  font-size: 16px;
+
+  margin: 0 12px 0 0;
 }
 
-.input-box input {
-  width: 100%;
+
+/* =========================================================
+   TEXT INPUT
+========================================================= */
+
+.login-form .input-box input {
+  flex: 1;
+
+  min-width: 0;
+
+  width: auto;
   height: 100%;
 
   border: none;
   outline: none;
 
-  font-size: 15px;
+  background: transparent;
+
+  padding: 0;
+
+  font-family: "Poppins", sans-serif;
+
+  font-size: 14px;
 
   color: #333;
-
-  background: transparent;
 }
 
-.input-box input::placeholder {
+.login-form .input-box input::placeholder {
   color: #aaa;
 }
 
-/* =========================================
-   PASSWORD BUTTON
-========================================= */
 
-.show-btn {
+/* =========================================================
+   PASSWORD SHOW BUTTON
+   FIXED SPACE - PREVENTS ICON OVERLAP
+========================================================= */
+
+.login-form .show-btn {
+  flex: 0 0 42px;
+
+  width: 42px;
+  min-width: 42px;
+  height: 100%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
   border: none;
 
   background: transparent;
 
-  cursor: pointer;
-
   color: #777;
 
-  display: flex;
-  align-items: center;
+  cursor: pointer;
 
   font-size: 16px;
+
+  padding: 0;
+  margin: 0;
 }
 
-.show-btn:hover {
+.login-form .show-btn:hover {
   color: #ff5f8f;
 }
 
-/* =========================================
-   REMEMBER
-========================================= */
+
+/* =========================================================
+   REMEMBER ME
+========================================================= */
 
 .remember {
-  display: flex;
+  width: 100%;
 
+  display: flex;
   align-items: center;
   justify-content: space-between;
 
@@ -213,10 +298,19 @@
   gap: 7px;
 
   color: #666;
+
+  cursor: pointer;
 }
 
 .remember input {
+  width: 15px;
+  height: 15px;
+
+  margin: 0;
+
   accent-color: #ff5f8f;
+
+  cursor: pointer;
 }
 
 .remember a {
@@ -231,9 +325,10 @@
   text-decoration: underline;
 }
 
-/* =========================================
+
+/* =========================================================
    LOGIN BUTTON
-========================================= */
+========================================================= */
 
 .login-btn {
   width: 100%;
@@ -244,18 +339,29 @@
 
   background: #ff5f8f;
 
-  color: white;
+  color: #ffffff;
+
+  font-family: "Poppins", sans-serif;
 
   font-size: 16px;
   font-weight: 600;
 
   cursor: pointer;
 
-  transition: 0.2s;
+  transition: all 0.2s ease;
 }
 
-.login-btn:hover {
+.login-btn:hover:not(:disabled) {
   background: #ed4d7d;
+
+  transform: translateY(-1px);
+
+  box-shadow:
+    0 8px 20px rgba(255, 95, 143, 0.25);
+}
+
+.login-btn:active:not(:disabled) {
+  transform: translateY(0);
 }
 
 .login-btn:disabled {
@@ -264,13 +370,15 @@
   cursor: not-allowed;
 }
 
-/* =========================================
+
+/* =========================================================
    DIVIDER
-========================================= */
+========================================================= */
 
-.divider {
+.login-form .divider {
+  width: 100%;
+
   display: flex;
-
   align-items: center;
 
   gap: 15px;
@@ -280,8 +388,8 @@
   color: #aaa;
 }
 
-.divider::before,
-.divider::after {
+.login-form .divider::before,
+.login-form .divider::after {
   content: "";
 
   flex: 1;
@@ -291,26 +399,29 @@
   background: #e4e4e4;
 }
 
-.divider span {
+.login-form .divider span {
+  flex-shrink: 0;
+
   font-size: 13px;
+
+  color: #aaa;
 }
 
-/* =========================================
-   GOOGLE BUTTON
-========================================= */
 
-.google-btn {
+/* =========================================================
+   GOOGLE BUTTON
+========================================================= */
+
+.login-form .google-btn {
   width: 100%;
   height: 52px;
 
   border: 1px solid #dedee5;
-
   border-radius: 10px;
 
-  background: white;
+  background: #ffffff;
 
   display: flex;
-
   align-items: center;
   justify-content: center;
 
@@ -318,28 +429,33 @@
 
   cursor: pointer;
 
+  font-family: "Poppins", sans-serif;
+
   font-size: 15px;
 
   color: #444;
 
-  transition: 0.2s;
+  transition: all 0.2s ease;
 }
 
-.google-btn:hover {
+.login-form .google-btn:hover {
   background: #fafafa;
 
   border-color: #ccc;
 }
 
-.google-icon {
+.login-form .google-icon {
+  flex-shrink: 0;
+
   font-size: 20px;
 }
 
-/* =========================================
-   REGISTER
-========================================= */
 
-.register-link {
+/* =========================================================
+   REGISTER LINK
+========================================================= */
+
+.login-form .register-link {
   margin-top: 25px;
 
   text-align: center;
@@ -349,7 +465,7 @@
   font-size: 14px;
 }
 
-.register-link a {
+.login-form .register-link a {
   color: #ff5f8f;
 
   text-decoration: none;
@@ -357,15 +473,54 @@
   font-weight: 600;
 }
 
-.register-link a:hover {
+.login-form .register-link a:hover {
   text-decoration: underline;
 }
 
-/* =========================================
-   TABLET
-========================================= */
 
-@media (max-width: 900px) {
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media (max-width: 1000px) {
+
+  .login-left {
+    width: 45%;
+
+    padding: 35px;
+  }
+
+  .login-right {
+    width: 55%;
+
+    padding: 30px;
+  }
+
+  .login-left .overlay {
+    width: 90%;
+  }
+
+  .login-left .overlay h1 {
+    font-size: 32px;
+
+    margin-bottom: 50px;
+  }
+
+  .login-left .overlay h2 {
+    font-size: 34px;
+  }
+
+  .login-left .overlay p {
+    font-size: 15px;
+  }
+}
+
+
+/* =========================================================
+   SMALL TABLET
+========================================================= */
+
+@media (max-width: 800px) {
 
   .login-left {
     display: none;
@@ -373,26 +528,119 @@
 
   .login-right {
     width: 100%;
+    min-height: 100vh;
+
+    padding: 40px 25px;
   }
 
+  .login-form {
+    max-width: 480px;
+  }
 }
 
-/* =========================================
+
+/* =========================================================
    MOBILE
-========================================= */
+========================================================= */
 
 @media (max-width: 500px) {
 
   .login-right {
-    padding: 25px 20px;
+    padding: 25px 18px;
+  }
+
+  .login-form {
+    max-width: 100%;
   }
 
   .login-form h2 {
     font-size: 28px;
   }
 
-  .subtitle {
+  .login-form .subtitle {
+    font-size: 13px;
+
+    margin-bottom: 25px;
+  }
+
+  .login-form .input-group {
+    margin-bottom: 18px;
+  }
+
+  .login-form .input-box {
+    height: 50px;
+
+    padding-left: 12px;
+    padding-right: 6px;
+  }
+
+  .login-form .input-icon {
+    flex-basis: 21px;
+
+    width: 21px;
+    min-width: 21px;
+
+    margin-right: 10px;
+
+    font-size: 15px;
+  }
+
+  .login-form .input-box input {
+    font-size: 13px;
+  }
+
+  .login-form .show-btn {
+    flex-basis: 40px;
+
+    width: 40px;
+    min-width: 40px;
+  }
+
+  .remember {
+    font-size: 12px;
+  }
+
+  .login-btn {
+    height: 50px;
+
     font-size: 14px;
   }
 
+  .login-form .google-btn {
+    height: 50px;
+
+    font-size: 13px;
+  }
+
+  .login-form .register-link {
+    font-size: 13px;
+  }
+}
+
+
+/* =========================================================
+   VERY SMALL MOBILE
+========================================================= */
+
+@media (max-width: 360px) {
+
+  .login-right {
+    padding: 20px 14px;
+  }
+
+  .login-form h2 {
+    font-size: 26px;
+  }
+
+  .login-form .input-box {
+    height: 48px;
+  }
+
+  .login-form .input-icon {
+    margin-right: 8px;
+  }
+
+  .remember {
+    font-size: 11px;
+  }
 }

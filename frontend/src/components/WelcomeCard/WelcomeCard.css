@@ -1,142 +1,336 @@
+/* =========================================================
+   WELCOME CARD
+   NURTURE AI
+========================================================= */
+
 .welcome-card {
-    background: #ffffff;
-    border-radius: 16px;
-    padding: 20px 25px;
-    margin: 20px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  position: relative;
+  width: 100%;
+  min-height: 230px;
+
+  padding: 30px;
+
+  border-radius: 24px;
+
+  background:
+    radial-gradient(
+      circle at 90% 10%,
+      rgba(219, 234, 254, 0.75),
+      transparent 28%
+    ),
+    linear-gradient(
+      135deg,
+      #ffffff,
+      #f8fbff
+    );
+
+  border: 1px solid #e5eaf2;
+
+  box-shadow:
+    0 12px 35px rgba(15, 23, 42, 0.08);
+
+  overflow: hidden;
 }
+
+
+/* =========================================================
+   CONTENT
+========================================================= */
 
 .welcome-content {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 25px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  gap: 30px;
+
+  position: relative;
+  z-index: 2;
 }
 
+
+/* =========================================================
+   WELCOME TEXT
+========================================================= */
+
 .welcome-text {
-    flex: 1;
+  flex: 1;
 }
 
 .welcome-text h2 {
-    color: #333;
-    font-size: 26px;
-    margin-bottom: 6px;
-    font-weight: 600;
+  margin: 0 0 8px;
+
+  font-size: 27px;
+  font-weight: 700;
+
+  color: #172033;
 }
 
-.welcome-text p {
-    color: #666;
-    font-size: 15px;
-    margin-bottom: 18px;
+.welcome-text > p {
+  margin: 0;
+
+  color: #6b7280;
+
+  font-size: 15px;
 }
 
-.welcome-text span {
-    color: #6C63FF;
-    font-weight: 600;
+.welcome-text > p span {
+  color: #2563eb;
+  font-weight: 700;
 }
+
+
+/* =========================================================
+   INFO BOXES
+========================================================= */
 
 .welcome-info {
-    display: flex;
-    gap: 15px;
-    flex-wrap: wrap;
+  display: flex;
+
+  gap: 14px;
+
+  margin-top: 25px;
 }
 
 .info-box {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    background: #f8f9ff;
-    padding: 12px 16px;
-    border-radius: 12px;
-    min-width: 180px;
+  display: flex;
+  align-items: center;
+
+  gap: 11px;
+
+  min-width: 190px;
+
+  padding: 12px 15px;
+
+  border-radius: 15px;
+
+  background: rgba(255, 255, 255, 0.85);
+
+  border: 1px solid #e8edf5;
 }
 
 .info-icon {
-    font-size: 22px;
-    color: #6C63FF;
+  font-size: 18px;
+
+  color: #4f8df7;
+
+  flex-shrink: 0;
 }
 
 .info-box h4 {
-    margin: 0;
-    font-size: 15px;
-    color: #333;
-    font-weight: 600;
+  margin: 0 0 3px;
+
+  font-size: 14px;
+
+  color: #1f2937;
 }
 
 .info-box p {
-    margin: 2px 0 0;
-    font-size: 13px;
-    color: #777;
+  margin: 0;
+
+  font-size: 12px;
+
+  color: #7b8494;
 }
 
-/* Right Side */
+
+/* =========================================================
+   RIGHT SIDE
+========================================================= */
 
 .welcome-right {
-    background: #f8f9ff;
-    padding: 18px;
-    border-radius: 12px;
-    min-width: 220px;
+  width: 220px;
+
+  padding: 20px;
+
+  border-radius: 18px;
+
+  background: rgba(255, 255, 255, 0.75);
+
+  border: 1px solid #e8edf5;
 }
 
 .welcome-right h3 {
-    margin: 0;
-    color: #6C63FF;
-    font-size: 18px;
+  margin: 0 0 8px;
+
+  font-size: 16px;
+
+  color: #1f2937;
 }
 
 .welcome-right p {
-    margin-top: 8px;
-    color: #555;
-    font-size: 14px;
-    line-height: 1.4;
+  margin: 0 0 15px;
+
+  font-size: 13px;
+
+  line-height: 1.5;
+
+  color: #6b7280;
 }
 
-/* Tablet */
+
+/* =========================================================
+   BABY FRUIT CIRCLE
+========================================================= */
+
+.baby-fruit-circle {
+  position: absolute;
+
+  top: 20px;
+  right: 25px;
+
+  width: 82px;
+  height: 82px;
+
+  border-radius: 50%;
+
+  border: 5px solid rgba(255, 255, 255, 0.9);
+
+  background:
+    linear-gradient(
+      145deg,
+      #e0f2fe,
+      #dbeafe
+    );
+
+  box-shadow:
+    0 8px 20px rgba(59, 130, 246, 0.18);
+
+  display: flex;
+  flex-direction: column;
+
+  align-items: center;
+  justify-content: center;
+
+  cursor: pointer;
+
+  z-index: 10;
+
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.baby-fruit-circle:hover {
+  transform: scale(1.08);
+
+  box-shadow:
+    0 12px 28px rgba(59, 130, 246, 0.28);
+}
+
+.fruit-emoji {
+  font-size: 30px;
+
+  line-height: 1;
+}
+
+.fruit-week {
+  margin-top: 4px;
+
+  font-size: 11px;
+
+  font-weight: 700;
+
+  color: #2563eb;
+}
+
+
+/* =========================================================
+   BABY DEVELOPMENT LINK
+========================================================= */
+
+.baby-development-link {
+  width: 100%;
+
+  padding: 10px 12px;
+
+  border: none;
+
+  border-radius: 12px;
+
+  background: #eff6ff;
+
+  color: #2563eb;
+
+  font-size: 12px;
+
+  font-weight: 600;
+
+  text-align: left;
+
+  cursor: pointer;
+
+  transition: 0.2s ease;
+}
+
+.baby-development-link:hover {
+  background: #dbeafe;
+}
+
+.baby-development-link span {
+  display: block;
+
+  margin-top: 4px;
+
+  font-size: 11px;
+
+  font-weight: 500;
+
+  color: #64748b;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
 
 @media (max-width: 900px) {
 
-    .welcome-card {
-        margin: 15px;
-        padding: 18px;
-    }
+  .welcome-content {
+    flex-direction: column;
 
-    .welcome-content {
-        flex-direction: column;
-        align-items: flex-start;
-    }
+    align-items: stretch;
+  }
 
-    .welcome-info {
-        width: 100%;
-    }
-
-    .welcome-right {
-        width: 100%;
-    }
+  .welcome-right {
+    width: auto;
+  }
 
 }
 
-/* Mobile */
 
 @media (max-width: 600px) {
 
-    .welcome-text h2 {
-        font-size: 22px;
-    }
+  .welcome-card {
+    padding: 22px;
 
-    .welcome-text p {
-        font-size: 14px;
-    }
+    border-radius: 20px;
+  }
 
-    .welcome-info {
-        flex-direction: column;
-    }
+  .welcome-text h2 {
+    font-size: 22px;
 
-    .info-box {
-        width: 100%;
-    }
+    padding-right: 65px;
+  }
 
-    .welcome-right {
-        width: 100%;
-    }
+  .welcome-info {
+    flex-direction: column;
+  }
+
+  .info-box {
+    width: 100%;
+  }
+
+  .baby-fruit-circle {
+    width: 68px;
+    height: 68px;
+
+    top: 15px;
+    right: 15px;
+  }
+
+  .fruit-emoji {
+    font-size: 25px;
+  }
 
 }

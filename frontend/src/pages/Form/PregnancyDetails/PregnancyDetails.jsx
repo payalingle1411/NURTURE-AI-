@@ -24,6 +24,15 @@ const defaultFormData = {
   /* Current pregnancy */
   lastMenstrualPeriod: "",
   pregnancyType: "Natural",
+
+  /*
+    Automatically derived from pregnancyType.
+
+    Natural -> false
+    IVF     -> true
+  */
+  ivfPregnancy: false,
+
   babyCount: 1,
 
   /* Calculated values */
@@ -126,12 +135,6 @@ const getDaysDifference = (
    PREGNANCY CALCULATIONS
 ========================================================= */
 
-/*
-  Estimated Due Date
-
-  LMP + 280 days = 40 weeks
-*/
-
 const calculateDueDate = (lmp) => {
   const lmpDate = parseDateInput(lmp);
 
@@ -142,22 +145,11 @@ const calculateDueDate = (lmp) => {
   const dueDate = new Date(lmpDate);
 
   dueDate.setDate(
-    dueDate.getDate() + 280
+    dueDate.getDate() + DUE_DATE_DAYS
   );
 
   return formatDateInput(dueDate);
 };
-
-/*
-  Gestational age
-
-  Today - LMP
-
-  Example:
-
-  107 days
-  = 15 weeks + 2 days
-*/
 
 const calculatePregnancyAge = (lmp) => {
   const lmpDate = parseDateInput(lmp);
@@ -191,14 +183,6 @@ const calculatePregnancyAge = (lmp) => {
     totalDays,
   };
 };
-
-/*
-  Trimester
-
-  0-13 weeks  -> First
-  14-27 weeks -> Second
-  28+ weeks   -> Third
-*/
 
 const calculateTrimester = (weeks) => {
   if (!Number.isInteger(weeks) || weeks < 0) {
@@ -332,16 +316,33 @@ const PregnancyDetails = () => {
       )
     );
 
-    const timeline = calculateTimeline(
-      data?.lastMenstrualPeriod || ""
-    );
+    const pregnancyType =
+      data?.pregnancyType || "Natural";
+
+    /*
+      IMPORTANT
+
+      IVF status is NOT taken independently
+      from backend.
+
+      It is always calculated from pregnancyType.
+    */
+
+    const ivfPregnancy =
+      pregnancyType === "IVF";
+
+    const timeline =
+      calculateTimeline(
+        data?.lastMenstrualPeriod || ""
+      );
 
     return {
       lastMenstrualPeriod:
         data?.lastMenstrualPeriod || "",
 
-      pregnancyType:
-        data?.pregnancyType || "Natural",
+      pregnancyType,
+
+      ivfPregnancy,
 
       babyCount,
 
@@ -357,18 +358,6 @@ const PregnancyDetails = () => {
       trimester:
         timeline.trimester,
 
-      /*
-        IMPORTANT:
-
-        firstPregnancy is derived from
-        previousPregnancies.
-
-        0 previous pregnancies
-        = first pregnancy
-
-        1+ previous pregnancies
-        = not first pregnancy
-      */
       firstPregnancy,
 
       previousPregnancies,
@@ -472,7 +461,9 @@ const PregnancyDetails = () => {
           setFormData(
             normalizeData(parsed)
           );
+
         } catch (err) {
+
           console.error(
             "Invalid pregnancy draft:",
             err
@@ -483,7 +474,9 @@ const PregnancyDetails = () => {
           );
         }
       }
+
     } catch (err) {
+
       console.error(
         "Pregnancy loading error:",
         err
@@ -492,7 +485,9 @@ const PregnancyDetails = () => {
       setError(
         "Unable to load pregnancy information."
       );
+
     } finally {
+
       setFetching(false);
     }
   };
@@ -502,6 +497,7 @@ const PregnancyDetails = () => {
   ======================================================= */
 
   const handleChange = (event) => {
+
     const {
       name,
       value,
@@ -513,6 +509,23 @@ const PregnancyDetails = () => {
     };
 
     /* =====================================================
+       IVF STATUS
+    ===================================================== */
+
+    if (name === "pregnancyType") {
+
+      /*
+        Automatic IVF calculation:
+
+        IVF -> true
+        Natural -> false
+      */
+
+      updated.ivfPregnancy =
+        value === "IVF";
+    }
+
+    /* =====================================================
        LMP
     ===================================================== */
 
@@ -520,6 +533,7 @@ const PregnancyDetails = () => {
       name ===
       "lastMenstrualPeriod"
     ) {
+
       const timeline =
         calculateTimeline(value);
 
@@ -547,6 +561,7 @@ const PregnancyDetails = () => {
     if (
       name === "babyCount"
     ) {
+
       updated.babyCount =
         toNonNegativeInteger(
           value
@@ -561,6 +576,7 @@ const PregnancyDetails = () => {
       name ===
       "previousPregnancies"
     ) {
+
       const previous =
         toNonNegativeInteger(
           value
@@ -569,23 +585,9 @@ const PregnancyDetails = () => {
       updated.previousPregnancies =
         previous;
 
-      /*
-        FIRST PREGNANCY IS DERIVED.
-
-        0 previous pregnancies
-        => first pregnancy
-
-        1+ previous pregnancies
-        => not first pregnancy
-      */
       updated.firstPregnancy =
         previous === 0;
 
-      /*
-        If there are no previous
-        pregnancies, there cannot
-        be previous outcomes.
-      */
       if (previous === 0) {
         updated.liveBirths = 0;
         updated.miscarriages = 0;
@@ -599,6 +601,7 @@ const PregnancyDetails = () => {
     if (
       name === "liveBirths"
     ) {
+
       updated.liveBirths =
         toNonNegativeInteger(
           value
@@ -612,6 +615,7 @@ const PregnancyDetails = () => {
     if (
       name === "miscarriages"
     ) {
+
       updated.miscarriages =
         toNonNegativeInteger(
           value
@@ -619,7 +623,9 @@ const PregnancyDetails = () => {
     }
 
     setFormData(updated);
+
     saveDraft(updated);
+
     setError("");
   };
 
@@ -631,13 +637,16 @@ const PregnancyDetails = () => {
     field,
     value
   ) => {
+
     const updated = {
       ...formData,
       [field]: toBoolean(value),
     };
 
     setFormData(updated);
+
     saveDraft(updated);
+
     setError("");
   };
 
@@ -646,13 +655,11 @@ const PregnancyDetails = () => {
   ======================================================= */
 
   const validateForm = () => {
-    /* =====================================================
-       LMP
-    ===================================================== */
 
     if (
       !formData.lastMenstrualPeriod
     ) {
+
       return (
         "Please select the first day of your last menstrual period."
       );
@@ -664,6 +671,7 @@ const PregnancyDetails = () => {
       );
 
     if (!lmpDate) {
+
       return (
         "Please enter a valid last menstrual period."
       );
@@ -672,6 +680,7 @@ const PregnancyDetails = () => {
     const today = getToday();
 
     if (lmpDate > today) {
+
       return (
         "Last menstrual period cannot be in the future."
       );
@@ -687,6 +696,7 @@ const PregnancyDetails = () => {
       );
 
     if (babyCount < 1) {
+
       return (
         "Number of babies must be at least 1."
       );
@@ -711,71 +721,47 @@ const PregnancyDetails = () => {
         formData.miscarriages
       );
 
-    /* =====================================================
-       FIRST PREGNANCY RELATION
-    ===================================================== */
-
     if (
       previousPregnancies === 0
     ) {
+
       if (
         liveBirths !== 0 ||
         miscarriages !== 0
       ) {
+
         return (
           "With no previous pregnancies, previous live births and miscarriages must both be 0."
         );
       }
     }
 
-    /* =====================================================
-       LIVE BIRTH RELATION
-    ===================================================== */
-
     if (
       liveBirths >
       previousPregnancies
     ) {
+
       return (
         "Live births cannot be greater than previous pregnancies."
       );
     }
 
-    /* =====================================================
-       MISCARRIAGE RELATION
-    ===================================================== */
-
     if (
       miscarriages >
       previousPregnancies
     ) {
+
       return (
         "Miscarriages cannot be greater than previous pregnancies."
       );
     }
-
-    /* =====================================================
-       COMBINED OUTCOME RELATION
-    ===================================================== */
-
-    /*
-      Example:
-
-      Previous pregnancies = 3
-
-      Live births = 2
-      Miscarriages = 1
-
-      2 + 1 = 3
-
-      VALID
-    */
 
     if (
       liveBirths +
         miscarriages >
       previousPregnancies
     ) {
+
       return (
         "Live births and miscarriages together cannot be greater than previous pregnancies."
       );
@@ -791,19 +777,25 @@ const PregnancyDetails = () => {
   const handleSubmit = async (
     event
   ) => {
+
     event.preventDefault();
 
     const validationError =
       validateForm();
 
     if (validationError) {
-      setError(validationError);
+
+      setError(
+        validationError
+      );
+
       return;
     }
 
     const userId = getUserId();
 
     if (!userId) {
+
       setError(
         "User not found. Please login again."
       );
@@ -812,11 +804,12 @@ const PregnancyDetails = () => {
     }
 
     try {
+
       setLoading(true);
       setError("");
 
       /* =================================================
-         RECALCULATE TIMELINE
+         TIMELINE
       ================================================= */
 
       const timeline =
@@ -825,7 +818,7 @@ const PregnancyDetails = () => {
         );
 
       /* =================================================
-         HISTORY VALUES
+         HISTORY
       ================================================= */
 
       const previousPregnancies =
@@ -855,28 +848,35 @@ const PregnancyDetails = () => {
           )
         );
 
-      /*
-        IMPORTANT:
-
-        Do not depend on a manually entered
-        firstPregnancy value.
-
-        It is derived from previousPregnancies.
-      */
-
       const firstPregnancy =
         previousPregnancies === 0;
+
+      /* =================================================
+         IVF
+      ================================================= */
+
+      /*
+        IMPORTANT
+
+        Always calculate IVF from pregnancyType.
+
+        IVF     -> true
+        Natural -> false
+      */
+
+      const ivfPregnancy =
+        formData.pregnancyType === "IVF";
 
       /* =================================================
          FINAL REQUEST
       ================================================= */
 
       const request = {
-        userId: Number(userId),
 
-        /* ==========================
-           CURRENT PREGNANCY
-        ========================== */
+        userId:
+          Number(userId),
+
+        /* CURRENT PREGNANCY */
 
         lastMenstrualPeriod:
           formData.lastMenstrualPeriod,
@@ -884,17 +884,14 @@ const PregnancyDetails = () => {
         pregnancyType:
           formData.pregnancyType,
 
+        ivfPregnancy,
+
         babyCount,
 
-        /*
-          Derived from babyCount.
-        */
         multiplePregnancy:
           babyCount > 1,
 
-        /* ==========================
-           CALCULATED TIMELINE
-        ========================== */
+        /* TIMELINE */
 
         dueDate:
           timeline.dueDate,
@@ -908,9 +905,7 @@ const PregnancyDetails = () => {
         trimester:
           timeline.trimester,
 
-        /* ==========================
-           PREVIOUS HISTORY
-        ========================== */
+        /* HISTORY */
 
         firstPregnancy,
 
@@ -920,25 +915,14 @@ const PregnancyDetails = () => {
 
         miscarriages,
 
-        /* ==========================
-           HEALTH
-        ========================== */
+        /* HEALTH */
 
         highRisk:
           toBoolean(
             formData.highRisk
           ),
 
-        /*
-          No separate ivfPregnancy field.
-
-          IVF is already represented by:
-          pregnancyType = "IVF"
-        */
-
-        /* ==========================
-           NOTES
-        ========================== */
+        /* NOTES */
 
         doctorNotes:
           formData.doctorNotes?.trim() ||
@@ -955,6 +939,7 @@ const PregnancyDetails = () => {
       ================================================= */
 
       if (!profileExists) {
+
         await savePregnancyDetails(
           request
         );
@@ -962,6 +947,7 @@ const PregnancyDetails = () => {
         alert(
           "Pregnancy details saved successfully!"
         );
+
       }
 
       /* =================================================
@@ -969,6 +955,7 @@ const PregnancyDetails = () => {
       ================================================= */
 
       else {
+
         await updatePregnancyDetails(
           Number(userId),
           request
@@ -983,28 +970,39 @@ const PregnancyDetails = () => {
         DRAFT_KEY
       );
 
-      navigate("/dashboard");
+      navigate(
+        "/dashboard"
+      );
+
     } catch (err) {
+
       console.error(
         "Pregnancy save error:",
         err
       );
 
       if (err.response) {
+
         setError(
           err.response.data?.message ||
-            "Unable to save pregnancy details."
+          "Unable to save pregnancy details."
         );
+
       } else if (err.request) {
+
         setError(
           "Unable to connect to the backend server."
         );
+
       } else {
+
         setError(
           "Something went wrong. Please try again."
         );
       }
+
     } finally {
+
       setLoading(false);
     }
   };
@@ -1014,8 +1012,12 @@ const PregnancyDetails = () => {
   ======================================================= */
 
   const handleBack = () => {
+
     saveDraft(formData);
-    navigate("/personal-info");
+
+    navigate(
+      "/personal-info"
+    );
   };
 
   /* =======================================================
@@ -1023,14 +1025,19 @@ const PregnancyDetails = () => {
   ======================================================= */
 
   const handleSkip = () => {
+
     const confirmSkip =
       window.confirm(
         "You can complete pregnancy details later. Do you want to skip?"
       );
 
     if (confirmSkip) {
+
       saveDraft(formData);
-      navigate("/dashboard");
+
+      navigate(
+        "/dashboard"
+      );
     }
   };
 
@@ -1039,13 +1046,16 @@ const PregnancyDetails = () => {
   ======================================================= */
 
   if (fetching) {
+
     return (
       <div className="personal-loading">
+
         <div className="loading-spinner"></div>
 
         <p>
           Loading pregnancy information...
         </p>
+
       </div>
     );
   }
@@ -1055,7 +1065,9 @@ const PregnancyDetails = () => {
   ======================================================= */
 
   return (
+
     <div className="personal-page">
+
       <div className="personal-card">
 
         {/* HEADER */}
@@ -1076,7 +1088,10 @@ const PregnancyDetails = () => {
           </p>
 
           <div className="personal-quote">
-            <span>“</span>
+
+            <span>
+              “
+            </span>
 
             Every pregnancy is a unique journey.
             Nurture AI uses this information to
@@ -1085,9 +1100,13 @@ const PregnancyDetails = () => {
           </div>
 
           {profileExists && (
+
             <div className="profile-status">
+
               ✓ Pregnancy information already saved
+
             </div>
+
           )}
 
         </div>
@@ -1095,30 +1114,53 @@ const PregnancyDetails = () => {
         {/* ERROR */}
 
         {error && (
+
           <div className="error-message">
-            <span>⚠</span>
-            <span>{error}</span>
+
+            <span>
+              ⚠
+            </span>
+
+            <span>
+              {error}
+            </span>
+
           </div>
+
         )}
 
-        <form onSubmit={handleSubmit}>
+        <form
+          onSubmit={handleSubmit}
+        >
 
           {/* =================================================
               PREGNANCY TIMELINE
           ================================================= */}
 
           <div className="section-title">
-            <span>📅</span>
+
+            <span>
+              📅
+            </span>
+
             Pregnancy Timeline
+
           </div>
 
           <div className="form-row">
 
+            {/* LMP */}
+
             <div className="form-group">
 
               <label>
+
                 Last Menstrual Period{" "}
-                <span>*</span>
+
+                <span>
+                  *
+                </span>
+
               </label>
 
               <input
@@ -1127,7 +1169,9 @@ const PregnancyDetails = () => {
                 value={
                   formData.lastMenstrualPeriod
                 }
-                onChange={handleChange}
+                onChange={
+                  handleChange
+                }
                 max={
                   formatDateInput(
                     getToday()
@@ -1137,11 +1181,15 @@ const PregnancyDetails = () => {
               />
 
               <small>
+
                 Enter the first day of your
                 last menstrual period.
+
               </small>
 
             </div>
+
+            {/* DUE DATE */}
 
             <div className="form-group">
 
@@ -1158,8 +1206,10 @@ const PregnancyDetails = () => {
               />
 
               <small>
+
                 Automatically calculated
                 from the LMP.
+
               </small>
 
             </div>
@@ -1186,8 +1236,10 @@ const PregnancyDetails = () => {
               </div>
 
               <small>
+
                 Automatically calculated from
                 your last menstrual period.
+
               </small>
 
             </div>
@@ -1218,8 +1270,13 @@ const PregnancyDetails = () => {
           ================================================= */}
 
           <div className="section-title">
-            <span>🌸</span>
+
+            <span>
+              🌸
+            </span>
+
             Current Pregnancy
+
           </div>
 
           <div className="form-row">
@@ -1237,7 +1294,9 @@ const PregnancyDetails = () => {
                 value={
                   formData.pregnancyType
                 }
-                onChange={handleChange}
+                onChange={
+                  handleChange
+                }
               >
 
                 <option value="Natural">
@@ -1251,37 +1310,68 @@ const PregnancyDetails = () => {
               </select>
 
               <small>
+
                 Select how the current pregnancy
                 was conceived.
+
               </small>
 
             </div>
 
-            {/* BABY COUNT */}
+            {/* IVF STATUS */}
 
             <div className="form-group">
 
               <label>
-                Number of Babies
+                IVF Pregnancy
               </label>
 
-              <input
-                type="number"
-                name="babyCount"
-                min="1"
-                step="1"
-                value={
-                  formData.babyCount
-                }
-                onChange={handleChange}
-              />
+              <div className="readonly-input">
+
+                {formData.pregnancyType === "IVF"
+                  ? "Yes — IVF Pregnancy"
+                  : "No — Natural Pregnancy"}
+
+              </div>
 
               <small>
-                Enter the number of babies
-                expected in this pregnancy.
+
+                Automatically determined from
+                pregnancy type.
+
               </small>
 
             </div>
+
+          </div>
+
+          {/* BABY COUNT */}
+
+          <div className="form-group">
+
+            <label>
+              Number of Babies
+            </label>
+
+            <input
+              type="number"
+              name="babyCount"
+              min="1"
+              step="1"
+              value={
+                formData.babyCount
+              }
+              onChange={
+                handleChange
+              }
+            />
+
+            <small>
+
+              Enter the number of babies
+              expected in this pregnancy.
+
+            </small>
 
           </div>
 
@@ -1302,8 +1392,10 @@ const PregnancyDetails = () => {
             </div>
 
             <small>
+
               Automatically determined from
               the number of babies.
+
             </small>
 
           </div>
@@ -1313,8 +1405,13 @@ const PregnancyDetails = () => {
           ================================================= */}
 
           <div className="section-title">
-            <span>💗</span>
+
+            <span>
+              💗
+            </span>
+
             Previous Pregnancy History
+
           </div>
 
           {/* PREVIOUS PREGNANCIES */}
@@ -1333,17 +1430,21 @@ const PregnancyDetails = () => {
               value={
                 formData.previousPregnancies
               }
-              onChange={handleChange}
+              onChange={
+                handleChange
+              }
             />
 
             <small>
+
               Number of pregnancies before
               the current pregnancy.
+
             </small>
 
           </div>
 
-          {/* FIRST PREGNANCY STATUS */}
+          {/* HISTORY STATUS */}
 
           <div className="form-group">
 
@@ -1360,8 +1461,10 @@ const PregnancyDetails = () => {
             </div>
 
             <small>
+
               Automatically determined from
               previous pregnancies.
+
             </small>
 
           </div>
@@ -1369,6 +1472,7 @@ const PregnancyDetails = () => {
           {/* PREVIOUS OUTCOMES */}
 
           {formData.previousPregnancies > 0 && (
+
             <>
 
               <div className="form-row">
@@ -1392,12 +1496,16 @@ const PregnancyDetails = () => {
                     value={
                       formData.liveBirths
                     }
-                    onChange={handleChange}
+                    onChange={
+                      handleChange
+                    }
                   />
 
                   <small>
+
                     Number of previous pregnancies
                     that resulted in a live birth.
+
                   </small>
 
                 </div>
@@ -1421,12 +1529,16 @@ const PregnancyDetails = () => {
                     value={
                       formData.miscarriages
                     }
-                    onChange={handleChange}
+                    onChange={
+                      handleChange
+                    }
                   />
 
                   <small>
+
                     Number of previous pregnancies
                     that ended in miscarriage.
+
                   </small>
 
                 </div>
@@ -1444,6 +1556,7 @@ const PregnancyDetails = () => {
                 <div className="history-summary-grid">
 
                   <div>
+
                     <span>
                       Previous pregnancies
                     </span>
@@ -1453,9 +1566,11 @@ const PregnancyDetails = () => {
                         formData.previousPregnancies
                       }
                     </strong>
+
                   </div>
 
                   <div>
+
                     <span>
                       Live births
                     </span>
@@ -1465,9 +1580,11 @@ const PregnancyDetails = () => {
                         formData.liveBirths
                       }
                     </strong>
+
                   </div>
 
                   <div>
+
                     <span>
                       Miscarriages
                     </span>
@@ -1477,9 +1594,11 @@ const PregnancyDetails = () => {
                         formData.miscarriages
                       }
                     </strong>
+
                   </div>
 
                   <div>
+
                     <span>
                       Current pregnancy
                     </span>
@@ -1487,11 +1606,10 @@ const PregnancyDetails = () => {
                     <strong>
                       1
                     </strong>
+
                   </div>
 
                 </div>
-
-                {/* OUTCOME CHECK */}
 
                 <div className="history-calculation">
 
@@ -1501,8 +1619,10 @@ const PregnancyDetails = () => {
 
                   {" "}
 
-                  {formData.liveBirths +
-                    formData.miscarriages}
+                  {
+                    formData.liveBirths +
+                    formData.miscarriages
+                  }
 
                   {" / "}
 
@@ -1517,6 +1637,7 @@ const PregnancyDetails = () => {
               </div>
 
             </>
+
           )}
 
           {/* =================================================
@@ -1524,8 +1645,13 @@ const PregnancyDetails = () => {
           ================================================= */}
 
           <div className="section-title">
-            <span>🩺</span>
+
+            <span>
+              🩺
+            </span>
+
             Health Information
+
           </div>
 
           <div className="form-group">
@@ -1559,9 +1685,11 @@ const PregnancyDetails = () => {
             </select>
 
             <small>
+
               Select Yes only if a healthcare
               professional has identified this
               pregnancy as high risk.
+
             </small>
 
           </div>
@@ -1571,8 +1699,13 @@ const PregnancyDetails = () => {
           ================================================= */}
 
           <div className="section-title">
-            <span>📝</span>
+
+            <span>
+              📝
+            </span>
+
             Additional Information
+
           </div>
 
           <div className="form-group">
@@ -1586,7 +1719,9 @@ const PregnancyDetails = () => {
               value={
                 formData.doctorNotes
               }
-              onChange={handleChange}
+              onChange={
+                handleChange
+              }
               rows="5"
               placeholder="Add any important notes or instructions from your doctor..."
             />
@@ -1602,8 +1737,12 @@ const PregnancyDetails = () => {
             <button
               type="button"
               className="back-button"
-              onClick={handleBack}
-              disabled={loading}
+              onClick={
+                handleBack
+              }
+              disabled={
+                loading
+              }
             >
               ← Back
             </button>
@@ -1611,8 +1750,12 @@ const PregnancyDetails = () => {
             <button
               type="button"
               className="skip-button"
-              onClick={handleSkip}
-              disabled={loading}
+              onClick={
+                handleSkip
+              }
+              disabled={
+                loading
+              }
             >
               Skip
             </button>
@@ -1620,16 +1763,25 @@ const PregnancyDetails = () => {
             <button
               type="submit"
               className="next-button"
-              disabled={loading}
+              disabled={
+                loading
+              }
             >
 
               {loading ? (
+
                 <>
+
                   <span className="button-spinner"></span>
+
                   Saving...
+
                 </>
+
               ) : (
+
                 <>
+
                   {profileExists
                     ? "Update & Continue"
                     : "Save & Continue"}
@@ -1637,7 +1789,9 @@ const PregnancyDetails = () => {
                   <span>
                     →
                   </span>
+
                 </>
+
               )}
 
             </button>
@@ -1645,7 +1799,9 @@ const PregnancyDetails = () => {
           </div>
 
         </form>
+
       </div>
+
     </div>
   );
 };

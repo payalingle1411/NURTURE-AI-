@@ -10,6 +10,7 @@ import {
 import "./Navbar.css";
 
 function Navbar() {
+
   const location = useLocation();
 
   // =========================================================
@@ -17,32 +18,69 @@ function Navbar() {
   // =========================================================
 
   const [user, setUser] = useState({
+    userId: "",
     name: "",
+    email: "",
     role: "",
   });
 
   // =========================================================
-  // GET LOGGED-IN USER DATA
+  // LOAD LOGGED-IN USER
   // =========================================================
 
   useEffect(() => {
-    const userName = localStorage.getItem("userName");
-    const userRole = localStorage.getItem("userRole");
 
-    console.log("Navbar User Name:", userName);
-    console.log("Navbar User Role:", userRole);
+    const userId =
+      localStorage.getItem("userId");
+
+    const fullName =
+      localStorage.getItem("fullName");
+
+    const email =
+      localStorage.getItem("email");
+
+    const role =
+      localStorage.getItem("role");
+
+    console.log(
+      "========== NAVBAR USER =========="
+    );
+
+    console.log(
+      "User ID:",
+      userId
+    );
+
+    console.log(
+      "Full Name:",
+      fullName
+    );
+
+    console.log(
+      "Email:",
+      email
+    );
+
+    console.log(
+      "Role:",
+      role
+    );
 
     setUser({
-      name: userName || "User",
-      role: userRole || "",
+      userId: userId || "",
+      name: fullName || "User",
+      email: email || "",
+      role: role || "",
     });
-  }, []);
+
+  }, [location.pathname]);
 
   // =========================================================
   // NAVBAR TITLE
   // =========================================================
 
   const getNavbarTitle = () => {
+
     if (
       location.pathname === "/appointment" ||
       location.pathname === "/appointment-history" ||
@@ -51,36 +89,64 @@ function Navbar() {
       return "Appointments";
     }
 
-    if (location.pathname === "/ai-assistant") {
+    if (
+      location.pathname === "/ai-assistant"
+    ) {
       return "AI Assistant";
     }
 
-    if (location.pathname === "/pregnancy-profile") {
+    if (
+      location.pathname === "/pregnancy-profile"
+    ) {
       return "Pregnancy Profile";
     }
 
-    if (location.pathname === "/nutrition") {
+    if (
+      location.pathname === "/nutrition"
+    ) {
       return "Nutrition";
     }
 
-    if (location.pathname === "/medicine") {
+    if (
+      location.pathname === "/medicine"
+    ) {
       return "Medicine";
     }
 
-    if (location.pathname === "/reports") {
+    if (
+      location.pathname === "/reports"
+    ) {
       return "Reports";
     }
 
-    if (location.pathname === "/family-dashboard") {
+    if (
+      location.pathname === "/family-dashboard"
+    ) {
       return "Family Dashboard";
     }
 
-    if (location.pathname === "/settings") {
+    if (
+      location.pathname === "/settings"
+    ) {
       return "Settings";
     }
 
-    if (location.pathname === "/dashboard") {
+    if (
+      location.pathname === "/dashboard"
+    ) {
       return "Dashboard";
+    }
+
+    if (
+      location.pathname === "/personal-info"
+    ) {
+      return "Personal Information";
+    }
+
+    if (
+      location.pathname === "/pregnancy-details"
+    ) {
+      return "Pregnancy Details";
     }
 
     return "Dashboard";
@@ -91,22 +157,17 @@ function Navbar() {
   // =========================================================
 
   const formatRole = (role) => {
+
     if (!role) {
       return "";
     }
 
-    // Example:
-    // MOTHER -> Mother
-    // mother -> Mother
-    // FAMILY_MEMBER -> Family Member
-
     return role
       .toLowerCase()
       .split("_")
-      .map(
-        (word) =>
-          word.charAt(0).toUpperCase() +
-          word.slice(1)
+      .map((word) =>
+        word.charAt(0).toUpperCase() +
+        word.slice(1)
       )
       .join(" ");
   };
@@ -116,11 +177,12 @@ function Navbar() {
   // =========================================================
 
   return (
+
     <header className="navbar">
 
-      {/* =================================================
+      {/* =====================================================
           LEFT
-      ================================================= */}
+      ===================================================== */}
 
       <div className="navbar-left">
 
@@ -131,13 +193,15 @@ function Navbar() {
       </div>
 
 
-      {/* =================================================
+      {/* =====================================================
           SEARCH
-      ================================================= */}
+      ===================================================== */}
 
       <div className="navbar-search">
 
-        <FaSearch className="search-icon" />
+        <FaSearch
+          className="search-icon"
+        />
 
         <input
           type="text"
@@ -147,15 +211,15 @@ function Navbar() {
       </div>
 
 
-      {/* =================================================
+      {/* =====================================================
           RIGHT
-      ================================================= */}
+      ===================================================== */}
 
       <div className="navbar-right">
 
-        {/* =================================================
+        {/* ===================================================
             NOTIFICATION
-        ================================================= */}
+        =================================================== */}
 
         <div className="notification">
 
@@ -168,13 +232,15 @@ function Navbar() {
         </div>
 
 
-        {/* =================================================
+        {/* ===================================================
             PROFILE
-        ================================================= */}
+        =================================================== */}
 
         <div className="profile">
 
-          <FaUserCircle className="profile-icon" />
+          <FaUserCircle
+            className="profile-icon"
+          />
 
           <div className="profile-info">
 
@@ -183,9 +249,11 @@ function Navbar() {
             </h4>
 
             {user.role && (
+
               <p>
                 {formatRole(user.role)}
               </p>
+
             )}
 
           </div>
