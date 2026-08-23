@@ -1,13 +1,40 @@
 /* =========================================================
-   LOGIN PAGE - NURTURE AI
-   Clean icon + input alignment
+   NURTURE AI - LOGIN PAGE
+   Premium Lavender + Pink Theme
+   Mother & Baby • Modern • Elegant • Responsive
+========================================================= */
+
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap");
+
+
+/* =========================================================
+   GLOBAL RESET
 ========================================================= */
 
 * {
-  box-sizing: border-box;
   margin: 0;
   padding: 0;
+  box-sizing: border-box;
 }
+
+html,
+body,
+#root {
+  width: 100%;
+  min-height: 100%;
+
+  font-family: "Poppins", sans-serif;
+}
+
+body {
+  background: #faf7ff;
+  color: #332b4f;
+}
+
+
+/* =========================================================
+   MAIN CONTAINER
+========================================================= */
 
 .login-container {
   width: 100%;
@@ -15,8 +42,22 @@
 
   display: flex;
 
-  background: #fff6fa;
-  overflow-x: hidden;
+  position: relative;
+
+  overflow: hidden;
+
+  background:
+    radial-gradient(
+      circle at 10% 15%,
+      rgba(215, 184, 255, 0.22),
+      transparent 34%
+    ),
+    radial-gradient(
+      circle at 90% 85%,
+      rgba(255, 184, 215, 0.20),
+      transparent 34%
+    ),
+    #faf7ff;
 }
 
 
@@ -25,26 +66,115 @@
 ========================================================= */
 
 .login-left {
-  width: 50%;
+  width: 47%;
   min-height: 100vh;
 
-  position: relative;
-
-  background-image:
-    linear-gradient(
-      rgba(255, 95, 143, 0.55),
-      rgba(108, 99, 255, 0.65)
-    ),
-    url("/pregnancy-login.jpg");
-
-  background-size: cover;
-  background-position: center;
-
   display: flex;
+
   align-items: center;
   justify-content: center;
 
-  padding: 50px;
+  position: relative;
+
+  overflow: hidden;
+
+  background:
+    linear-gradient(
+      145deg,
+      #7655c9 0%,
+      #9870df 38%,
+      #d982b6 72%,
+      #f1a7c4 100%
+    );
+}
+
+
+/* =========================================================
+   MOTHER + BABY BACKGROUND
+========================================================= */
+
+.login-left::before {
+  content: "";
+
+  position: absolute;
+
+  inset: 0;
+
+  background-image:
+    linear-gradient(
+      180deg,
+      rgba(101, 66, 170, 0.35),
+      rgba(145, 92, 198, 0.08) 38%,
+      rgba(230, 129, 183, 0.08) 62%,
+      rgba(75, 42, 124, 0.38) 100%
+    ),
+    url("./nurture-mother-baby-bg.png");
+
+  background-size: cover;
+
+  background-position: center bottom;
+
+  background-repeat: no-repeat;
+
+  opacity: 0.96;
+
+  z-index: 0;
+}
+
+
+/* =========================================================
+   SOFT LEFT OVERLAY
+========================================================= */
+
+.login-left::after {
+  content: "";
+
+  position: absolute;
+
+  inset: 0;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(104, 67, 174, 0.48) 0%,
+      rgba(144, 94, 199, 0.10) 35%,
+      rgba(224, 127, 180, 0.06) 65%,
+      rgba(86, 47, 135, 0.34) 100%
+    );
+
+  z-index: 1;
+
+  pointer-events: none;
+}
+
+
+/* =========================================================
+   LEFT DECORATIVE GLOW
+========================================================= */
+
+.login-left .overlay::before {
+  content: "";
+
+  position: absolute;
+
+  width: 260px;
+  height: 260px;
+
+  border-radius: 50%;
+
+  top: -130px;
+  right: -80px;
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(255, 255, 255, 0.22),
+      rgba(255, 255, 255, 0)
+    );
+
+  filter: blur(3px);
+
+  z-index: -1;
 }
 
 
@@ -52,34 +182,74 @@
    LEFT CONTENT
 ========================================================= */
 
-.login-left .overlay {
-  width: 80%;
-  max-width: 600px;
+.overlay {
+  position: relative;
 
-  color: #ffffff;
+  z-index: 3;
+
+  width: min(82%, 560px);
+
+  color: white;
+
+  text-align: left;
+
+  padding-bottom: 20px;
 }
 
-.login-left .overlay h1 {
-  font-size: 38px;
+
+/* =========================================================
+   BRAND TITLE
+========================================================= */
+
+.overlay h1 {
+  font-size: clamp(34px, 4vw, 50px);
+
   font-weight: 700;
 
-  margin-bottom: 70px;
+  letter-spacing: -1.2px;
+
+  margin-bottom: 22px;
+
+  text-shadow:
+    0 5px 20px rgba(47, 24, 76, 0.28);
 }
 
-.login-left .overlay h2 {
-  font-size: 42px;
-  font-weight: 700;
 
-  margin-bottom: 20px;
+/* =========================================================
+   WELCOME TITLE
+========================================================= */
+
+.overlay h2 {
+  font-size: clamp(26px, 3vw, 38px);
+
+  font-weight: 600;
+
+  margin-bottom: 17px;
+
+  letter-spacing: -0.5px;
+
+  text-shadow:
+    0 4px 17px rgba(47, 24, 76, 0.24);
 }
 
-.login-left .overlay p {
-  max-width: 600px;
 
-  font-size: 17px;
-  line-height: 1.8;
+/* =========================================================
+   LEFT DESCRIPTION
+========================================================= */
 
-  color: #ffffff;
+.overlay p {
+  max-width: 510px;
+
+  font-size: 15px;
+
+  line-height: 1.9;
+
+  font-weight: 300;
+
+  color: rgba(255, 255, 255, 0.96);
+
+  text-shadow:
+    0 2px 10px rgba(47, 24, 76, 0.20);
 }
 
 
@@ -88,48 +258,160 @@
 ========================================================= */
 
 .login-right {
-  width: 50%;
+  width: 53%;
   min-height: 100vh;
 
   display: flex;
-  justify-content: center;
-  align-items: center;
 
-  padding: 40px;
+  align-items: center;
+  justify-content: center;
+
+  padding: 50px 45px;
+
+  overflow-y: auto;
+
+  overflow-x: hidden;
+
+  background:
+    radial-gradient(
+      circle at 90% 5%,
+      rgba(224, 195, 255, 0.26),
+      transparent 30%
+    ),
+    radial-gradient(
+      circle at 10% 95%,
+      rgba(255, 194, 220, 0.20),
+      transparent 32%
+    ),
+    #fcfaff;
 }
 
 
 /* =========================================================
-   LOGIN FORM
+   LOGIN FORM CARD
 ========================================================= */
 
 .login-form {
   width: 100%;
-  max-width: 460px;
+
+  max-width: 500px;
+
+  padding: 42px 42px 38px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255, 255, 255, 0.98),
+      rgba(255, 251, 255, 0.96)
+    );
+
+  border: 1px solid rgba(221, 207, 235, 0.85);
+
+  border-radius: 22px;
+
+  box-shadow:
+    0 25px 70px rgba(86, 57, 119, 0.12),
+    0 8px 25px rgba(159, 107, 190, 0.07);
+
+  position: relative;
+
+  overflow: hidden;
 }
 
 
 /* =========================================================
-   TITLE
+   CARD TOP GLOW
 ========================================================= */
 
-.login-form h2 {
-  margin: 0;
+.login-form::before {
+  content: "";
 
-  color: #25234a;
+  position: absolute;
 
-  font-size: 34px;
-  font-weight: 700;
+  width: 220px;
+  height: 220px;
+
+  border-radius: 50%;
+
+  top: -150px;
+  right: -80px;
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(224, 165, 255, 0.22),
+      rgba(224, 165, 255, 0)
+    );
+
+  pointer-events: none;
 }
 
-.login-form .subtitle {
-  margin-top: 10px;
-  margin-bottom: 35px;
 
-  color: #77798b;
+/* =========================================================
+   CARD BOTTOM GLOW
+========================================================= */
 
-  font-size: 15px;
-  line-height: 1.6;
+.login-form::after {
+  content: "";
+
+  position: absolute;
+
+  width: 180px;
+  height: 180px;
+
+  border-radius: 50%;
+
+  bottom: -130px;
+  left: -80px;
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(255, 173, 213, 0.17),
+      rgba(255, 173, 213, 0)
+    );
+
+  pointer-events: none;
+}
+
+
+/* =========================================================
+   LOGIN HEADING
+========================================================= */
+
+.login-form > h2 {
+  position: relative;
+
+  z-index: 2;
+
+  color: #382c5d;
+
+  font-size: 32px;
+
+  font-weight: 700;
+
+  margin-bottom: 7px;
+
+  letter-spacing: -0.6px;
+}
+
+
+/* =========================================================
+   SUBTITLE
+========================================================= */
+
+.subtitle {
+  position: relative;
+
+  z-index: 2;
+
+  color: #827992;
+
+  font-size: 13px;
+
+  line-height: 1.7;
+
+  margin-bottom: 28px;
 }
 
 
@@ -137,21 +419,26 @@
    INPUT GROUP
 ========================================================= */
 
-.login-form .input-group {
+.input-group {
   width: 100%;
 
-  margin-bottom: 22px;
+  margin-bottom: 19px;
+
+  position: relative;
+
+  z-index: 2;
 }
 
-.login-form .input-group label {
+.input-group label {
   display: block;
 
-  margin-bottom: 8px;
+  color: #514668;
 
-  color: #34354a;
+  font-size: 13px;
 
-  font-size: 14px;
   font-weight: 600;
+
+  margin-bottom: 7px;
 }
 
 
@@ -159,169 +446,267 @@
    INPUT BOX
 ========================================================= */
 
-.login-form .input-box {
+.input-box {
   width: 100%;
+
   height: 52px;
 
+  position: relative;
+
   display: flex;
+
   align-items: center;
 
-  border: 1px solid #e1e2ea;
-  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.96);
+
+  border: 1px solid #e2d8ec;
+
+  border-radius: 12px;
+
+  transition:
+    border-color 0.25s ease,
+    box-shadow 0.25s ease,
+    transform 0.25s ease,
+    background 0.25s ease;
+}
+
+
+/* =========================================================
+   INPUT HOVER
+========================================================= */
+
+.input-box:hover {
+  border-color: #d2bee6;
+}
+
+
+/* =========================================================
+   INPUT FOCUS
+========================================================= */
+
+.input-box:focus-within {
+  border-color: #a16de0;
 
   background: #ffffff;
 
-  padding: 0 8px 0 14px;
-
-  transition: all 0.2s ease;
-
-  overflow: hidden;
-}
-
-.login-form .input-box:focus-within {
-  border-color: #ff5f8f;
-
   box-shadow:
-    0 0 0 3px rgba(255, 95, 143, 0.1);
+    0 0 0 3px rgba(161, 109, 224, 0.11),
+    0 7px 20px rgba(144, 94, 200, 0.08);
+
+  transform: translateY(-1px);
 }
 
 
 /* =========================================================
    INPUT ICON
-   FIXED SPACE - PREVENTS OVERLAPPING
 ========================================================= */
 
-.login-form .input-icon {
-  flex: 0 0 22px;
+.input-icon {
+  position: absolute;
 
-  width: 22px;
-  min-width: 22px;
+  left: 17px;
 
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  width: 17px;
 
-  color: #ff5f8f;
+  height: 17px;
 
-  font-size: 16px;
+  color: #a48abb;
 
-  margin: 0 12px 0 0;
+  pointer-events: none;
+
+  z-index: 2;
+
+  transition:
+    color 0.25s ease,
+    transform 0.25s ease;
+}
+
+.input-box:focus-within .input-icon {
+  color: #925fd3;
+
+  transform: scale(1.08);
 }
 
 
 /* =========================================================
-   TEXT INPUT
+   INPUT
 ========================================================= */
 
-.login-form .input-box input {
-  flex: 1;
+.input-box input {
+  width: 100%;
 
-  min-width: 0;
-
-  width: auto;
   height: 100%;
 
   border: none;
+
   outline: none;
 
   background: transparent;
 
-  padding: 0;
+  color: #39324d;
 
   font-family: "Poppins", sans-serif;
 
-  font-size: 14px;
+  font-size: 13px;
 
-  color: #333;
+  padding: 0 48px 0 47px;
+
+  min-width: 0;
 }
 
-.login-form .input-box input::placeholder {
-  color: #aaa;
+.input-box input::placeholder {
+  color: #aaa1b8;
+
+  font-weight: 400;
+
+  transition: color 0.2s ease;
+}
+
+.input-box input:focus::placeholder {
+  color: #c1b6cc;
 }
 
 
 /* =========================================================
    PASSWORD SHOW BUTTON
-   FIXED SPACE - PREVENTS ICON OVERLAP
 ========================================================= */
 
-.login-form .show-btn {
-  flex: 0 0 42px;
+.show-btn {
+  position: absolute;
 
-  width: 42px;
-  min-width: 42px;
-  height: 100%;
+  right: 9px;
+
+  top: 50%;
+
+  transform: translateY(-50%);
+
+  width: 36px;
+
+  height: 36px;
 
   display: flex;
+
   align-items: center;
+
   justify-content: center;
 
   border: none;
 
   background: transparent;
 
-  color: #777;
+  color: #a18cae;
+
+  font-size: 15px;
 
   cursor: pointer;
 
-  font-size: 16px;
+  border-radius: 8px;
 
-  padding: 0;
-  margin: 0;
+  transition:
+    color 0.2s ease,
+    background 0.2s ease,
+    transform 0.2s ease;
 }
 
-.login-form .show-btn:hover {
-  color: #ff5f8f;
+.show-btn:hover {
+  color: #8b5ce6;
+
+  background: #f5efff;
+
+  transform:
+    translateY(-50%)
+    scale(1.04);
+}
+
+.show-btn:active {
+  transform:
+    translateY(-50%)
+    scale(0.96);
 }
 
 
 /* =========================================================
-   REMEMBER ME
+   REMEMBER + FORGOT PASSWORD
 ========================================================= */
 
 .remember {
   width: 100%;
 
   display: flex;
+
   align-items: center;
+
   justify-content: space-between;
 
-  margin-bottom: 25px;
+  gap: 15px;
 
-  font-size: 14px;
+  margin-top: 4px;
+
+  margin-bottom: 23px;
+
+  position: relative;
+
+  z-index: 2;
 }
+
+
+/* =========================================================
+   REMEMBER LABEL
+========================================================= */
 
 .remember label {
   display: flex;
+
   align-items: center;
 
-  gap: 7px;
+  gap: 8px;
 
-  color: #666;
+  color: #777087;
+
+  font-size: 11.5px;
 
   cursor: pointer;
+
+  user-select: none;
 }
+
+
+/* =========================================================
+   REMEMBER CHECKBOX
+========================================================= */
 
 .remember input {
   width: 15px;
+
   height: 15px;
 
-  margin: 0;
-
-  accent-color: #ff5f8f;
+  accent-color: #9a65d7;
 
   cursor: pointer;
 }
 
+
+/* =========================================================
+   FORGOT PASSWORD
+========================================================= */
+
 .remember a {
-  color: #ff5f8f;
+  color: #925dd0;
+
+  font-size: 11.5px;
+
+  font-weight: 600;
 
   text-decoration: none;
 
-  font-weight: 500;
+  transition:
+    color 0.2s ease,
+    transform 0.2s ease;
 }
 
 .remember a:hover {
+  color: #d05c9b;
+
   text-decoration: underline;
 }
 
@@ -331,43 +716,96 @@
 ========================================================= */
 
 .login-btn {
+  position: relative;
+
+  z-index: 2;
+
   width: 100%;
-  height: 52px;
+
+  height: 51px;
 
   border: none;
-  border-radius: 10px;
 
-  background: #ff5f8f;
+  border-radius: 12px;
 
-  color: #ffffff;
+  background:
+    linear-gradient(
+      135deg,
+      #8656df 0%,
+      #a568df 45%,
+      #e476ad 100%
+    );
+
+  color: white;
 
   font-family: "Poppins", sans-serif;
 
-  font-size: 16px;
+  font-size: 13px;
+
   font-weight: 600;
+
+  letter-spacing: 0.1px;
 
   cursor: pointer;
 
-  transition: all 0.2s ease;
-}
+  display: flex;
 
-.login-btn:hover:not(:disabled) {
-  background: #ed4d7d;
+  align-items: center;
 
-  transform: translateY(-1px);
+  justify-content: center;
 
   box-shadow:
-    0 8px 20px rgba(255, 95, 143, 0.25);
+    0 9px 24px rgba(137, 87, 210, 0.23);
+
+  transition:
+    transform 0.22s ease,
+    box-shadow 0.22s ease,
+    opacity 0.22s ease;
 }
+
+
+/* =========================================================
+   LOGIN BUTTON HOVER
+========================================================= */
+
+.login-btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+
+  background:
+    linear-gradient(
+      135deg,
+      #7948d4 0%,
+      #9859d7 45%,
+      #dc65a2 100%
+    );
+
+  box-shadow:
+    0 13px 30px rgba(137, 87, 210, 0.31);
+}
+
+
+/* =========================================================
+   LOGIN BUTTON ACTIVE
+========================================================= */
 
 .login-btn:active:not(:disabled) {
   transform: translateY(0);
+
+  box-shadow:
+    0 6px 15px rgba(137, 87, 210, 0.20);
 }
 
+
+/* =========================================================
+   LOGIN BUTTON DISABLED
+========================================================= */
+
 .login-btn:disabled {
-  opacity: 0.65;
+  opacity: 0.58;
 
   cursor: not-allowed;
+
+  box-shadow: none;
 }
 
 
@@ -375,36 +813,57 @@
    DIVIDER
 ========================================================= */
 
-.login-form .divider {
+.divider {
   width: 100%;
 
   display: flex;
+
   align-items: center;
 
-  gap: 15px;
+  gap: 14px;
 
-  margin: 25px 0;
+  margin: 24px 0 18px;
 
-  color: #aaa;
+  color: #aaa0b5;
+
+  font-size: 10px;
+
+  font-weight: 500;
+
+  position: relative;
+
+  z-index: 2;
 }
 
-.login-form .divider::before,
-.login-form .divider::after {
+.divider::before,
+.divider::after {
   content: "";
 
   flex: 1;
 
   height: 1px;
 
-  background: #e4e4e4;
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      #e2d8ea
+    );
 }
 
-.login-form .divider span {
+.divider::after {
+  background:
+    linear-gradient(
+      90deg,
+      #e2d8ea,
+      transparent
+    );
+}
+
+.divider span {
   flex-shrink: 0;
 
-  font-size: 13px;
-
-  color: #aaa;
+  padding: 0 2px;
 }
 
 
@@ -412,42 +871,69 @@
    GOOGLE BUTTON
 ========================================================= */
 
-.login-form .google-btn {
+.google-btn {
+  position: relative;
+
+  z-index: 2;
+
   width: 100%;
-  height: 52px;
 
-  border: 1px solid #dedee5;
-  border-radius: 10px;
-
-  background: #ffffff;
+  height: 49px;
 
   display: flex;
+
   align-items: center;
+
   justify-content: center;
 
   gap: 10px;
 
-  cursor: pointer;
+  border: 1px solid #e2d8ec;
+
+  border-radius: 11px;
+
+  background: rgba(255, 255, 255, 0.97);
+
+  color: #514668;
 
   font-family: "Poppins", sans-serif;
 
-  font-size: 15px;
+  font-size: 12.5px;
 
-  color: #444;
+  font-weight: 500;
 
-  transition: all 0.2s ease;
+  cursor: pointer;
+
+  transition:
+    all 0.22s ease;
 }
 
-.login-form .google-btn:hover {
-  background: #fafafa;
+.google-btn:hover {
+  border-color: #cdbbdc;
 
-  border-color: #ccc;
+  background: #ffffff;
+
+  box-shadow:
+    0 7px 18px rgba(112, 81, 145, 0.09);
+
+  transform: translateY(-1px);
 }
 
-.login-form .google-icon {
+.google-btn:active {
+  transform: translateY(0);
+}
+
+
+/* =========================================================
+   GOOGLE ICON
+========================================================= */
+
+.google-icon {
+  width: 19px;
+
+  height: 19px;
+
   flex-shrink: 0;
-
-  font-size: 20px;
 }
 
 
@@ -455,26 +941,123 @@
    REGISTER LINK
 ========================================================= */
 
-.login-form .register-link {
-  margin-top: 25px;
+.register-link {
+  position: relative;
+
+  z-index: 2;
 
   text-align: center;
 
-  color: #777;
+  margin-top: 21px;
 
-  font-size: 14px;
+  color: #7b728a;
+
+  font-size: 12px;
+
+  line-height: 1.6;
 }
 
-.login-form .register-link a {
-  color: #ff5f8f;
+.register-link a {
+  color: #925dd0;
+
+  font-weight: 600;
 
   text-decoration: none;
 
-  font-weight: 600;
+  margin-left: 3px;
+
+  transition:
+    color 0.2s ease;
 }
 
-.login-form .register-link a:hover {
+.register-link a:hover {
+  color: #d05c9b;
+
   text-decoration: underline;
+}
+
+
+/* =========================================================
+   SUBTLE CARD SHINE
+========================================================= */
+
+.login-form {
+  isolation: isolate;
+}
+
+.login-form > * {
+  position: relative;
+
+  z-index: 2;
+}
+
+
+/* =========================================================
+   SCROLLBAR
+========================================================= */
+
+.login-right::-webkit-scrollbar {
+  width: 6px;
+}
+
+.login-right::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.login-right::-webkit-scrollbar-thumb {
+  background:
+    linear-gradient(
+      180deg,
+      #c5a9e4,
+      #e4a8c4
+    );
+
+  border-radius: 10px;
+}
+
+.login-right::-webkit-scrollbar-thumb:hover {
+  background:
+    linear-gradient(
+      180deg,
+      #ad87d3,
+      #d88eaf
+    );
+}
+
+
+/* =========================================================
+   LARGE LAPTOP
+========================================================= */
+
+@media (max-width: 1100px) {
+
+  .login-left {
+    width: 42%;
+  }
+
+  .login-right {
+    width: 58%;
+
+    padding: 40px 32px;
+  }
+
+  .overlay {
+    width: 80%;
+  }
+
+  .overlay p {
+    font-size: 14px;
+  }
+
+  .login-left::before {
+    background-position: center bottom;
+  }
+
+  .login-form {
+    max-width: 490px;
+
+    padding: 38px 36px 34px;
+  }
 }
 
 
@@ -482,45 +1065,11 @@
    TABLET
 ========================================================= */
 
-@media (max-width: 1000px) {
+@media (max-width: 850px) {
 
-  .login-left {
-    width: 45%;
-
-    padding: 35px;
+  .login-container {
+    overflow: auto;
   }
-
-  .login-right {
-    width: 55%;
-
-    padding: 30px;
-  }
-
-  .login-left .overlay {
-    width: 90%;
-  }
-
-  .login-left .overlay h1 {
-    font-size: 32px;
-
-    margin-bottom: 50px;
-  }
-
-  .login-left .overlay h2 {
-    font-size: 34px;
-  }
-
-  .login-left .overlay p {
-    font-size: 15px;
-  }
-}
-
-
-/* =========================================================
-   SMALL TABLET
-========================================================= */
-
-@media (max-width: 800px) {
 
   .login-left {
     display: none;
@@ -528,13 +1077,20 @@
 
   .login-right {
     width: 100%;
+
     min-height: 100vh;
 
-    padding: 40px 25px;
+    padding: 55px 25px 35px;
+
+    overflow: visible;
+
+    align-items: center;
+
+    justify-content: center;
   }
 
   .login-form {
-    max-width: 480px;
+    max-width: 520px;
   }
 }
 
@@ -543,104 +1099,138 @@
    MOBILE
 ========================================================= */
 
-@media (max-width: 500px) {
+@media (max-width: 600px) {
 
   .login-right {
-    padding: 25px 18px;
+    padding: 35px 18px 30px;
   }
 
   .login-form {
     max-width: 100%;
+
+    padding: 34px 23px 30px;
+
+    border-radius: 18px;
+
+    box-shadow:
+      0 18px 50px rgba(86, 57, 119, 0.12);
   }
 
-  .login-form h2 {
-    font-size: 28px;
+  .login-form > h2 {
+    font-size: 27px;
   }
 
-  .login-form .subtitle {
-    font-size: 13px;
+  .subtitle {
+    font-size: 12px;
 
-    margin-bottom: 25px;
+    margin-bottom: 24px;
   }
 
-  .login-form .input-group {
-    margin-bottom: 18px;
+  .input-group {
+    margin-bottom: 16px;
   }
 
-  .login-form .input-box {
-    height: 50px;
-
-    padding-left: 12px;
-    padding-right: 6px;
-  }
-
-  .login-form .input-icon {
-    flex-basis: 21px;
-
-    width: 21px;
-    min-width: 21px;
-
-    margin-right: 10px;
-
-    font-size: 15px;
-  }
-
-  .login-form .input-box input {
-    font-size: 13px;
-  }
-
-  .login-form .show-btn {
-    flex-basis: 40px;
-
-    width: 40px;
-    min-width: 40px;
-  }
-
-  .remember {
+  .input-group label {
     font-size: 12px;
   }
 
+  .input-box {
+    height: 49px;
+
+    border-radius: 10px;
+  }
+
+  .input-box input {
+    font-size: 12px;
+
+    padding-left: 44px;
+  }
+
+  .input-icon {
+    left: 15px;
+
+    width: 16px;
+
+    height: 16px;
+  }
+
+  .remember {
+    margin-bottom: 20px;
+  }
+
+  .remember label,
+  .remember a {
+    font-size: 10.5px;
+  }
+
   .login-btn {
-    height: 50px;
+    height: 48px;
 
-    font-size: 14px;
+    font-size: 12px;
   }
 
-  .login-form .google-btn {
-    height: 50px;
+  .google-btn {
+    height: 46px;
 
-    font-size: 13px;
+    font-size: 12px;
   }
 
-  .login-form .register-link {
-    font-size: 13px;
+  .register-link {
+    font-size: 11px;
   }
 }
 
 
 /* =========================================================
-   VERY SMALL MOBILE
+   SMALL MOBILE
 ========================================================= */
 
-@media (max-width: 360px) {
+@media (max-width: 400px) {
 
   .login-right {
-    padding: 20px 14px;
+    padding: 25px 14px 25px;
   }
 
-  .login-form h2 {
-    font-size: 26px;
+  .login-form {
+    padding: 30px 18px 27px;
+
+    border-radius: 16px;
   }
 
-  .login-form .input-box {
-    height: 48px;
+  .login-form > h2 {
+    font-size: 25px;
   }
 
-  .login-form .input-icon {
-    margin-right: 8px;
+  .subtitle {
+    font-size: 11px;
+  }
+
+  .input-box input {
+    padding-left: 42px;
+  }
+
+  .input-icon {
+    left: 14px;
+
+    width: 15px;
+
+    height: 15px;
   }
 
   .remember {
-    font-size: 11px;
+    gap: 8px;
+  }
+
+  .remember label,
+  .remember a {
+    font-size: 10px;
+  }
+
+  .login-btn {
+    height: 47px;
+  }
+
+  .google-btn {
+    height: 45px;
   }
 }

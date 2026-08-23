@@ -1,7 +1,7 @@
 import Sidebar from "../../components/sidebar/Sidebar";
 import Navbar from "../../components/Navbar/Navbar";
 import WelcomeCard from "../../components/WelcomeCard/WelcomeCard";
-import HealthSummary from "../../components/HealthSummary/HealthSummary";
+import Tip from "../../components/pregnancyTips/tip";
 import AppointmentCard from "../../components/AppointmentCard/AppointmentCard";
 
 
@@ -17,7 +17,7 @@ function Dashboard() {
 
         <main className="dashboard-content">
           <WelcomeCard />
-          <HealthSummary />
+          <Tip/>
           <AppointmentCard />
         </main>
       </div>
