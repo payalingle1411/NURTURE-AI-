@@ -5,7 +5,8 @@ function Welcome() {
   const navigate = useNavigate();
 
   return (
-    <div className="welcome-page">{/* ================= NAVBAR ================= */}
+    <div className="welcome-page">
+    {/* ================= NAVBAR ================= */}
 <nav className="navbar">
 
   {/* LEFT SIDE - LOGO + WEBSITE NAME */}
@@ -562,9 +563,8 @@ One platform that supports you from planning your pregnancy through delivery and
         </div>
 
       </section>
-
-{/* ================================================= */}
-{/* ================ DOCTOR SECTION ================= */}
+      {/* ================================================= */}
+{/* ================= DOCTOR SECTION ================= */}
 {/* ================================================= */}
 
 <section className="doctor-section" id="doctors">
@@ -577,7 +577,7 @@ One platform that supports you from planning your pregnancy through delivery and
 
     <h2>
       Connect With Your
-      <span> Trusted Doctor</span>
+      <span>Trusted Doctor</span>
     </h2>
 
     <p>
@@ -595,43 +595,54 @@ One platform that supports you from planning your pregnancy through delivery and
 
     <div className="doctor-card">
 
-      <div className="doctor-avatar">
-        👩‍⚕️
-      </div>
+      <div className="doctor-card-top">
 
-      <div className="doctor-info">
-
-        <h3>
-          Dr. Priya Sharma
-        </h3>
-
-        <p className="doctor-degree">
-          MBBS, MD
-        </p>
-
-        <p className="doctor-specialization">
-          Obstetrician & Gynecologist
-        </p>
-
-        <p className="doctor-description">
-          Specialized in pregnancy care, prenatal health,
-          maternal wellness, and pregnancy-related guidance.
-        </p>
-
-        <div className="doctor-status">
-          <span className="status-dot"></span>
-          Available for consultation
+        <div className="doctor-avatar">
+          👩‍⚕️
         </div>
 
-        <button
-          className="doctor-connect-btn"
-          onClick={() => navigate("/doctor-consultation")}
-        >
-          Connect with Doctor
-          <span>→</span>
-        </button>
+        <div className="doctor-info">
+
+          <h3>Dr. Priya Sharma</h3>
+
+          <p className="doctor-degree">
+            MBBS, MD
+          </p>
+
+          <p className="doctor-specialization">
+            Obstetrician & Gynecologist
+          </p>
+
+        </div>
 
       </div>
+
+
+      <p className="doctor-description">
+        Specialized in pregnancy care, prenatal health,
+        maternal wellness, and pregnancy-related guidance.
+      </p>
+
+
+      <div className="doctor-status">
+        <span className="status-dot"></span>
+        <span>Available for consultation</span>
+      </div>
+
+
+      <button
+        type="button"
+        className="doctor-connect-btn"
+        onClick={() => navigate("/doctor-consultation")}
+      >
+        <span className="button-text">
+          Connect with Doctor
+        </span>
+
+        <span className="button-arrow">
+          →
+        </span>
+      </button>
 
     </div>
 
@@ -640,41 +651,305 @@ One platform that supports you from planning your pregnancy through delivery and
 
     <div className="doctor-card">
 
-      <div className="doctor-avatar doctor-avatar-two">
-        👨‍⚕️
-      </div>
+      <div className="doctor-card-top">
 
-      <div className="doctor-info">
-
-        <h3>
-          Dr. Rahul Mehta
-        </h3>
-
-        <p className="doctor-degree">
-          MBBS, DNB
-        </p>
-
-        <p className="doctor-specialization">
-          Maternal & Child Health Specialist
-        </p>
-
-        <p className="doctor-description">
-          Focused on maternal wellness, pregnancy support,
-          prenatal care, and family health guidance.
-        </p>
-
-        <div className="doctor-status">
-          <span className="status-dot"></span>
-          Available for consultation
+        <div className="doctor-avatar doctor-avatar-two">
+          👨‍⚕️
         </div>
 
-        <button
-          className="doctor-connect-btn"
-          onClick={() => navigate("/doctor-consultation")}
-        >
+        <div className="doctor-info">
+
+          <h3>Dr. Rahul Mehta</h3>
+
+          <p className="doctor-degree">
+            MBBS, DNB
+          </p>
+
+          <p className="doctor-specialization">
+            Maternal & Child Health Specialist
+          </p>
+
+        </div>
+
+      </div>
+
+
+      <p className="doctor-description">
+        Focused on maternal wellness, pregnancy support,
+        prenatal care, and family health guidance.
+      </p>
+
+
+      <div className="doctor-status">
+        <span className="status-dot"></span>
+        <span>Available for consultation</span>
+      </div>
+
+
+      <button
+        type="button"
+        className="doctor-connect-btn"
+        onClick={() => navigate("/doctor-consultation")}
+      >
+        <span className="button-text">
           Connect with Doctor
-          <span>→</span>
-        </button>
+        </span>
+
+        <span className="button-arrow">
+          →
+        </span>
+      </button>
+
+    </div>
+
+  </div>
+
+
+  {/* ================= SECURITY MESSAGE ================= */}
+
+  <div className="doctor-note">
+    <span>🔒</span>
+    <span>Your health information is kept private and secure.</span>
+  </div>
+
+</section>
+{/* ================================================= */}
+{/* ========== PREGNANCY VIDEO GUIDANCE ============= */}
+{/* ================================================= */}
+
+<section className="video-guidance-section" id="video-guidance">
+
+  <div className="video-guidance-heading">
+
+    <span className="video-guidance-tag">
+      🎥 WELLNESS VIDEO GUIDANCE
+    </span>
+
+    <h2>
+      Guidance That Supports
+      <span>Your Pregnancy Journey</span>
+    </h2>
+
+    <p>
+      Nurture AI also provides curated YouTube video guidance
+      to help expecting mothers learn, relax, stay active,
+      and make informed wellness choices throughout pregnancy.
+    </p>
+
+  </div>
+
+
+  <div className="video-guidance-content">
+
+    {/* ================= INTRODUCTION ================= */}
+
+    <div className="video-guidance-intro">
+
+      <div className="video-main-icon">
+        🎬
+      </div>
+
+      <div>
+
+        <h3>
+          Learn Through Trusted Video Guidance
+        </h3>
+
+        <p>
+          Pregnancy is a journey of continuous learning.
+          Nurture AI brings useful video-based guidance
+          together so mothers can easily explore topics
+          related to pregnancy wellness, healthy lifestyle,
+          relaxation, and emotional well-being.
+        </p>
+
+        <p>
+          These videos are provided as an additional
+          educational and wellness resource inside the
+          Nurture AI experience.
+        </p>
+
+      </div>
+
+    </div>
+
+
+    {/* ================= VIDEO CATEGORIES ================= */}
+
+    <div className="video-category-grid">
+
+      {/* EXERCISE */}
+
+      <div className="video-category-card">
+
+        <div className="video-category-icon">
+          🧘‍♀️
+        </div>
+
+        <div>
+
+          <h3>
+            Pregnancy Exercise
+          </h3>
+
+          <p>
+            Guidance videos covering gentle pregnancy-friendly
+            exercises, stretching, movement, breathing practices,
+            and physical wellness activities.
+          </p>
+
+        </div>
+
+      </div>
+
+
+      {/* DIET */}
+
+      <div className="video-category-card">
+
+        <div className="video-category-icon">
+          🥗
+        </div>
+
+        <div>
+
+          <h3>
+            Diet & Nutrition
+          </h3>
+
+          <p>
+            Educational videos about healthy pregnancy nutrition,
+            balanced meals, important nutrients, healthy eating
+            habits, and pregnancy-friendly food choices.
+          </p>
+
+        </div>
+
+      </div>
+
+
+      {/* MENTAL PEACE */}
+
+      <div className="video-category-card">
+
+        <div className="video-category-icon">
+          🧠
+        </div>
+
+        <div>
+
+          <h3>
+            Mental Peace & Relaxation
+          </h3>
+
+          <p>
+            Explore relaxation, mindfulness, meditation,
+            breathing exercises, and other wellness practices
+            that can support emotional well-being during pregnancy.
+          </p>
+
+        </div>
+
+      </div>
+
+
+      {/* MUSIC */}
+
+      <div className="video-category-card">
+
+        <div className="video-category-icon">
+          🎵
+        </div>
+
+        <div>
+
+          <h3>
+            Pregnancy Music
+          </h3>
+
+          <p>
+            Discover calming music, soothing sounds, meditation
+            music, and relaxing audio experiences designed to
+            create a peaceful pregnancy environment.
+          </p>
+
+        </div>
+
+      </div>
+
+
+      {/* GARBH SANSKAR */}
+
+      <div className="video-category-card">
+
+        <div className="video-category-icon">
+          🪷
+        </div>
+
+        <div>
+
+          <h3>
+            Garbh Sanskar
+          </h3>
+
+          <p>
+            Access educational and cultural content related
+            to Garbh Sanskar, including positive thoughts,
+            meditation, mantras, music, and traditional practices.
+          </p>
+
+        </div>
+
+      </div>
+
+
+      {/* GENERAL GUIDANCE */}
+
+      <div className="video-category-card">
+
+        <div className="video-category-icon">
+          💕
+        </div>
+
+        <div>
+
+          <h3>
+            Pregnancy Wellness
+          </h3>
+
+          <p>
+            Explore additional educational videos covering
+            pregnancy care, healthy lifestyle habits,
+            preparation, awareness, and everyday wellness.
+          </p>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    {/* ================= BOTTOM MESSAGE ================= */}
+
+    <div className="video-guidance-bottom">
+
+      <div className="video-bottom-icon">
+        ▶
+      </div>
+
+      <div>
+
+        <h3>
+          Curated Guidance, All in One Place
+        </h3>
+
+        <p>
+          Nurture AI makes it easier to discover useful
+          pregnancy-related video resources without searching
+          through multiple platforms. Video guidance is designed
+          to complement your personalized wellness journey.
+        </p>
 
       </div>
 
@@ -683,9 +958,12 @@ One platform that supports you from planning your pregnancy through delivery and
   </div>
 
 
-  <div className="doctor-note">
-    <span>🔒</span>
-    Your health information is kept private and secure.
+  <div className="video-guidance-note">
+
+    🔒 Video content is provided for general educational and
+    wellness purposes. Always consult a qualified healthcare
+    professional for personalized medical advice.
+
   </div>
 
 </section>
@@ -847,7 +1125,6 @@ One platform that supports you from planning your pregnancy through delivery and
   </div>
 
 </section>
-
       {/* ================= FOOTER ================= */}
 
       <footer className="footer">
