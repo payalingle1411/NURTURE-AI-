@@ -10,7 +10,7 @@
 
 Database normalization is the process of organizing data into well-structured tables to reduce redundancy, improve data consistency, and maintain data integrity.
 
-The Nurture AI database follows the principles of normalization up to the **Third Normal Form (3NF)**.
+The Nurture AI database follows normalization principles up to the **Third Normal Form (3NF)**.
 
 ---
 
@@ -23,7 +23,8 @@ The normalization process helps to:
 - Improve data consistency.
 - Maintain referential integrity.
 - Simplify database maintenance.
-- Increase scalability and efficiency.
+- Improve the organization of related information.
+- Support future scalability.
 
 ---
 
@@ -31,34 +32,42 @@ The normalization process helps to:
 
 ## Definition
 
-A table is in First Normal Form if:
+A table is in First Normal Form (1NF) if:
 
 - Each column contains atomic (single) values.
 - There are no repeating groups.
-- Each record is uniquely identified by a primary key.
+- Each record is uniquely identifiable by a primary key.
 
 ## Implementation in Nurture AI
 
 The database satisfies 1NF because:
 
-- Every table has a primary key (`id`).
-- Each column stores only one value.
-- There are no multi-valued or repeating attributes.
-- Data is stored in separate rows.
+- Every table has a primary key.
+- Each column stores values of a single defined type.
+- There are no repeating groups within a table.
+- Related multiple records are stored as separate rows.
+- Each record can be uniquely identified using its primary key.
 
-### Example
+## Example
 
-Instead of storing multiple phone numbers in one column:
+Instead of storing multiple emergency contacts in one user record:
 
-❌ Incorrect
+### Incorrect
 
-| User | Phone Numbers |
-|------|---------------|
-| Aarohi | 98765..., 91234... |
+| User | Emergency Contacts |
+|------|---------------------|
+| Aarohi | Rohit - 98765..., Sunita - 98765... |
 
-✅ Correct
+### Correct
 
-Each emergency contact is stored as a separate row in the `emergency_contacts` table.
+Each emergency contact is stored as a separate record in the `emergency_contacts` table.
+
+| contact_id | user_id | contact_name | mobile_number |
+|------------|---------|--------------|---------------|
+| 1 | 1 | Rohit Sharma | 9876511001 |
+| 2 | 1 | Sunita Sharma | 9876511002 |
+
+This allows a user to have multiple emergency contacts without storing multiple values in a single column.
 
 ---
 
@@ -66,7 +75,7 @@ Each emergency contact is stored as a separate row in the `emergency_contacts` t
 
 ## Definition
 
-A table is in Second Normal Form if:
+A table is in Second Normal Form (2NF) if:
 
 - It is already in 1NF.
 - Every non-key attribute is fully dependent on the entire primary key.
@@ -75,67 +84,22 @@ A table is in Second Normal Form if:
 
 The database satisfies 2NF because:
 
-- Every table uses a single-column primary key (`id`).
-- All non-key attributes depend only on their respective primary key.
+- All tables are already in 1NF.
+- Each table uses a single-column primary key.
+- Therefore, there are no partial dependencies on a part of a composite primary key.
+- Non-key attributes depend on the primary key of their respective table.
 - User-related information is separated into dedicated tables.
 
-### Example
+## Example
 
-Instead of storing pregnancy details inside the `users` table, they are stored in the `pregnancy_details` table and linked through `user_id`.
+Pregnancy information is not stored directly inside the `users` table.
 
----
+Instead, it is stored in the `pregnancy_details` table:
 
-# Third Normal Form (3NF)
-
-## Definition
-
-A table is in Third Normal Form if:
-
-- It is already in 2NF.
-- There are no transitive dependencies.
-- Non-key attributes depend only on the primary key.
-
-## Implementation in Nurture AI
-
-The database satisfies 3NF because:
-
-- Personal information is stored in `user_profile`.
-- Medical information is stored in `medical_history`.
-- Allergy information is stored in `allergies`.
-- Doctor information is stored in `doctors`.
-- Family information is stored in `family_members`.
-- Notification settings are stored in `notification_preferences`.
-- Security settings are stored in `security_settings`.
-
-Each table stores only information related to its specific purpose.
-
----
-
-# Benefits of Normalization
-
-The normalized database provides the following benefits:
-
-- Eliminates duplicate data.
-- Reduces storage requirements.
-- Improves data integrity.
-- Prevents update anomalies.
-- Simplifies database maintenance.
-- Enhances query performance.
-- Supports future scalability.
-- Makes the database easier to understand.
-
----
-
-# Normalization Summary
-
-| Normal Form | Status | Description |
-|--------------|--------|-------------|
-| First Normal Form (1NF) | ✅ Achieved | Atomic values and unique primary keys |
-| Second Normal Form (2NF) | ✅ Achieved | Full dependency on the primary key |
-| Third Normal Form (3NF) | ✅ Achieved | No transitive dependencies |
-
----
-
-# Conclusion
-
-The Nurture AI database is normalized up to the Third Normal Form (3NF). The data is organized into logical tables with appropriate primary keys and foreign keys, ensuring minimal redundancy, improved consistency, and efficient data management. This design provides a scalable and maintainable database structure suitable for a pregnancy wellness and family support platform.
+```text
+users
+  |
+  | user_id
+  |
+  ▼
+pregnancy_details

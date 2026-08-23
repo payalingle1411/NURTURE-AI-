@@ -9,3 +9,8 @@ user_id,date_of_birth,age,height_cm,weight_kg,blood_group,profile_picture,countr
 8,1998-10-14,28,164.10,62.00,AB-,profile8.jpg,India,Maharashtra,Wardha,"Gandhi Chowk, Wardha",442001
 9,1997-02-26,29,159.80,58.70,O+,profile9.jpg,India,Maharashtra,Yavatmal,"Arni Road, Yavatmal",445001
 10,1998-12-01,28,165.50,63.40,B+,profile10.jpg,India,Maharashtra,Aurangabad,"CIDCO, Aurangabad",431001
+11,1997-06-22,29,159.60,56.90,A+,profile11.jpg,India,Maharashtra,Nagpur,"Manish Nagar, Nagpur",440015
+12,1996-08-17,30,161.80,59.50,O+,profile12.jpg,India,Maharashtra,Pune,"Baner, Pune",411045
+13,1998-02-11,28,157.50,53.70,B+,profile13.jpg,India,Maharashtra,Nashik,"Gangapur Road, Nashik",422013
+14,1997-12-09,28,163.70,61.20,AB+,profile14.jpg,India,Maharashtra,Mumbai,"Powai, Mumbai",400076
+15,1996-10-25,29,160.20,57.80,O-,profile15.jpg,India,Maharashtra,Amravati,"Camp Road, Amravati",444602

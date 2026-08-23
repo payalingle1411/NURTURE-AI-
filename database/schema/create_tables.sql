@@ -1,13 +1,35 @@
+/*
+=========================================================
+Nurture AI Database Tables
+Database: PostgreSQL (Neon Cloud)
+=========================================================
+
+Final ER Diagram:
+1. Users
+2. User_Profile
+3. Pregnancy_Details
+4. Medical_History
+5. Allergies
+6. Notification_Preferences
+7. Emergency_Contacts
+8. Family_Members
+9. Doctors
+10. Appointment_History
+
+=========================================================
+*/
+
+
 CREATE TABLE users (
     user_id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
 
     full_name VARCHAR(100) NOT NULL,
 
-    email VARCHAR(255) UNIQUE NOT NULL,
-
-    password VARCHAR(255) NOT NULL,
+    email VARCHAR(100) UNIQUE NOT NULL,
 
     mobile_number VARCHAR(15) UNIQUE NOT NULL,
+
+    password VARCHAR(255) NOT NULL,
 
     role VARCHAR(20)
         CHECK (role IN ('MOTHER', 'FAMILY_MEMBER'))
@@ -19,6 +41,7 @@ CREATE TABLE users (
 
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
 
 CREATE TABLE user_profile (
     profile_id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
@@ -47,15 +70,12 @@ CREATE TABLE user_profile (
 
     pincode VARCHAR(10),
 
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-
     CONSTRAINT fk_user_profile_user
         FOREIGN KEY (user_id)
         REFERENCES users(user_id)
         ON DELETE CASCADE
 );
+
 
 CREATE TABLE pregnancy_details (
     pregnancy_id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
@@ -86,15 +106,12 @@ CREATE TABLE pregnancy_details (
 
     multiple_pregnancy BOOLEAN DEFAULT FALSE,
 
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-
     CONSTRAINT fk_pregnancy_user
         FOREIGN KEY (user_id)
         REFERENCES users(user_id)
         ON DELETE CASCADE
 );
+
 
 CREATE TABLE medical_history (
     history_id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
@@ -115,13 +132,12 @@ CREATE TABLE medical_history (
 
     other_disease TEXT,
 
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-
     CONSTRAINT fk_medical_user
         FOREIGN KEY (user_id)
         REFERENCES users(user_id)
         ON DELETE CASCADE
 );
+
 
 CREATE TABLE allergies (
     allergy_id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
@@ -134,80 +150,12 @@ CREATE TABLE allergies (
 
     other_allergy TEXT,
 
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-
     CONSTRAINT fk_allergy_user
         FOREIGN KEY (user_id)
         REFERENCES users(user_id)
         ON DELETE CASCADE
 );
 
-CREATE TABLE emergency_contacts (
-    contact_id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-
-    user_id BIGINT NOT NULL,
-
-    contact_name VARCHAR(100) NOT NULL,
-
-    relationship VARCHAR(50),
-
-    phone_number VARCHAR(15) NOT NULL,
-
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-
-    CONSTRAINT fk_contact_user
-        FOREIGN KEY (user_id)
-        REFERENCES users(user_id)
-        ON DELETE CASCADE
-);
-
-CREATE TABLE doctors (
-    doctor_id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-
-    user_id BIGINT NOT NULL,
-
-    doctor_name VARCHAR(100) NOT NULL,
-
-    hospital_name VARCHAR(150),
-
-    contact_number VARCHAR(15),
-
-    hospital_address TEXT,
-
-    next_appointment TIMESTAMP,
-
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-
-    CONSTRAINT fk_doctor_user
-        FOREIGN KEY (user_id)
-        REFERENCES users(user_id)
-        ON DELETE CASCADE
-);
-
-CREATE TABLE family_members (
-    family_member_id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-
-    user_id BIGINT NOT NULL,
-
-    name VARCHAR(100) NOT NULL,
-
-    relationship VARCHAR(50),
-
-    phone_number VARCHAR(15),
-
-    email VARCHAR(255),
-
-    permission_level VARCHAR(30)
-        CHECK (permission_level IN ('VIEW_ONLY', 'VIEW_AND_REMINDERS'))
-        DEFAULT 'VIEW_ONLY',
-
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-
-    CONSTRAINT fk_family_user
-        FOREIGN KEY (user_id)
-        REFERENCES users(user_id)
-        ON DELETE CASCADE
-);
 
 CREATE TABLE notification_preferences (
     preference_id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
@@ -224,28 +172,87 @@ CREATE TABLE notification_preferences (
 
     nutrition_reminder BOOLEAN DEFAULT TRUE,
 
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-
     CONSTRAINT fk_notification_user
         FOREIGN KEY (user_id)
         REFERENCES users(user_id)
         ON DELETE CASCADE
 );
 
-CREATE TABLE security_settings (
-    security_id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
 
-    user_id BIGINT UNIQUE NOT NULL,
+CREATE TABLE emergency_contacts (
+    contact_id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
 
-    email_verified BOOLEAN NOT NULL DEFAULT FALSE,
-    
-    mobile_verified BOOLEAN NOT NULL DEFAULT FALSE,
+    user_id BIGINT NOT NULL,
 
-    two_factor_enabled BOOLEAN DEFAULT FALSE,
+    contact_name VARCHAR(100) NOT NULL,
 
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    relationship VARCHAR(50),
 
-    CONSTRAINT fk_security_user
+    mobile_number VARCHAR(15) NOT NULL,
+
+    CONSTRAINT fk_contact_user
+        FOREIGN KEY (user_id)
+        REFERENCES users(user_id)
+        ON DELETE CASCADE
+);
+
+
+CREATE TABLE family_members (
+    family_member_id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+
+    user_id BIGINT NOT NULL,
+
+    name VARCHAR(100) NOT NULL,
+
+    relationship VARCHAR(50),
+
+    mobile_number VARCHAR(15),
+
+    permission_level VARCHAR(30)
+        CHECK (permission_level IN ('VIEW_ONLY', 'VIEW_AND_REMINDERS'))
+        DEFAULT 'VIEW_ONLY',
+
+    CONSTRAINT fk_family_user
+        FOREIGN KEY (user_id)
+        REFERENCES users(user_id)
+        ON DELETE CASCADE
+);
+
+
+CREATE TABLE doctors (
+    doctor_id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+
+    user_id BIGINT NOT NULL,
+
+    doctor_name VARCHAR(100) NOT NULL,
+
+    hospital_name VARCHAR(150),
+
+    contact_number VARCHAR(15),
+
+    hospital_address TEXT,
+
+    next_appointment TIMESTAMP,
+
+    CONSTRAINT fk_doctor_user
+        FOREIGN KEY (user_id)
+        REFERENCES users(user_id)
+        ON DELETE CASCADE
+);
+
+
+CREATE TABLE appointment_history (
+    appointment_id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+
+    user_id BIGINT NOT NULL,
+
+    total_appointment INTEGER DEFAULT 0,
+
+    prescription TEXT,
+
+    reports TEXT,
+
+    CONSTRAINT fk_appointment_user
         FOREIGN KEY (user_id)
         REFERENCES users(user_id)
         ON DELETE CASCADE
