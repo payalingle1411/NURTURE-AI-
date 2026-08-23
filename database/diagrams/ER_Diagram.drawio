@@ -1,0 +1,97 @@
+<mxfile host="app.diagrams.net">
+  <diagram name="ER Diagram" id="wRbcl6F_zYGifYig12ka">
+    <mxGraphModel grid="0" page="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="izESintxpah87J0kizIi-1" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;verticalAlign=top;spacing=8" value="&lt;b&gt;USERS&lt;/b&gt;&lt;hr&gt;PK user_id : BIGINT&lt;br&gt;full_name : VARCHAR(100)&lt;br&gt;email : VARCHAR(100)&lt;br&gt;mobile_number : VARCHAR(15)&lt;br&gt;password : VARCHAR(255)&lt;br&gt;role : VARCHAR(20)&lt;br&gt;terms_accepted : BOOLEAN&lt;br&gt;created_at : TIMESTAMP&lt;br&gt;updated_at : TIMESTAMP" vertex="1">
+          <mxGeometry height="240" width="300" x="600" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="izESintxpah87J0kizIi-2" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;verticalAlign=top;spacing=8" value="&lt;b&gt;USER_PROFILE&lt;/b&gt;&lt;hr&gt;PK profile_id : BIGINT&lt;br&gt;FK user_id : BIGINT UNIQUE&lt;br&gt;date_of_birth : DATE&lt;br&gt;age : INTEGER&lt;br&gt;height_cm : DECIMAL(5,2)&lt;br&gt;weight_kg : DECIMAL(5,2)&lt;br&gt;blood_group : VARCHAR(5)&lt;br&gt;profile_picture : VARCHAR(255)&lt;br&gt;country : VARCHAR(100)&lt;br&gt;state : VARCHAR(100)&lt;br&gt;city : VARCHAR(100)&lt;br&gt;address : TEXT&lt;br&gt;pincode : VARCHAR(10)" vertex="1">
+          <mxGeometry height="280" width="300" x="-173" y="477" as="geometry" />
+        </mxCell>
+        <mxCell id="izESintxpah87J0kizIi-4" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;verticalAlign=top;spacing=8" value="&lt;b&gt;MEDICAL_HISTORY&lt;/b&gt;&lt;hr&gt;PK history_id : BIGINT&lt;br&gt;FK user_id : BIGINT UNIQUE&lt;br&gt;diabetes : BOOLEAN&lt;br&gt;hypertension : BOOLEAN&lt;br&gt;thyroid : BOOLEAN&lt;br&gt;pcos : BOOLEAN&lt;br&gt;asthma : BOOLEAN&lt;br&gt;heart_disease : BOOLEAN&lt;br&gt;other_disease : TEXT" vertex="1">
+          <mxGeometry height="220" width="300" x="678" y="467" as="geometry" />
+        </mxCell>
+        <mxCell id="izESintxpah87J0kizIi-5" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;verticalAlign=top;spacing=8" value="&lt;b&gt;ALLERGIES&lt;/b&gt;&lt;hr&gt;PK allergy_id : BIGINT&lt;br&gt;FK user_id : BIGINT UNIQUE&lt;br&gt;food_allergy : TEXT&lt;br&gt;medicine_allergy : TEXT&lt;br&gt;other_allergy : TEXT" vertex="1">
+          <mxGeometry height="170" width="300" x="1035" y="580" as="geometry" />
+        </mxCell>
+        <mxCell id="izESintxpah87J0kizIi-6" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;verticalAlign=top;spacing=8" value="&lt;b&gt;NOTIFICATION_PREFERENCES&lt;/b&gt;&lt;hr&gt;PK preference_id : BIGINT&lt;br&gt;FK user_id : BIGINT UNIQUE&lt;br&gt;medicine_reminder : BOOLEAN&lt;br&gt;water_reminder : BOOLEAN&lt;br&gt;appointment_reminder : BOOLEAN&lt;br&gt;weekly_update : BOOLEAN&lt;br&gt;nutrition_reminder : BOOLEAN" vertex="1">
+          <mxGeometry height="210" width="300" x="1510" y="477" as="geometry" />
+        </mxCell>
+        <mxCell id="izESintxpah87J0kizIi-7" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;verticalAlign=top;spacing=8" value="&lt;b&gt;EMERGENCY_CONTACTS&lt;/b&gt;&lt;hr&gt;PK contact_id : BIGINT&lt;br&gt;FK user_id : BIGINT&lt;br&gt;contact_name : VARCHAR(100)&lt;br&gt;relationship : VARCHAR(50)&lt;br&gt;mobile_number : VARCHAR(15)" vertex="1">
+          <mxGeometry height="170" width="300" x="-3" y="907" as="geometry" />
+        </mxCell>
+        <mxCell id="izESintxpah87J0kizIi-8" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;verticalAlign=top;spacing=8" value="&lt;b&gt;FAMILY_MEMBERS&lt;/b&gt;&lt;hr&gt;PK family_member_id : BIGINT&lt;br&gt;FK user_id : BIGINT&lt;br&gt;name : VARCHAR(100)&lt;br&gt;relationship : VARCHAR(50)&lt;br&gt;mobile_number : VARCHAR(15)&lt;br&gt;permission_level : VARCHAR(30)" vertex="1">
+          <mxGeometry height="190" width="300" x="507" y="902" as="geometry" />
+        </mxCell>
+        <mxCell id="izESintxpah87J0kizIi-9" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;verticalAlign=top;spacing=8" value="&lt;b&gt;DOCTORS&lt;/b&gt;&lt;hr&gt;PK doctor_id : BIGINT&lt;br&gt;FK user_id : BIGINT&lt;br&gt;doctor_name : VARCHAR(100)&lt;br&gt;hospital_name : VARCHAR(150)&lt;br&gt;contact_number : VARCHAR(15)&lt;br&gt;hospital_address : TEXT&lt;br&gt;next_appointment : TIMESTAMP" vertex="1">
+          <mxGeometry height="190" width="300" x="989" y="897" as="geometry" />
+        </mxCell>
+        <mxCell id="izESintxpah87J0kizIi-10" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;verticalAlign=top;spacing=8" value="&lt;b&gt;APPOINTMENT_HISTORY&lt;/b&gt;&lt;hr&gt;PK appointment_id : BIGINT&lt;br&gt;FK user_id : BIGINT&lt;br&gt;total_appointment : INTEGER&lt;br&gt;prescription : TEXT&lt;br&gt;reports : TEXT" vertex="1">
+          <mxGeometry height="170" width="300" x="1409" y="897" as="geometry" />
+        </mxCell>
+        <mxCell id="izESintxpah87J0kizIi-11" edge="1" parent="1" source="izESintxpah87J0kizIi-1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeWidth=2;endArrow=ERone;startArrow=ERone" target="izESintxpah87J0kizIi-2" value="1 : 1">
+          <mxGeometry relative="1" x="0.9144" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="izESintxpah87J0kizIi-12" edge="1" parent="1" style="rounded=0;html=1;strokeWidth=2;endArrow=ERone;startArrow=none;startFill=0;" target="izESintxpah87J0kizIi-3" value="1 : 1">
+          <mxGeometry relative="1" x="0.7948" as="geometry">
+            <mxPoint y="1" as="offset" />
+            <mxPoint x="369" y="159.57" as="sourcePoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="izESintxpah87J0kizIi-13" edge="1" parent="1" source="izESintxpah87J0kizIi-1" style="rounded=0;html=1;strokeWidth=2;endArrow=ERone;startArrow=ERone;exitX=0.75;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="izESintxpah87J0kizIi-4" value="1 : 1">
+          <mxGeometry relative="1" x="0.5108" y="1" as="geometry">
+            <mxPoint as="offset" />
+            <mxPoint x="833.9966666666666" y="280" as="sourcePoint" />
+            <mxPoint x="869.7299999999997" y="472" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="izESintxpah87J0kizIi-14" edge="1" parent="1" source="izESintxpah87J0kizIi-1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeWidth=2;endArrow=ERone;startArrow=ERone" target="izESintxpah87J0kizIi-5" value="1 : 1">
+          <mxGeometry relative="1" x="0.8418" as="geometry">
+            <mxPoint y="1" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="izESintxpah87J0kizIi-15" edge="1" parent="1" source="izESintxpah87J0kizIi-1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeWidth=2;endArrow=ERone;startArrow=ERone" target="izESintxpah87J0kizIi-6" value="1 : 1">
+          <mxGeometry relative="1" x="0.9169" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="izESintxpah87J0kizIi-16" edge="1" parent="1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeWidth=2;endArrow=ERmany;startArrow=ERone" value="1 : N">
+          <mxGeometry relative="1" x="0.8938" as="geometry">
+            <mxPoint as="offset" />
+            <mxPoint x="621" y="160" as="sourcePoint" />
+            <mxPoint x="167.99999999999977" y="907.0000000000002" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="izESintxpah87J0kizIi-17" edge="1" parent="1" source="izESintxpah87J0kizIi-1" style="rounded=0;html=1;strokeWidth=2;endArrow=ERmany;startArrow=ERone;exitX=0.187;exitY=0.996;exitDx=0;exitDy=0;exitPerimeter=0;" target="izESintxpah87J0kizIi-8" value="1 : N">
+          <mxGeometry relative="1" x="0.8435" y="-1" as="geometry">
+            <mxPoint as="offset" />
+            <mxPoint x="642.13" y="901.87" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="izESintxpah87J0kizIi-18" edge="1" parent="1" source="izESintxpah87J0kizIi-1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeWidth=2;endArrow=ERmany;startArrow=ERone" target="izESintxpah87J0kizIi-9" value="1 : N">
+          <mxGeometry relative="1" x="0.87" as="geometry">
+            <mxPoint as="offset" />
+            <Array as="points">
+              <mxPoint x="1036.11" y="160.11" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="izESintxpah87J0kizIi-19" edge="1" parent="1" source="izESintxpah87J0kizIi-1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeWidth=2;endArrow=ERmany;startArrow=ERone" target="izESintxpah87J0kizIi-10" value="1 : N">
+          <mxGeometry relative="1" x="0.937" as="geometry">
+            <mxPoint as="offset" />
+            <Array as="points">
+              <mxPoint x="1457.44" y="160.11" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="izESintxpah87J0kizIi-3" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;verticalAlign=top;spacing=8" value="&lt;b&gt;PREGNANCY_DETAILS&lt;/b&gt;&lt;hr&gt;PK pregnancy_id : BIGINT&lt;br&gt;FK user_id : BIGINT UNIQUE&lt;br&gt;lmp_date : DATE&lt;br&gt;due_date : DATE&lt;br&gt;pregnancy_week : INTEGER&lt;br&gt;trimester : INTEGER&lt;br&gt;first_pregnancy : BOOLEAN&lt;br&gt;previous_pregnancies : INTEGER&lt;br&gt;live_births : INTEGER&lt;br&gt;miscarriages : INTEGER&lt;br&gt;high_risk : BOOLEAN&lt;br&gt;ivf_pregnancy : BOOLEAN&lt;br&gt;multiple_pregnancy : BOOLEAN" vertex="1">
+          <mxGeometry height="280" width="300" x="219" y="477" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
