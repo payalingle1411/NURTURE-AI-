@@ -15,14 +15,11 @@ import axios from "axios";
 import "./login.css";
 
 function Login() {
-
   const navigate = useNavigate();
 
-  const [showPassword, setShowPassword] =
-    useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
-  const [loading, setLoading] =
-    useState(false);
+  const [loading, setLoading] = useState(false);
 
   const [formData, setFormData] = useState({
     email: "",
@@ -30,13 +27,11 @@ function Login() {
     remember: false,
   });
 
-
   // =========================================================
   // HANDLE INPUT
   // =========================================================
 
   const handleChange = (e) => {
-
     const {
       name,
       value,
@@ -54,47 +49,34 @@ function Login() {
     }));
   };
 
-
   // =========================================================
   // LOGIN
   // =========================================================
 
   const handleSubmit = async (e) => {
-
     e.preventDefault();
 
     if (
       !formData.email.trim() ||
       !formData.password.trim()
     ) {
-
-      alert(
-        "Please enter email and password."
-      );
-
+      alert("Please enter email and password.");
       return;
     }
 
-
     setLoading(true);
 
-
     try {
-
       // =====================================================
       // LOGIN API
       // =====================================================
 
       const response = await axios.post(
-
         "http://localhost:8080/api/auth/login",
 
         {
-          email:
-            formData.email.trim(),
-
-          password:
-            formData.password,
+          email: formData.email.trim(),
+          password: formData.password,
         },
 
         {
@@ -102,39 +84,28 @@ function Login() {
         }
       );
 
-
       console.log(
         "========== LOGIN RESPONSE =========="
       );
 
-      console.log(
-        response.data
-      );
-
+      console.log(response.data);
 
       if (response.status === 200) {
-
-        const data =
-          response.data;
-
+        const data = response.data;
 
         // ===================================================
-        // GET DYNAMIC USER ID FROM BACKEND
+        // GET DYNAMIC USER ID
         // ===================================================
 
-        const userId =
-          data.userId;
-
+        const userId = data.userId;
 
         console.log(
           "User ID received from backend:",
           userId
         );
 
-
         // ===================================================
-        // IMPORTANT
-        // NEVER USE STATIC USER ID
+        // CHECK USER ID
         // ===================================================
 
         if (
@@ -142,7 +113,6 @@ function Login() {
           userId === null ||
           userId === ""
         ) {
-
           console.error(
             "Backend did not return userId:",
             data
@@ -155,9 +125,8 @@ function Login() {
           return;
         }
 
-
         // ===================================================
-        // SAVE DYNAMIC USER ID
+        // SAVE USER ID
         // ===================================================
 
         localStorage.setItem(
@@ -165,40 +134,73 @@ function Login() {
           String(userId)
         );
 
-
         // ===================================================
-        // SAVE OTHER USER INFORMATION
+        // SAVE USER INFORMATION
         // ===================================================
 
         if (data.fullName) {
-
           localStorage.setItem(
             "fullName",
             data.fullName
           );
         }
 
-
         if (data.email) {
-
           localStorage.setItem(
             "email",
             data.email
           );
         }
 
-
         if (data.role) {
-
           localStorage.setItem(
             "role",
             data.role
           );
         }
 
+        // ===================================================
+        // NORMALIZE ROLE
+        // ===================================================
+
+        /*
+          Examples:
+
+          "Family Member"
+              ↓
+          "family member"
+
+          "FAMILY_MEMBER"
+              ↓
+          "family member"
+
+          "Mother"
+              ↓
+          "mother"
+
+          "MOTHER"
+              ↓
+          "mother"
+        */
+
+        const role = String(data.role || "")
+          .trim()
+          .toLowerCase()
+          .replace(/_/g, " ")
+          .replace(/\s+/g, " ");
+
+        console.log(
+          "Original Role:",
+          data.role
+        );
+
+        console.log(
+          "Normalized Role:",
+          role
+        );
 
         // ===================================================
-        // VERIFY WHAT WAS STORED
+        // VERIFY STORED INFORMATION
         // ===================================================
 
         console.log(
@@ -206,30 +208,25 @@ function Login() {
           localStorage.getItem("userId")
         );
 
-
         console.log(
           "User Name:",
           data.fullName
         );
-
 
         console.log(
           "Email:",
           data.email
         );
 
-
         console.log(
           "Role:",
           data.role
         );
 
-
         console.log(
           "Profile Completed:",
           data.profileCompleted
         );
-
 
         // ===================================================
         // LOGIN SUCCESS
@@ -240,32 +237,95 @@ function Login() {
           "Login Successful ✅"
         );
 
-
         // ===================================================
-        // NAVIGATION
+        // ROLE-BASED NAVIGATION
         // ===================================================
 
-        if (
-          data.profileCompleted === true
-        ) {
+        // ---------------------------------------------------
+        // FAMILY MEMBER
+        // ---------------------------------------------------
+
+        if (role === "family member") {
+
+          console.log(
+            "Navigating Family Member to Family Dashboard..."
+          );
 
           navigate(
-            "/dashboard",
+            "/family-form",
             {
               replace: true,
             }
           );
 
-        } else {
-
-          navigate(
-            "/personal-info",
-            {
-              replace: true,
-            }
-          );
         }
 
+        // ---------------------------------------------------
+        // MOTHER
+        // ---------------------------------------------------
+
+        else if (role === "mother") {
+
+          console.log(
+            "Navigating Mother..."
+          );
+
+          console.log(
+            "Profile Completed:",
+            data.profileCompleted
+          );
+
+          if (
+            data.profileCompleted === true
+          ) {
+
+            console.log(
+              "Mother profile completed → Dashboard"
+            );
+
+            navigate(
+              "/dashboard",
+              {
+                replace: true,
+              }
+            );
+
+          } else {
+
+            console.log(
+              "Mother profile incomplete → Personal Info"
+            );
+
+            navigate(
+              "/personal-info",
+              {
+                replace: true,
+              }
+            );
+          }
+
+        }
+
+        // ---------------------------------------------------
+        // UNKNOWN ROLE
+        // ---------------------------------------------------
+
+        else {
+
+          console.error(
+            "Unknown user role:",
+            data.role
+          );
+
+          console.error(
+            "Normalized role:",
+            role
+          );
+
+          alert(
+            `Unknown user role: ${data.role}`
+          );
+        }
       }
 
     } catch (error) {
@@ -274,7 +334,6 @@ function Login() {
         "Login Error:",
         error
       );
-
 
       // =====================================================
       // BACKEND ERROR
@@ -286,7 +345,6 @@ function Login() {
           "Backend Error:",
           error.response.data
         );
-
 
         if (
           typeof error.response.data ===
@@ -307,7 +365,6 @@ function Login() {
 
       }
 
-
       // =====================================================
       // NETWORK ERROR
       // =====================================================
@@ -320,7 +377,6 @@ function Login() {
         );
 
       }
-
 
       // =====================================================
       // OTHER ERROR
@@ -339,15 +395,12 @@ function Login() {
     }
   };
 
-
   // =========================================================
   // UI
   // =========================================================
 
   return (
-
     <div className="login-container">
-
 
       {/* =====================================================
           LEFT SECTION
@@ -507,7 +560,6 @@ function Login() {
               </span>
 
             </label>
-
 
             <Link to="/forgot-password">
               Forgot Password?

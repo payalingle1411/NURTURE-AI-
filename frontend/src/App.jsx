@@ -19,6 +19,9 @@ import AppointmentHistory from "./pages/Appointment/AppointmentHistory.jsx";
 import Profile from "./pages/Profile/Profile.jsx";
 import BabyDevelopment from "./components/WelcomeCard/BabyDevelopment.jsx";
 
+import FamilyForm from "./pages/FamilyForm/FForm.jsx";
+import FamilyFormDetails from "./pages/FamilyForm/FForm1.jsx";
+
 function App() {
   return (
     <BrowserRouter>
@@ -52,7 +55,9 @@ function App() {
         <Route path="/profile" element={<Profile />} />
         <Route path="/baby-development" element={<BabyDevelopment />} />
        
-
+        <Route path="/family-form" element={<FamilyForm />} />
+        <Route path="/family-form-details" element={<FamilyFormDetails />} />
+        
       </Routes>
     </BrowserRouter>
   );

@@ -1,0 +1,591 @@
+/* =========================================================
+   NURTURE AI - FAMILY MEMBER VERIFICATION FORM
+   Premium Lavender + Pink Theme
+========================================================= */
+
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap");
+
+/* =========================================================
+   PAGE
+========================================================= */
+
+.fform-page {
+  min-height: 100vh;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 40px 20px;
+
+  font-family: "Poppins", sans-serif;
+
+  background:
+    radial-gradient(
+      circle at 10% 20%,
+      rgba(180, 150, 255, 0.20),
+      transparent 30%
+    ),
+    radial-gradient(
+      circle at 90% 80%,
+      rgba(255, 170, 210, 0.22),
+      transparent 30%
+    ),
+    linear-gradient(
+      135deg,
+      #faf7ff 0%,
+      #f7f0ff 50%,
+      #fff7fb 100%
+    );
+
+  box-sizing: border-box;
+}
+
+/* =========================================================
+   BACK BUTTON
+========================================================= */
+
+.fform-back-btn {
+  position: fixed;
+  top: 28px;
+  left: 30px;
+
+  display: flex;
+  align-items: center;
+  gap: 9px;
+
+  border: none;
+  background: rgba(255, 255, 255, 0.85);
+
+  color: #6d4bb8;
+
+  padding: 11px 18px;
+
+  border-radius: 12px;
+
+  font-family: "Poppins", sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  box-shadow: 0 5px 20px rgba(100, 70, 150, 0.10);
+
+  transition: all 0.25s ease;
+
+  z-index: 10;
+}
+
+.fform-back-btn:hover {
+  transform: translateX(-3px);
+
+  background: #ffffff;
+
+  box-shadow: 0 8px 25px rgba(100, 70, 150, 0.16);
+}
+
+.fform-back-btn svg {
+  font-size: 14px;
+}
+
+/* =========================================================
+   CARD
+========================================================= */
+
+.fform-card {
+  width: 100%;
+  max-width: 500px;
+
+  background: rgba(255, 255, 255, 0.94);
+
+  border: 1px solid rgba(190, 165, 230, 0.25);
+
+  border-radius: 28px;
+
+  padding: 38px;
+
+  box-sizing: border-box;
+
+  box-shadow:
+    0 25px 70px rgba(93, 66, 130, 0.13),
+    0 5px 20px rgba(93, 66, 130, 0.06);
+
+  backdrop-filter: blur(15px);
+
+  animation: fformCardAppear 0.5s ease;
+}
+
+@keyframes fformCardAppear {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.fform-header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.fform-icon {
+  width: 70px;
+  height: 70px;
+
+  margin: 0 auto 18px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 22px;
+
+  background: linear-gradient(
+    135deg,
+    #8e68d4,
+    #c789d9
+  );
+
+  color: white;
+
+  font-size: 28px;
+
+  box-shadow:
+    0 10px 25px rgba(135, 94, 190, 0.25);
+}
+
+.fform-header h1 {
+  margin: 0 0 10px;
+
+  color: #35204d;
+
+  font-size: 26px;
+  font-weight: 700;
+
+  line-height: 1.3;
+}
+
+.fform-header p {
+  margin: 0 auto;
+
+  max-width: 420px;
+
+  color: #7c7088;
+
+  font-size: 13px;
+  line-height: 1.7;
+
+  font-weight: 400;
+}
+
+/* =========================================================
+   FORM
+========================================================= */
+
+.fform-form {
+  display: flex;
+  flex-direction: column;
+
+  gap: 20px;
+}
+
+/* =========================================================
+   INPUT GROUP
+========================================================= */
+
+.fform-input-group {
+  width: 100%;
+}
+
+.fform-input-group label {
+  display: block;
+
+  margin-bottom: 8px;
+
+  color: #4c3b59;
+
+  font-size: 13px;
+  font-weight: 600;
+}
+
+/* =========================================================
+   INPUT BOX
+========================================================= */
+
+.fform-input-box {
+  position: relative;
+
+  width: 100%;
+
+  box-sizing: border-box;
+}
+
+.fform-input-box input {
+  width: 100%;
+
+  height: 52px;
+
+  padding: 0 16px 0 48px;
+
+  box-sizing: border-box;
+
+  border: 1.5px solid #e5ddef;
+
+  border-radius: 14px;
+
+  background: #fcfaff;
+
+  color: #35204d;
+
+  font-family: "Poppins", sans-serif;
+
+  font-size: 13px;
+
+  outline: none;
+
+  transition: all 0.25s ease;
+}
+
+.fform-input-box input::placeholder {
+  color: #aaa0b5;
+}
+
+.fform-input-box input:focus {
+  border-color: #9a73d4;
+
+  background: #ffffff;
+
+  box-shadow:
+    0 0 0 4px rgba(154, 115, 212, 0.10);
+}
+
+/* =========================================================
+   INPUT ICON
+========================================================= */
+
+.fform-input-icon {
+  position: absolute;
+
+  left: 17px;
+  top: 50%;
+
+  transform: translateY(-50%);
+
+  color: #9a73d4;
+
+  font-size: 15px;
+
+  pointer-events: none;
+
+  z-index: 2;
+}
+
+/* =========================================================
+   SECURITY INFORMATION
+========================================================= */
+
+.fform-info {
+  display: flex;
+  align-items: flex-start;
+
+  gap: 12px;
+
+  padding: 14px 15px;
+
+  border-radius: 14px;
+
+  background: linear-gradient(
+    135deg,
+    #f8f2ff,
+    #fff5fa
+  );
+
+  border: 1px solid #eadff5;
+
+  box-sizing: border-box;
+}
+
+.fform-info svg {
+  flex-shrink: 0;
+
+  margin-top: 2px;
+
+  color: #8d68c7;
+
+  font-size: 16px;
+}
+
+.fform-info p {
+  margin: 0;
+
+  color: #766982;
+
+  font-size: 11.5px;
+
+  line-height: 1.6;
+}
+
+/* =========================================================
+   SUBMIT BUTTON
+========================================================= */
+
+.fform-submit-btn {
+  width: 100%;
+
+  height: 52px;
+
+  border: none;
+
+  border-radius: 14px;
+
+  background: linear-gradient(
+    135deg,
+    #8961cf,
+    #b879c9
+  );
+
+  color: white;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 10px;
+
+  font-family: "Poppins", sans-serif;
+
+  font-size: 13px;
+
+  font-weight: 600;
+
+  cursor: pointer;
+
+  box-shadow:
+    0 10px 25px rgba(137, 97, 207, 0.22);
+
+  transition: all 0.25s ease;
+}
+
+.fform-submit-btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 14px 30px rgba(137, 97, 207, 0.28);
+}
+
+.fform-submit-btn:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.fform-submit-btn:disabled {
+  opacity: 0.55;
+
+  cursor: not-allowed;
+
+  box-shadow: none;
+}
+
+.fform-submit-btn svg {
+  font-size: 15px;
+}
+
+/* =========================================================
+   OTP EMAIL DISPLAY
+========================================================= */
+
+.fform-email-display {
+  display: flex;
+  align-items: center;
+
+  gap: 13px;
+
+  padding: 15px;
+
+  border-radius: 14px;
+
+  background: #f8f3ff;
+
+  border: 1px solid #e7dcf5;
+}
+
+.fform-email-display > svg {
+  flex-shrink: 0;
+
+  width: 38px;
+  height: 38px;
+
+  padding: 10px;
+
+  box-sizing: border-box;
+
+  border-radius: 11px;
+
+  background: #e7dcfa;
+
+  color: #8b62c8;
+}
+
+.fform-email-display div {
+  min-width: 0;
+
+  display: flex;
+  flex-direction: column;
+
+  gap: 2px;
+}
+
+.fform-email-display span {
+  color: #8a7d94;
+
+  font-size: 11px;
+}
+
+.fform-email-display strong {
+  color: #4a3557;
+
+  font-size: 12px;
+
+  font-weight: 600;
+
+  word-break: break-word;
+}
+
+/* =========================================================
+   OTP INFORMATION
+========================================================= */
+
+.fform-otp-info {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 10px 4px;
+}
+
+.fform-otp-info span {
+  color: #84768f;
+
+  font-size: 12px;
+}
+
+.fform-otp-info strong {
+  color: #a15cbd;
+
+  font-size: 13px;
+
+  font-weight: 600;
+}
+
+/* =========================================================
+   CHANGE EMAIL BUTTON
+========================================================= */
+
+.fform-change-btn {
+  width: 100%;
+
+  border: none;
+
+  background: transparent;
+
+  color: #8060b8;
+
+  font-family: "Poppins", sans-serif;
+
+  font-size: 12px;
+
+  font-weight: 600;
+
+  cursor: pointer;
+
+  padding: 5px;
+
+  transition: color 0.2s ease;
+}
+
+.fform-change-btn:hover {
+  color: #5f3e96;
+
+  text-decoration: underline;
+}
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 600px) {
+
+  .fform-page {
+    padding: 80px 16px 30px;
+  }
+
+  .fform-back-btn {
+    top: 18px;
+    left: 18px;
+
+    padding: 9px 13px;
+
+    font-size: 12px;
+  }
+
+  .fform-card {
+    padding: 28px 20px;
+
+    border-radius: 22px;
+  }
+
+  .fform-header {
+    margin-bottom: 25px;
+  }
+
+  .fform-icon {
+    width: 60px;
+    height: 60px;
+
+    font-size: 24px;
+
+    border-radius: 18px;
+  }
+
+  .fform-header h1 {
+    font-size: 22px;
+  }
+
+  .fform-header p {
+    font-size: 12px;
+  }
+
+  .fform-form {
+    gap: 17px;
+  }
+
+  .fform-input-box input {
+    height: 50px;
+  }
+}
+
+/* =========================================================
+   VERY SMALL DEVICES
+========================================================= */
+
+@media (max-width: 380px) {
+
+  .fform-card {
+    padding: 24px 16px;
+  }
+
+  .fform-header h1 {
+    font-size: 20px;
+  }
+
+  .fform-header p {
+    font-size: 11px;
+  }
+}
