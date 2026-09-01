@@ -9,7 +9,7 @@ public interface FamilyMemberRepository
         extends JpaRepository<FamilyMember, Long> {
 
     // =========================================================
-    // FIND FAMILY MEMBER PROFILE BY LOGIN USER ID
+    // FIND FAMILY MEMBER PROFILE BY FAMILY MEMBER USER ID
     // =========================================================
 
     Optional<FamilyMember> findByUserId(Long userId);
@@ -23,7 +23,7 @@ public interface FamilyMemberRepository
 
 
     // =========================================================
-    // CHECK IF FAMILY MEMBER PROFILE ALREADY EXISTS
+    // CHECK PROFILE
     // =========================================================
 
     boolean existsByUserId(Long userId);

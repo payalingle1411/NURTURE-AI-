@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+
 import { Link, useNavigate } from "react-router-dom";
 
 import {
@@ -160,6 +161,20 @@ function Login() {
         }
 
         // ===================================================
+        // SAVE FAMILY VERIFICATION STATUS
+        // ===================================================
+
+        if (
+          data.familyVerified !== undefined &&
+          data.familyVerified !== null
+        ) {
+          localStorage.setItem(
+            "familyVerified",
+            String(data.familyVerified)
+          );
+        }
+
+        // ===================================================
         // NORMALIZE ROLE
         // ===================================================
 
@@ -200,6 +215,18 @@ function Login() {
         );
 
         // ===================================================
+        // FAMILY MEMBER VERIFICATION STATUS
+        // ===================================================
+
+        const familyVerified =
+          data.familyVerified === true;
+
+        console.log(
+          "Family Member Verified:",
+          familyVerified
+        );
+
+        // ===================================================
         // VERIFY STORED INFORMATION
         // ===================================================
 
@@ -228,6 +255,11 @@ function Login() {
           data.profileCompleted
         );
 
+        console.log(
+          "Family Verified:",
+          data.familyVerified
+        );
+
         // ===================================================
         // LOGIN SUCCESS
         // ===================================================
@@ -239,7 +271,7 @@ function Login() {
 
         // ===================================================
         // ROLE-BASED NAVIGATION
-        // ===================================================
+        // =========================================================
 
         // ---------------------------------------------------
         // FAMILY MEMBER
@@ -247,16 +279,50 @@ function Login() {
 
         if (role === "family member") {
 
-          console.log(
-            "Navigating Family Member to Family Dashboard..."
-          );
+          // =================================================
+          // ALREADY VERIFIED / LINKED WITH LADY
+          // =================================================
 
-          navigate(
-            "/family-form",
-            {
-              replace: true,
-            }
-          );
+          if (familyVerified) {
+
+            console.log(
+              "Family member already verified with lady."
+            );
+
+            console.log(
+              "Navigating directly to Family Dashboard..."
+            );
+
+            navigate(
+              "/family-dashboard",
+              {
+                replace: true,
+              }
+            );
+
+          }
+
+          // =================================================
+          // NOT VERIFIED YET
+          // =================================================
+
+          else {
+
+            console.log(
+              "Family member is not verified yet."
+            );
+
+            console.log(
+              "Navigating to Family Form..."
+            );
+
+            navigate(
+              "/family-form",
+              {
+                replace: true,
+              }
+            );
+          }
 
         }
 
@@ -392,6 +458,7 @@ function Login() {
     } finally {
 
       setLoading(false);
+
     }
   };
 
@@ -400,6 +467,7 @@ function Login() {
   // =========================================================
 
   return (
+
     <div className="login-container">
 
       {/* =====================================================
@@ -431,7 +499,6 @@ function Login() {
 
       </div>
 
-
       {/* =====================================================
           RIGHT SECTION
       ===================================================== */}
@@ -450,7 +517,6 @@ function Login() {
           <p className="subtitle">
             Sign in to continue your pregnancy journey.
           </p>
-
 
           {/* =================================================
               EMAIL
@@ -481,7 +547,6 @@ function Login() {
             </div>
 
           </div>
-
 
           {/* =================================================
               PASSWORD
@@ -535,7 +600,6 @@ function Login() {
 
           </div>
 
-
           {/* =================================================
               REMEMBER ME
           ================================================= */}
@@ -567,7 +631,6 @@ function Login() {
 
           </div>
 
-
           {/* =================================================
               LOGIN BUTTON
           ================================================= */}
@@ -584,7 +647,6 @@ function Login() {
 
           </button>
 
-
           {/* =================================================
               DIVIDER
           ================================================= */}
@@ -596,7 +658,6 @@ function Login() {
             </span>
 
           </div>
-
 
           {/* =================================================
               GOOGLE
@@ -616,7 +677,6 @@ function Login() {
             </span>
 
           </button>
-
 
           {/* =================================================
               REGISTER

@@ -33,12 +33,24 @@ public class UserProfileService {
                         )
                 );
 
-        // If profile already exists, update it
+        // =====================================================
+        // IF PROFILE ALREADY EXISTS → UPDATE
+        // OTHERWISE → CREATE NEW PROFILE
+        // =====================================================
+
         UserProfile profile =
                 repository.findByUser(user)
                         .orElse(new UserProfile());
 
+        // =====================================================
+        // LINK PROFILE WITH LOGIN USER
+        // =====================================================
+
         profile.setUser(user);
+
+        // =====================================================
+        // PERSONAL INFORMATION
+        // =====================================================
 
         profile.setDateOfBirth(
                 request.getDateOfBirth()
@@ -60,6 +72,10 @@ public class UserProfileService {
                 request.getBloodGroup()
         );
 
+        // =====================================================
+        // ADDRESS INFORMATION
+        // =====================================================
+
         profile.setCountry(
                 request.getCountry()
         );
@@ -80,11 +96,23 @@ public class UserProfileService {
                 request.getPincode()
         );
 
+        // =====================================================
+        // PROFILE PICTURE
+        // =====================================================
+
         profile.setProfilePicture(
                 request.getProfilePicture()
         );
 
+        // =====================================================
+        // MARK PROFILE AS COMPLETED
+        // =====================================================
+
         profile.setProfileCompleted(true);
+
+        // =====================================================
+        // SAVE PROFILE
+        // =====================================================
 
         return repository.save(profile);
     }
@@ -96,6 +124,10 @@ public class UserProfileService {
 
     public UserProfile getByUserId(Long userId) {
 
+        // =====================================================
+        // FIND LOGIN USER
+        // =====================================================
+
         Login user = loginRepository
                 .findById(userId)
                 .orElseThrow(
@@ -103,6 +135,10 @@ public class UserProfileService {
                                 "User not found"
                         )
                 );
+
+        // =====================================================
+        // FIND USER PROFILE
+        // =====================================================
 
         return repository
                 .findByUser(user)
@@ -120,7 +156,12 @@ public class UserProfileService {
 
     public UserProfile update(
             Long userId,
-            UserProfileRequest request) {
+            UserProfileRequest request
+    ) {
+
+        // =====================================================
+        // FIND LOGIN USER
+        // =====================================================
 
         Login user = loginRepository
                 .findById(userId)
@@ -130,6 +171,10 @@ public class UserProfileService {
                         )
                 );
 
+        // =====================================================
+        // FIND EXISTING PROFILE
+        // =====================================================
+
         UserProfile profile =
                 repository.findByUser(user)
                         .orElseThrow(
@@ -137,6 +182,10 @@ public class UserProfileService {
                                         "Personal profile not found"
                                 )
                         );
+
+        // =====================================================
+        // UPDATE PERSONAL INFORMATION
+        // =====================================================
 
         profile.setDateOfBirth(
                 request.getDateOfBirth()
@@ -158,6 +207,10 @@ public class UserProfileService {
                 request.getBloodGroup()
         );
 
+        // =====================================================
+        // UPDATE ADDRESS
+        // =====================================================
+
         profile.setCountry(
                 request.getCountry()
         );
@@ -178,11 +231,23 @@ public class UserProfileService {
                 request.getPincode()
         );
 
+        // =====================================================
+        // UPDATE PROFILE PICTURE
+        // =====================================================
+
         profile.setProfilePicture(
                 request.getProfilePicture()
         );
 
+        // =====================================================
+        // PROFILE IS COMPLETED
+        // =====================================================
+
         profile.setProfileCompleted(true);
+
+        // =====================================================
+        // SAVE UPDATED PROFILE
+        // =====================================================
 
         return repository.save(profile);
     }

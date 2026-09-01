@@ -7,17 +7,24 @@ public class LoginResponse {
     private String email;
     private String role;
     private String message;
+
     private boolean profileCompleted;
+
+    // Family member verification status
+    private boolean familyVerified;
 
     public LoginResponse() {
     }
 
-    public LoginResponse(Long userId,
-                         String fullName,
-                         String email,
-                         String role,
-                         String message,
-                         boolean profileCompleted) {
+    public LoginResponse(
+            Long userId,
+            String fullName,
+            String email,
+            String role,
+            String message,
+            boolean profileCompleted,
+            boolean familyVerified
+    ) {
 
         this.userId = userId;
         this.fullName = fullName;
@@ -25,6 +32,7 @@ public class LoginResponse {
         this.role = role;
         this.message = message;
         this.profileCompleted = profileCompleted;
+        this.familyVerified = familyVerified;
     }
 
     public Long getUserId() {
@@ -73,5 +81,13 @@ public class LoginResponse {
 
     public void setProfileCompleted(boolean profileCompleted) {
         this.profileCompleted = profileCompleted;
+    }
+
+    public boolean isFamilyVerified() {
+        return familyVerified;
+    }
+
+    public void setFamilyVerified(boolean familyVerified) {
+        this.familyVerified = familyVerified;
     }
 }

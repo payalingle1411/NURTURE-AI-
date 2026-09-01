@@ -21,9 +21,16 @@ public class LoginController {
 
     private final UserService userService;
 
+
     public LoginController(UserService userService) {
+
         this.userService = userService;
     }
+
+
+    // =========================================================
+    // LOGIN
+    // =========================================================
 
     @PostMapping("/login")
     public ResponseEntity<?> login(
@@ -31,47 +38,121 @@ public class LoginController {
             HttpSession session
     ) {
 
-        Login user = userService.login(request);
+        Login user =
+                userService.login(request);
+
+
+        // =====================================================
+        // INVALID LOGIN
+        // =====================================================
 
         if (user == null) {
+
             return ResponseEntity
                     .status(HttpStatus.UNAUTHORIZED)
                     .body("Invalid Email or Password");
         }
 
+
         // =====================================================
-        // STORE LOGGED-IN USER ID IN SERVER SESSION
+        // STORE USER ID IN SESSION
         // =====================================================
 
-        session.setAttribute("USER_ID", user.getId());
-
-        System.out.println(
-                "Logged-in USER_ID stored in session: "
-                        + user.getId()
+        session.setAttribute(
+                "USER_ID",
+                user.getId()
         );
 
+
+        System.out.println(
+                "========================================"
+        );
+
+        System.out.println(
+                "LOGIN SUCCESS"
+        );
+
+        System.out.println(
+                "USER ID: " + user.getId()
+        );
+
+        System.out.println(
+                "NAME: " + user.getFullName()
+        );
+
+        System.out.println(
+                "EMAIL: " + user.getEmail()
+        );
+
+        System.out.println(
+                "ROLE: " + user.getRole()
+        );
+
+
         // =====================================================
-        // CHECK PROFILE
+        // CHECK MOTHER PROFILE
         // =====================================================
 
         boolean profileCompleted =
-                userService.isProfileCompleted(user.getId());
+                userService.isProfileCompleted(
+                        user.getId()
+                );
+
+
+        // =====================================================
+        // CHECK FAMILY MEMBER PROFILE
+        // =====================================================
+
+        boolean familyVerified =
+                userService.isFamilyVerified(
+                        user.getId()
+                );
+
+
+        System.out.println(
+                "PROFILE COMPLETED: "
+                        + profileCompleted
+        );
+
+        System.out.println(
+                "FAMILY VERIFIED: "
+                        + familyVerified
+        );
+
+        System.out.println(
+                "========================================"
+        );
+
+
+        // =====================================================
+        // CREATE RESPONSE
+        // =====================================================
 
         LoginResponse response =
                 new LoginResponse(
+
                         user.getId(),
+
                         user.getFullName(),
+
                         user.getEmail(),
+
                         user.getRole(),
+
                         "Login Successful",
-                        profileCompleted
+
+                        profileCompleted,
+
+                        familyVerified
                 );
+
 
         return ResponseEntity.ok(response);
     }
 
+
     // =========================================================
-    // OPTIONAL: LOGOUT
+    // LOGOUT
     // =========================================================
 
     @PostMapping("/logout")

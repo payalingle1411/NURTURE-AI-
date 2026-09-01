@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
@@ -18,10 +18,19 @@ function FForm1() {
   const navigate = useNavigate();
 
   // =========================================================
-  // GET LOGGED-IN USER ID
+  // GET LOGGED-IN FAMILY MEMBER USER ID
   // =========================================================
 
-  const userId = localStorage.getItem("userId");
+  const userId =
+    localStorage.getItem("familyMemberUserId") ||
+    localStorage.getItem("userId");
+
+  // =========================================================
+  // GET VERIFIED MOTHER / PATIENT ID
+  // =========================================================
+
+  const patientUserId =
+    localStorage.getItem("patientUserId");
 
   // =========================================================
   // FORM STATE
@@ -34,7 +43,143 @@ function FForm1() {
     phoneNumber: "",
   });
 
+  // =========================================================
+  // LOADING STATES
+  // =========================================================
+
+  const [loadingUser, setLoadingUser] = useState(true);
   const [loading, setLoading] = useState(false);
+
+  // =========================================================
+  // LOAD FAMILY MEMBER REGISTERED INFORMATION
+  // =========================================================
+
+  useEffect(() => {
+    const loadFamilyMemberData = async () => {
+      try {
+        // -----------------------------------------------------
+        // CHECK USER ID
+        // -----------------------------------------------------
+
+        if (
+          !userId ||
+          userId === "null" ||
+          userId === "undefined"
+        ) {
+          alert(
+            "Your login session was not found. Please login again."
+          );
+
+          navigate("/login", {
+            replace: true,
+          });
+
+          return;
+        }
+
+        console.log(
+          "Loading registered family member information..."
+        );
+
+        console.log(
+          "Family Member User ID:",
+          userId
+        );
+
+        // -----------------------------------------------------
+        // GET USER INFORMATION FROM DATABASE
+        // -----------------------------------------------------
+        // IMPORTANT:
+        // withCredentials is removed because your backend
+        // currently does not return:
+        //
+        // Access-Control-Allow-Credentials: true
+        //
+        // This was causing your CORS error.
+        // -----------------------------------------------------
+
+        const response = await axios.get(
+          `http://localhost:8080/api/users/${userId}`
+        );
+
+        console.log(
+          "========== REGISTERED USER DATA =========="
+        );
+
+        console.log(response.data);
+
+        const data = response.data;
+
+        // -----------------------------------------------------
+        // GET NAME FROM DATABASE
+        // -----------------------------------------------------
+
+        const registeredName =
+          data.fullName ??
+          data.name ??
+          data.memberName ??
+          "";
+
+        // -----------------------------------------------------
+        // GET PHONE FROM DATABASE
+        // -----------------------------------------------------
+
+        const registeredPhone =
+          data.mobile ??
+          data.phone ??
+          data.phoneNumber ??
+          "";
+
+        // -----------------------------------------------------
+        // SET DATABASE VALUES
+        // -----------------------------------------------------
+
+        setFormData((previous) => ({
+          ...previous,
+
+          memberName: registeredName,
+
+          phoneNumber: registeredPhone,
+        }));
+
+        console.log(
+          "Family member name:",
+          registeredName
+        );
+
+        console.log(
+          "Family member phone:",
+          registeredPhone
+        );
+
+      } catch (error) {
+        console.error(
+          "Unable to load family member information:",
+          error
+        );
+
+        if (error.response) {
+          console.error(
+            "Backend status:",
+            error.response.status
+          );
+
+          console.error(
+            "Backend response:",
+            error.response.data
+          );
+        }
+
+        alert(
+          "Unable to load your registered name and phone number. Please try again."
+        );
+      } finally {
+        setLoadingUser(false);
+      }
+    };
+
+    loadFamilyMemberData();
+  }, [userId, navigate]);
 
   // =========================================================
   // HANDLE INPUT CHANGE
@@ -61,30 +206,17 @@ function FForm1() {
     }
 
     // -------------------------------------------------------
-    // PHONE NUMBER
+    // RELATIONSHIP
     // -------------------------------------------------------
 
-    if (name === "phoneNumber") {
-      const numericValue = value
-        .replace(/\D/g, "")
-        .slice(0, 15);
-
+    if (name === "relationship") {
       setFormData((previous) => ({
         ...previous,
-        phoneNumber: numericValue,
+        relationship: value,
       }));
 
       return;
     }
-
-    // -------------------------------------------------------
-    // OTHER FIELDS
-    // -------------------------------------------------------
-
-    setFormData((previous) => ({
-      ...previous,
-      [name]: value,
-    }));
   };
 
   // =========================================================
@@ -109,7 +241,21 @@ function FForm1() {
     }
 
     // -------------------------------------------------------
-    // TRIM VALUES
+    // CHECK MOTHER VERIFICATION
+    // -------------------------------------------------------
+
+    if (!patientUserId) {
+      alert(
+        "Mother verification is incomplete. Please verify the mother's email again."
+      );
+
+      navigate("/family-form");
+
+      return;
+    }
+
+    // -------------------------------------------------------
+    // GET VALUES
     // -------------------------------------------------------
 
     const memberName =
@@ -130,15 +276,7 @@ function FForm1() {
 
     if (!memberName) {
       alert(
-        "Please enter your full name."
-      );
-
-      return;
-    }
-
-    if (memberName.length < 2) {
-      alert(
-        "Please enter a valid name."
+        "Family member name could not be loaded from the database."
       );
 
       return;
@@ -150,7 +288,7 @@ function FForm1() {
 
     if (!relationship) {
       alert(
-        "Please select your relationship."
+        "Please select your relationship with the mother."
       );
 
       return;
@@ -181,34 +319,53 @@ function FForm1() {
 
     if (!/^\d{10,15}$/.test(phoneNumber)) {
       alert(
-        "Please enter a valid phone number."
+        "Registered phone number is not valid."
       );
 
       return;
     }
 
+    // -------------------------------------------------------
+    // START LOADING
+    // -------------------------------------------------------
+
     setLoading(true);
 
     try {
       // =====================================================
-      // SAVE FAMILY MEMBER DETAILS
+      // SAVE FAMILY MEMBER PROFILE
       // =====================================================
 
       const response = await axios.post(
-        "http://localhost:8080/api/family-members/details",
+        "http://localhost:8080/api/family-members/create-profile",
         {
+          // -------------------------------------------------
+          // FAMILY MEMBER LOGIN USER ID
+          // -------------------------------------------------
+
           userId: Number(userId),
 
+          // -------------------------------------------------
+          // VERIFIED MOTHER USER ID
+          // -------------------------------------------------
+
+          patientUserId: Number(patientUserId),
+
+          // -------------------------------------------------
+          // THESE COME FROM DATABASE
+          // -------------------------------------------------
+
           memberName: memberName,
+
+          phoneNumber: phoneNumber,
+
+          // -------------------------------------------------
+          // THESE ARE ENTERED IN THIS FORM
+          // -------------------------------------------------
 
           relationship: relationship,
 
           age: numericAge,
-
-          phoneNumber: phoneNumber,
-        },
-        {
-          withCredentials: true,
         }
       );
 
@@ -229,7 +386,7 @@ function FForm1() {
         const data = response.data;
 
         // ---------------------------------------------------
-        // SAVE FAMILY MEMBER INFORMATION LOCALLY
+        // SAVE FAMILY MEMBER ID
         // ---------------------------------------------------
 
         if (data.familyMemberId) {
@@ -238,6 +395,10 @@ function FForm1() {
             String(data.familyMemberId)
           );
         }
+
+        // ---------------------------------------------------
+        // SAVE INFORMATION
+        // ---------------------------------------------------
 
         localStorage.setItem(
           "familyMemberName",
@@ -259,18 +420,22 @@ function FForm1() {
           phoneNumber
         );
 
+        // ---------------------------------------------------
+        // PROFILE CREATED
+        // ---------------------------------------------------
+
         localStorage.setItem(
           "familyProfileCreated",
           "true"
         );
 
         // ---------------------------------------------------
-        // SUCCESS MESSAGE
+        // SUCCESS
         // ---------------------------------------------------
 
         alert(
           data.message ||
-          "Family member profile created successfully!"
+            "Family member profile created successfully!"
         );
 
         // ---------------------------------------------------
@@ -291,9 +456,9 @@ function FForm1() {
         error
       );
 
-      // =====================================================
+      // -----------------------------------------------------
       // BACKEND ERROR
-      // =====================================================
+      // -----------------------------------------------------
 
       if (error.response) {
         console.log(
@@ -302,8 +467,7 @@ function FForm1() {
         );
 
         if (
-          typeof error.response.data ===
-          "string"
+          typeof error.response.data === "string"
         ) {
           alert(
             error.response.data
@@ -311,25 +475,26 @@ function FForm1() {
         } else {
           alert(
             error.response.data?.message ||
-            "Unable to save family member details."
+              "Unable to save family member details."
           );
         }
+
       }
 
-      // =====================================================
+      // -----------------------------------------------------
       // NETWORK ERROR
-      // =====================================================
+      // -----------------------------------------------------
 
       else if (error.request) {
         alert(
           "Unable to connect to Spring Boot backend.\n\n" +
-          "Please make sure your backend is running on port 8080."
+            "Please make sure your backend is running on port 8080."
         );
       }
 
-      // =====================================================
+      // -----------------------------------------------------
       // OTHER ERROR
-      // =====================================================
+      // -----------------------------------------------------
 
       else {
         alert(
@@ -341,6 +506,37 @@ function FForm1() {
       setLoading(false);
     }
   };
+
+  // =========================================================
+  // LOADING SCREEN
+  // =========================================================
+
+  if (loadingUser) {
+    return (
+      <div className="fform1-page">
+
+        <div className="fform1-card fform1-loading-card">
+
+          <div className="fform1-icon">
+            <FaUser />
+          </div>
+
+          <h1>
+            Loading Your Information
+          </h1>
+
+          <p>
+            Getting your registered name and
+            phone number...
+          </p>
+
+          <div className="fform1-loading-spinner"></div>
+
+        </div>
+
+      </div>
+    );
+  }
 
   // =========================================================
   // UI
@@ -365,7 +561,6 @@ function FForm1() {
         </span>
       </button>
 
-
       {/* =====================================================
           CARD
       ===================================================== */}
@@ -387,12 +582,12 @@ function FForm1() {
           </h1>
 
           <p>
-            Tell us a little about yourself to
-            complete your Nurture AI family profile.
+            Your registered information has been
+            automatically loaded. Just complete
+            the remaining details.
           </p>
 
         </div>
-
 
         {/* ===================================================
             SECURITY INFORMATION
@@ -403,13 +598,12 @@ function FForm1() {
           <FaShieldAlt />
 
           <p>
-            Your information is securely stored
-            and used only to provide your
-            personalized family support experience.
+            Your name and phone number are taken
+            directly from your registered account.
+            They cannot be changed here.
           </p>
 
         </div>
-
 
         {/* ===================================================
             FORM
@@ -421,7 +615,7 @@ function FForm1() {
         >
 
           {/* =================================================
-              FULL NAME
+              FULL NAME - DATABASE
           ================================================= */}
 
           <div className="fform1-input-group">
@@ -430,7 +624,7 @@ function FForm1() {
               Full Name
             </label>
 
-            <div className="fform1-input-box">
+            <div className="fform1-input-box fform1-readonly-box">
 
               <FaUser
                 className="fform1-input-icon"
@@ -440,21 +634,22 @@ function FForm1() {
                 id="memberName"
                 type="text"
                 name="memberName"
-                placeholder="Enter your full name"
                 value={formData.memberName}
-                onChange={handleChange}
+                readOnly
+                disabled
                 autoComplete="name"
-                maxLength={100}
-                required
               />
+
+              <span className="fform1-db-badge">
+                From Account
+              </span>
 
             </div>
 
           </div>
 
-
           {/* =================================================
-              RELATIONSHIP
+              RELATIONSHIP - USER ENTERS
           ================================================= */}
 
           <div className="fform1-input-group">
@@ -519,9 +714,8 @@ function FForm1() {
 
           </div>
 
-
           {/* =================================================
-              AGE
+              AGE - USER ENTERS
           ================================================= */}
 
           <div className="fform1-input-group">
@@ -552,9 +746,8 @@ function FForm1() {
 
           </div>
 
-
           {/* =================================================
-              PHONE NUMBER
+              PHONE NUMBER - DATABASE
           ================================================= */}
 
           <div className="fform1-input-group">
@@ -563,7 +756,7 @@ function FForm1() {
               Phone Number
             </label>
 
-            <div className="fform1-input-box">
+            <div className="fform1-input-box fform1-readonly-box">
 
               <FaPhone
                 className="fform1-input-icon"
@@ -573,19 +766,34 @@ function FForm1() {
                 id="phoneNumber"
                 type="tel"
                 name="phoneNumber"
-                placeholder="Enter your phone number"
                 value={formData.phoneNumber}
-                onChange={handleChange}
-                inputMode="numeric"
+                readOnly
+                disabled
                 autoComplete="tel"
-                maxLength={15}
-                required
               />
+
+              <span className="fform1-db-badge">
+                From Account
+              </span>
 
             </div>
 
           </div>
 
+          {/* =================================================
+              INFORMATION MESSAGE
+          ================================================= */}
+
+          <div className="fform1-auto-info">
+
+            <FaShieldAlt />
+
+            <span>
+              Name and phone number are automatically
+              taken from your registration details.
+            </span>
+
+          </div>
 
           {/* =================================================
               SUBMIT BUTTON

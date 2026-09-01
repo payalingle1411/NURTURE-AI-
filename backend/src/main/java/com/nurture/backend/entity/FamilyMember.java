@@ -8,67 +8,35 @@ import java.time.LocalDateTime;
 @Table(name = "family_members")
 public class FamilyMember {
 
-    // =========================================================
-    // FAMILY MEMBER ID
-    // =========================================================
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "family_member_id")
     private Long familyMemberId;
 
 
-    // =========================================================
-    // FAMILY MEMBER USER ID
-    // =========================================================
-
     @Column(name = "user_id", nullable = false)
     private Long userId;
 
-
-    // =========================================================
-    // MOTHER / PATIENT USER ID
-    // =========================================================
 
     @Column(name = "patient_user_id", nullable = false)
     private Long patientUserId;
 
 
-    // =========================================================
-    // MEMBER NAME
-    // =========================================================
-
     @Column(name = "member_name", nullable = false, length = 100)
     private String memberName;
 
-
-    // =========================================================
-    // RELATIONSHIP
-    // =========================================================
 
     @Column(name = "relationship", length = 50)
     private String relationship;
 
 
-    // =========================================================
-    // AGE
-    // =========================================================
-
     @Column(name = "age")
     private Integer age;
 
 
-    // =========================================================
-    // PHONE NUMBER
-    // =========================================================
-
     @Column(name = "phone_number", length = 15)
     private String phoneNumber;
 
-
-    // =========================================================
-    // CREATED AT
-    // =========================================================
 
     @Column(
             name = "created_at",
@@ -78,17 +46,9 @@ public class FamilyMember {
     private LocalDateTime createdAt;
 
 
-    // =========================================================
-    // DEFAULT CONSTRUCTOR
-    // =========================================================
-
     public FamilyMember() {
     }
 
-
-    // =========================================================
-    // GETTERS AND SETTERS
-    // =========================================================
 
     public Long getFamilyMemberId() {
         return familyMemberId;
