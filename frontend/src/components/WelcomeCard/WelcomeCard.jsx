@@ -2,6 +2,8 @@ import { useCallback, useEffect, useState } from "react";
 import { FaHeart, FaCalendarAlt } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 
+import API from "../../services/api";
+
 import "./WelcomeCard.css";
 
 function WelcomeCard() {
@@ -20,37 +22,31 @@ function WelcomeCard() {
       setLoading(true);
       setError("");
 
-      const response = await fetch(
-        "http://localhost:8080/api/profile/me",
-        {
-          method: "GET",
-          credentials: "include",
-        }
-      );
+      const response = await API.get("/profile/me", {
+        withCredentials: true,
+      });
 
-      if (!response.ok) {
-        if (response.status === 401) {
-          throw new Error(
-            "Your session has expired. Please login again."
-          );
-        }
-
-        throw new Error(
-          "Unable to load profile information."
-        );
-      }
-
-      const data = await response.json();
+      const data = response.data;
 
       console.log("WELCOME CARD PROFILE:", data);
 
       setProfile(data);
+
     } catch (err) {
       console.error("WelcomeCard Error:", err);
 
-      setError(
-        err.message || "Unable to load profile."
-      );
+      if (err.response?.status === 401) {
+        setError(
+          "Your session has expired. Please login again."
+        );
+      } else {
+        setError(
+          err.response?.data?.message ||
+          err.message ||
+          "Unable to load profile."
+        );
+      }
+
     } finally {
       setLoading(false);
     }
@@ -273,6 +269,7 @@ function WelcomeCard() {
           </p>
 
           {/* Small baby information */}
+
           {pregnancyWeek && (
             <button
               className="baby-development-link"
@@ -282,7 +279,10 @@ function WelcomeCard() {
             >
               {babyData.fruit} Baby ≈{" "}
               {babyData.fruitName}
-              <span>View development →</span>
+
+              <span>
+                View development →
+              </span>
             </button>
           )}
 

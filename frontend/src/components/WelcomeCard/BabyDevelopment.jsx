@@ -1,18 +1,15 @@
-import { useCallback, useEffect, useState } from "react";
-import {
-  FaArrowLeft,
-  FaHeart,
-  FaLeaf,
-} from "react-icons/fa";
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 
-import { useNavigate } from "react-router-dom";
+import API from "../../services/api";
 
 import "./BabyDevelopment.css";
 
-function BabyDevelopment() {
-
-  const navigate = useNavigate();
-
+const BabyDevelopment = () => {
   const [profile, setProfile] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -22,34 +19,15 @@ function BabyDevelopment() {
   // =========================================================
 
   const fetchProfile = useCallback(async () => {
-
     try {
-
       setLoading(true);
       setError("");
 
-      const response = await fetch(
-        "http://localhost:8080/api/profile/me",
-        {
-          method: "GET",
-          credentials: "include",
-        }
-      );
+      const response = await API.get("/profile/me", {
+        withCredentials: true,
+      });
 
-      if (!response.ok) {
-
-        if (response.status === 401) {
-          throw new Error(
-            "Your session has expired. Please login again."
-          );
-        }
-
-        throw new Error(
-          "Unable to load pregnancy information."
-        );
-      }
-
-      const data = await response.json();
+      const data = response.data;
 
       console.log(
         "BABY DEVELOPMENT PROFILE:",
@@ -59,209 +37,367 @@ function BabyDevelopment() {
       setProfile(data);
 
     } catch (err) {
-
       console.error(
         "BabyDevelopment Error:",
         err
       );
 
-      setError(
-        err.message ||
-        "Unable to load information."
-      );
-
+      if (err.response?.status === 401) {
+        setError(
+          "Your login session has expired. Please login again."
+        );
+      } else {
+        setError(
+          err.response?.data?.message ||
+            err.message ||
+            "Unable to load pregnancy information."
+        );
+      }
     } finally {
-
       setLoading(false);
-
     }
-
   }, []);
 
   // =========================================================
-  // LOAD
+  // LOAD PROFILE
   // =========================================================
 
   useEffect(() => {
-
     fetchProfile();
-
   }, [fetchProfile]);
 
   // =========================================================
-  // LOADING
+  // PREGNANCY PROFILE
+  // =========================================================
+
+  const pregnancy = useMemo(() => {
+    if (!profile) {
+      return {};
+    }
+
+    return (
+      profile.pregnancyProfile ||
+      profile.pregnancy ||
+      {}
+    );
+  }, [profile]);
+
+  // =========================================================
+  // PREGNANCY WEEK
+  // =========================================================
+
+  const pregnancyWeek = useMemo(() => {
+    const week =
+      pregnancy.pregnancyWeek ??
+      pregnancy.currentWeek ??
+      profile?.pregnancyWeek ??
+      profile?.currentWeek;
+
+    const parsedWeek = Number(week);
+
+    return Number.isFinite(parsedWeek)
+      ? parsedWeek
+      : null;
+  }, [pregnancy, profile]);
+
+  // =========================================================
+  // TRIMESTER
+  // =========================================================
+
+  const trimester = useMemo(() => {
+    if (pregnancy.trimester) {
+      return pregnancy.trimester;
+    }
+
+    if (!pregnancyWeek) {
+      return "Not available";
+    }
+
+    if (pregnancyWeek <= 13) {
+      return "First Trimester";
+    }
+
+    if (pregnancyWeek <= 27) {
+      return "Second Trimester";
+    }
+
+    return "Third Trimester";
+  }, [pregnancy, pregnancyWeek]);
+
+  // =========================================================
+  // BABY SIZE
+  // =========================================================
+
+  const babyInfo = useMemo(() => {
+    if (!pregnancyWeek) {
+      return {
+        fruit: "🌱",
+        size: "Your baby",
+        description:
+          "Your baby's development information will appear here.",
+      };
+    }
+
+    if (pregnancyWeek <= 4) {
+      return {
+        fruit: "🌱",
+        size: "A tiny seed",
+        description:
+          "Your baby's development is just beginning.",
+      };
+    }
+
+    if (pregnancyWeek <= 7) {
+      return {
+        fruit: "🫐",
+        size: "A blueberry",
+        description:
+          "Your baby is growing rapidly and important organs are beginning to develop.",
+      };
+    }
+
+    if (pregnancyWeek <= 10) {
+      return {
+        fruit: "🍓",
+        size: "A strawberry",
+        description:
+          "Your baby's basic body structures are developing quickly.",
+      };
+    }
+
+    if (pregnancyWeek <= 13) {
+      return {
+        fruit: "🍋",
+        size: "A lemon",
+        description:
+          "Your baby is becoming more active as muscles and organs continue developing.",
+      };
+    }
+
+    if (pregnancyWeek <= 16) {
+      return {
+        fruit: "🥑",
+        size: "An avocado",
+        description:
+          "Your baby's facial features and movements are becoming more developed.",
+      };
+    }
+
+    if (pregnancyWeek <= 20) {
+      return {
+        fruit: "🍌",
+        size: "A banana",
+        description:
+          "Your baby's senses are developing and movements may become easier to notice.",
+      };
+    }
+
+    if (pregnancyWeek <= 24) {
+      return {
+        fruit: "🌽",
+        size: "An ear of corn",
+        description:
+          "Your baby's hearing and other senses are continuing to develop.",
+      };
+    }
+
+    if (pregnancyWeek <= 27) {
+      return {
+        fruit: "🥦",
+        size: "A broccoli head",
+        description:
+          "Your baby is growing stronger and gaining more body fat.",
+      };
+    }
+
+    if (pregnancyWeek <= 30) {
+      return {
+        fruit: "🍆",
+        size: "An eggplant",
+        description:
+          "Your baby's brain and nervous system are developing rapidly.",
+      };
+    }
+
+    if (pregnancyWeek <= 33) {
+      return {
+        fruit: "🥥",
+        size: "A coconut",
+        description:
+          "Your baby continues gaining weight and preparing for birth.",
+      };
+    }
+
+    if (pregnancyWeek <= 36) {
+      return {
+        fruit: "🍈",
+        size: "A honeydew melon",
+        description:
+          "Your baby's lungs and other organs continue maturing.",
+      };
+    }
+
+    if (pregnancyWeek <= 39) {
+      return {
+        fruit: "🍉",
+        size: "A small watermelon",
+        description:
+          "Your baby is getting ready for birth and continues gaining weight.",
+      };
+    }
+
+    return {
+      fruit: "🍉",
+      size: "A watermelon",
+      description:
+        "Your baby is fully developed and preparing for birth.",
+    };
+  }, [pregnancyWeek]);
+
+  // =========================================================
+  // DUE DATE
+  // =========================================================
+
+  const dueDate =
+    pregnancy.dueDate ||
+    profile?.dueDate ||
+    "Not available";
+
+  // =========================================================
+  // PREGNANCY TYPE
+  // =========================================================
+
+  const pregnancyType =
+    pregnancy.pregnancyType ||
+    "Not available";
+
+  // =========================================================
+  // BABY COUNT
+  // =========================================================
+
+  const babyCount =
+    pregnancy.babyCount ??
+    (pregnancy.multiplePregnancy
+      ? 2
+      : 1);
+
+  // =========================================================
+  // LMP
+  // =========================================================
+
+  const lastMenstrualPeriod =
+    pregnancy.lastMenstrualPeriod ||
+    "Not available";
+
+  // =========================================================
+  // LOADING SCREEN
   // =========================================================
 
   if (loading) {
-
     return (
       <div className="baby-development-page">
-
         <div className="baby-loading">
 
-          <div className="loading-fruit">
-            🌱
-          </div>
+          <div className="loading-spinner"></div>
 
-          <h2>
-            Loading baby development...
-          </h2>
+          <h3>
+            Loading baby's development...
+          </h3>
 
           <p>
-            Preparing this week's information
+            Please wait a moment.
           </p>
 
         </div>
-
       </div>
     );
-
   }
 
   // =========================================================
-  // ERROR
+  // ERROR SCREEN
   // =========================================================
 
   if (error) {
-
     return (
       <div className="baby-development-page">
-
         <div className="baby-error">
 
-          <h2>
-            Something went wrong
-          </h2>
+          <div className="error-icon">
+            ⚠️
+          </div>
+
+          <h3>
+            Unable to load information
+          </h3>
 
           <p>
             {error}
           </p>
 
           <button
-            onClick={() =>
-              navigate(-1)
-            }
+            onClick={fetchProfile}
+            className="retry-button"
           >
-            Go Back
+            Try Again
           </button>
 
         </div>
-
       </div>
     );
-
   }
 
   // =========================================================
-  // PREGNANCY DATA
-  // =========================================================
-
-  const pregnancy =
-    profile?.pregnancyProfile || {};
-
-  const pregnancyWeek =
-    pregnancy.pregnancyWeek ??
-    pregnancy.currentWeek ??
-    null;
-
-  const babyData =
-    getBabyDevelopment(
-      pregnancyWeek
-    );
-
-  const trimester =
-    pregnancy.trimester ||
-    getTrimester(pregnancyWeek);
-
-  // =========================================================
-  // RENDER
+  // MAIN UI
   // =========================================================
 
   return (
-
     <div className="baby-development-page">
 
-      {/* =====================================================
-          HEADER
-      ===================================================== */}
+      {/* HEADER */}
 
       <div className="baby-page-header">
 
-        <button
-          className="back-button"
-          onClick={() =>
-            navigate(-1)
-          }
-        >
-          <FaArrowLeft />
-          Back
-        </button>
-
         <div>
           <h1>
-            Baby Development This Week
+            👶 Baby Development
           </h1>
 
           <p>
-            A simple look at your baby's growth
+            Follow your baby's beautiful journey week by week.
           </p>
         </div>
 
       </div>
 
 
-      {/* =====================================================
-          MAIN CARD
-      ===================================================== */}
+      {/* MAIN BABY CARD */}
 
       <div className="baby-main-card">
 
-        {/* ===================================================
-            FRUIT
-        =================================================== */}
+        <div className="baby-emoji-container">
 
-        <div className="baby-visual">
-
-          <div className="large-fruit-circle">
-
-            <span>
-              {babyData.fruit}
-            </span>
-
+          <div className="baby-fruit">
+            {babyInfo.fruit}
           </div>
 
+        </div>
+
+
+        <div className="baby-main-content">
+
+          <span className="week-badge">
+            {pregnancyWeek
+              ? `Week ${pregnancyWeek}`
+              : "Pregnancy Week"}
+          </span>
+
           <h2>
-            {babyData.fruitName}
+            Your baby is about the size of{" "}
+            {babyInfo.size.toLowerCase()}
           </h2>
 
           <p>
-            Approximate size comparison
-          </p>
-
-        </div>
-
-
-        {/* ===================================================
-            BABY INFORMATION
-        =================================================== */}
-
-        <div className="baby-information">
-
-          <div className="week-badge">
-            Week {pregnancyWeek || "--"}
-          </div>
-
-          <h2>
-            Your baby is approximately
-          </h2>
-
-          <h1>
-            the size of {babyData.article}{" "}
-            {babyData.fruitName}
-          </h1>
-
-          <p className="trimester-text">
-            {trimester || "Pregnancy"} 
+            {babyInfo.description}
           </p>
 
         </div>
@@ -269,380 +405,231 @@ function BabyDevelopment() {
       </div>
 
 
-      {/* =====================================================
-          DEVELOPMENT HIGHLIGHTS
-      ===================================================== */}
+      {/* PREGNANCY INFORMATION */}
 
-      <div className="development-card">
+      <div className="pregnancy-info-grid">
 
-        <div className="section-title">
+        <div className="pregnancy-info-card">
 
-          <div className="section-icon">
-            <FaHeart />
+          <div className="info-card-icon">
+            📅
           </div>
 
           <div>
-            <h2>
-              Development Highlights
-            </h2>
+            <span>
+              Pregnancy Week
+            </span>
 
-            <p>
-              What's happening this week
-            </p>
+            <strong>
+              {pregnancyWeek
+                ? `Week ${pregnancyWeek}`
+                : "Not available"}
+            </strong>
           </div>
 
         </div>
 
 
-        <div className="development-list">
+        <div className="pregnancy-info-card">
 
-          {babyData.highlights.map(
-            (item, index) => (
+          <div className="info-card-icon">
+            🌸
+          </div>
 
-              <div
-                className="development-item"
-                key={index}
-              >
+          <div>
+            <span>
+              Trimester
+            </span>
 
-                <span className="check-icon">
-                  ✓
-                </span>
+            <strong>
+              {trimester}
+            </strong>
+          </div>
 
-                <p>
-                  {item}
-                </p>
+        </div>
 
-              </div>
 
-            )
-          )}
+        <div className="pregnancy-info-card">
+
+          <div className="info-card-icon">
+            👶
+          </div>
+
+          <div>
+            <span>
+              Baby Count
+            </span>
+
+            <strong>
+              {babyCount}
+            </strong>
+          </div>
+
+        </div>
+
+
+        <div className="pregnancy-info-card">
+
+          <div className="info-card-icon">
+            🗓️
+          </div>
+
+          <div>
+            <span>
+              Due Date
+            </span>
+
+            <strong>
+              {dueDate}
+            </strong>
+          </div>
 
         </div>
 
       </div>
 
 
-      {/* =====================================================
-          MOM WELLNESS
-      ===================================================== */}
+      {/* DEVELOPMENT SECTION */}
 
-      <div className="mom-tip-card">
+      <div className="development-section">
 
-        <div className="tip-icon">
-          <FaLeaf />
+        <div className="section-header">
+
+          <h2>
+            🌱 This Week's Development
+          </h2>
+
+          <span>
+            Week {pregnancyWeek || "--"}
+          </span>
+
+        </div>
+
+
+        <div className="development-content">
+
+          <div className="development-icon">
+            {babyInfo.fruit}
+          </div>
+
+          <div>
+
+            <h3>
+              Growing beautifully
+            </h3>
+
+            <p>
+              {babyInfo.description}
+            </p>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      {/* PREGNANCY DETAILS */}
+
+      <div className="pregnancy-details">
+
+        <div className="section-header">
+
+          <h2>
+            💗 Pregnancy Details
+          </h2>
+
+        </div>
+
+
+        <div className="details-grid">
+
+          <div className="detail-item">
+
+            <span>
+              Last Menstrual Period
+            </span>
+
+            <strong>
+              {lastMenstrualPeriod}
+            </strong>
+
+          </div>
+
+
+          <div className="detail-item">
+
+            <span>
+              Pregnancy Type
+            </span>
+
+            <strong>
+              {pregnancyType}
+            </strong>
+
+          </div>
+
+
+          <div className="detail-item">
+
+            <span>
+              First Pregnancy
+            </span>
+
+            <strong>
+              {pregnancy.firstPregnancy
+                ? "Yes"
+                : "No"}
+            </strong>
+
+          </div>
+
+
+          <div className="detail-item">
+
+            <span>
+              High Risk
+            </span>
+
+            <strong>
+              {pregnancy.highRisk
+                ? "Yes"
+                : "No"}
+            </strong>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      {/* HEALTH NOTE */}
+
+      <div className="baby-health-note">
+
+        <div className="health-note-icon">
+          💕
         </div>
 
         <div>
 
-          <h2>
-            💗 Mom's Wellness Tip
-          </h2>
+          <h3>
+            Take care of yourself
+          </h3>
 
           <p>
-            {babyData.tip}
+            Every pregnancy is unique. Follow your
+            healthcare provider's advice and attend
+            your regular prenatal appointments.
           </p>
 
         </div>
 
       </div>
 
-
-      {/* =====================================================
-          DISCLAIMER
-      ===================================================== */}
-
-      <p className="baby-disclaimer">
-
-        Fruit comparisons are approximate and are
-        provided for simple visualization only.
-        For medical advice, always consult your
-        healthcare professional.
-
-      </p>
-
     </div>
   );
-}
-
-
-// =========================================================
-// TRIMESTER
-// =========================================================
-
-function getTrimester(week) {
-
-  if (!week) {
-    return null;
-  }
-
-  if (week <= 13) {
-    return "First Trimester";
-  }
-
-  if (week <= 27) {
-    return "Second Trimester";
-  }
-
-  return "Third Trimester";
-}
-
-
-// =========================================================
-// BABY DATA
-// =========================================================
-
-function getBabyDevelopment(week) {
-
-  if (!week) {
-
-    return {
-      fruit: "🌱",
-      fruitName: "your baby",
-      article: "",
-      highlights: [
-        "Your pregnancy information will appear here.",
-      ],
-      tip:
-        "Continue following your healthcare professional's advice.",
-    };
-
-  }
-
-
-  if (week <= 4) {
-
-    return {
-      fruit: "🌱",
-      fruitName: "seed",
-      article: "a",
-      highlights: [
-        "Early development is beginning.",
-        "The foundation for major organs is forming.",
-        "Your body is adapting to pregnancy.",
-      ],
-      tip:
-        "Focus on rest, hydration, and a balanced diet.",
-    };
-
-  }
-
-
-  if (week <= 7) {
-
-    return {
-      fruit: "🫐",
-      fruitName: "blueberry",
-      article: "a",
-      highlights: [
-        "Early brain and spinal cord development is underway.",
-        "The heart is beginning to develop.",
-        "Tiny facial features are starting to form.",
-      ],
-      tip:
-        "Take your prenatal vitamins as recommended and stay hydrated.",
-    };
-
-  }
-
-
-  if (week <= 10) {
-
-    return {
-      fruit: "🍓",
-      fruitName: "strawberry",
-      article: "a",
-      highlights: [
-        "Major organs continue developing.",
-        "Tiny fingers and toes are beginning to form.",
-        "Facial features are becoming more defined.",
-      ],
-      tip:
-        "Eat nutritious meals and give yourself plenty of rest.",
-    };
-
-  }
-
-
-  if (week <= 13) {
-
-    return {
-      fruit: "🍋",
-      fruitName: "lemon",
-      article: "a",
-      highlights: [
-        "Your baby's body is becoming more proportionate.",
-        "Movement is developing even though you may not feel it yet.",
-        "Bones and muscles continue to develop.",
-      ],
-      tip:
-        "Keep up with prenatal appointments and gentle activity if recommended.",
-    };
-
-  }
-
-
-  if (week <= 16) {
-
-    return {
-      fruit: "🥑",
-      fruitName: "avocado",
-      article: "an",
-      highlights: [
-        "Your baby is becoming more active.",
-        "Facial muscles are developing.",
-        "The nervous system continues to mature.",
-      ],
-      tip:
-        "Stay active with pregnancy-safe movement and drink plenty of water.",
-    };
-
-  }
-
-
-  if (week <= 20) {
-
-    return {
-      fruit: "🍌",
-      fruitName: "banana",
-      article: "a",
-      highlights: [
-        "Your baby's movements are becoming stronger.",
-        "Hearing is developing.",
-        "Facial features are becoming more defined.",
-      ],
-      tip:
-        "Stay hydrated, eat balanced meals, and get enough rest.",
-    };
-
-  }
-
-
-  if (week <= 24) {
-
-    return {
-      fruit: "🌽",
-      fruitName: "ear of corn",
-      article: "an",
-      highlights: [
-        "Your baby's movements may become easier to notice.",
-        "The lungs continue developing.",
-        "Your baby is responding to sounds.",
-      ],
-      tip:
-        "Take regular breaks, stay hydrated, and prioritize comfortable rest.",
-    };
-
-  }
-
-
-  if (week <= 27) {
-
-    return {
-      fruit: "🥦",
-      fruitName: "broccoli head",
-      article: "a",
-      highlights: [
-        "Your baby continues gaining weight.",
-        "The brain is developing rapidly.",
-        "Your baby's senses continue becoming more developed.",
-      ],
-      tip:
-        "Maintain a nutritious diet and keep up with regular checkups.",
-    };
-
-  }
-
-
-  if (week <= 30) {
-
-    return {
-      fruit: "🍆",
-      fruitName: "eggplant",
-      article: "an",
-      highlights: [
-        "Your baby is gaining more body fat.",
-        "The brain continues growing quickly.",
-        "Your baby's movements may feel stronger.",
-      ],
-      tip:
-        "Get comfortable sleep whenever possible and stay well hydrated.",
-    };
-
-  }
-
-
-  if (week <= 33) {
-
-    return {
-      fruit: "🥥",
-      fruitName: "coconut",
-      article: "a",
-      highlights: [
-        "Your baby's bones are continuing to strengthen.",
-        "The brain and nervous system continue maturing.",
-        "Your baby is practicing breathing movements.",
-      ],
-      tip:
-        "Rest when you need to and continue attending prenatal appointments.",
-    };
-
-  }
-
-
-  if (week <= 36) {
-
-    return {
-      fruit: "🍈",
-      fruitName: "honeydew melon",
-      article: "a",
-      highlights: [
-        "Your baby continues gaining weight.",
-        "The lungs are approaching maturity.",
-        "Your baby is preparing for birth.",
-      ],
-      tip:
-        "Keep your essentials ready and follow your healthcare provider's guidance.",
-    };
-
-  }
-
-
-  if (week <= 39) {
-
-    return {
-      fruit: "🍉",
-      fruitName: "small watermelon",
-      article: "a",
-      highlights: [
-        "Your baby is continuing to mature.",
-        "The brain and lungs continue developing.",
-        "Your baby is getting ready for birth.",
-      ],
-      tip:
-        "Rest, stay hydrated, and contact your healthcare provider about any concerns.",
-    };
-
-  }
-
-
-  return {
-
-    fruit: "🍉",
-
-    fruitName: "watermelon",
-
-    article: "a",
-
-    highlights: [
-      "Your baby is in the final stage of development.",
-      "The body continues preparing for birth.",
-      "Your baby is ready for the journey into the world.",
-    ],
-
-    tip:
-      "Stay calm, rest when possible, and follow your healthcare provider's birth guidance.",
-
-  };
-}
+};
 
 export default BabyDevelopment;

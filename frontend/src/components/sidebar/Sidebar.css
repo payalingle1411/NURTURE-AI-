@@ -1,274 +1,508 @@
+ /* =========================================================
+   NURTURE AI — SIDEBAR
+   Lavender + Pink Professional Theme
+   ========================================================= */
+
+:root {
+  --sidebar-bg: #ffffff;
+  --sidebar-border: #eee7f7;
+
+  --primary-purple: #8b5cf6;
+  --primary-purple-dark: #7c3aed;
+
+  --pink: #ec4899;
+  --pink-light: #fce7f3;
+
+  --lavender: #f5f0ff;
+  --lavender-dark: #ede5ff;
+
+  --text-dark: #2d2340;
+  --text-muted: #8a8098;
+
+  --hover-bg: #faf7ff;
+
+  --shadow-sidebar: 0 8px 30px rgba(91, 67, 125, 0.08);
+}
+
+
 /* =========================================================
    SIDEBAR
-========================================================= */
+   ========================================================= */
 
 .sidebar {
-    width: 250px;
-    height: 100vh;
+  position: fixed;
 
-    background: #ffffff;
-    border-right: 1px solid #e5e7eb;
+  top: 0;
+  left: 0;
 
-    display: flex;
-    flex-direction: column;
+  width: 255px;
+  height: 100vh;
 
-    position: fixed;
-    left: 0;
-    top: 0;
+  background: var(--sidebar-bg);
 
-    z-index: 1000;
+  border-right: 1px solid var(--sidebar-border);
 
-    box-sizing: border-box;
+  box-shadow: var(--shadow-sidebar);
 
-    overflow-y: auto;
-    overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+
+  z-index: 1000;
+
+  padding: 28px 16px 18px;
+
+  overflow-y: auto;
+
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
 }
 
 
 /* =========================================================
    LOGO
-========================================================= */
+   ========================================================= */
 
 .logo {
-    text-align: center;
+  position: relative;
 
-    padding: 25px 15px;
+  padding: 4px 12px 25px;
 
-    border-bottom: 1px solid #ececec;
+  margin-bottom: 10px;
+}
 
-    flex-shrink: 0;
+.logo::after {
+  content: "";
+
+  position: absolute;
+
+  left: 12px;
+  bottom: 0;
+
+  width: 45px;
+  height: 3px;
+
+  border-radius: 10px;
+
+  background: linear-gradient(
+    90deg,
+    var(--primary-purple),
+    var(--pink)
+  );
 }
 
 .logo h2 {
-    margin: 0 0 5px;
+  margin: 0;
 
-    color: #6c63ff;
+  font-size: 25px;
 
-    font-size: 23px;
-    font-weight: 750;
+  font-weight: 800;
+
+  letter-spacing: -0.7px;
+
+  background: linear-gradient(
+    135deg,
+    #7c3aed,
+    #ec4899
+  );
+
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+
+  background-clip: text;
 }
 
 .logo p {
-    margin: 0;
+  margin: 5px 0 0;
 
-    color: #94a3b8;
+  font-size: 11px;
 
-    font-size: 12px;
+  font-weight: 600;
+
+  letter-spacing: 0.5px;
+
+  color: var(--text-muted);
 }
 
 
 /* =========================================================
    MENU
-========================================================= */
+   ========================================================= */
 
 .menu {
-    list-style: none;
+  list-style: none;
 
-    padding: 18px 0;
-    margin: 0;
+  padding: 0;
+  margin: 12px 0 0;
 
-    flex: 1;
+  display: flex;
+  flex-direction: column;
+
+  gap: 5px;
 }
 
 
 /* =========================================================
    MENU ITEM
-========================================================= */
+   ========================================================= */
 
 .menu li {
-    display: flex;
-    align-items: center;
+  position: relative;
 
-    gap: 14px;
+  display: flex;
+  align-items: center;
 
-    padding: 13px 22px;
-    margin: 4px 10px;
+  gap: 13px;
 
-    border-radius: 9px;
+  min-height: 47px;
 
-    cursor: pointer;
+  padding: 0 14px;
 
-    color: #475569;
+  border-radius: 12px;
 
-    font-size: 14px;
-    font-weight: 500;
+  color: var(--text-muted);
 
-    transition:
-        background 0.2s ease,
-        color 0.2s ease,
-        transform 0.2s ease;
+  font-size: 14px;
 
-    box-sizing: border-box;
-}
+  font-weight: 600;
 
+  cursor: pointer;
 
-/* =========================================================
-   MENU HOVER
-========================================================= */
+  user-select: none;
 
-.menu li:hover {
-    background: #f5f4ff;
-    color: #6c63ff;
-
-    transform: translateX(2px);
-}
-
-
-/* =========================================================
-   ACTIVE MENU
-========================================================= */
-
-.menu li.active {
-    background: #6c63ff;
-
-    color: #ffffff;
-
-    box-shadow:
-        0 6px 15px rgba(108, 99, 255, 0.20);
-}
-
-.menu li.active:hover {
-    background: #635bff;
-    color: #ffffff;
+  transition:
+    background 0.2s ease,
+    color 0.2s ease,
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
 
 /* =========================================================
    ICON
-========================================================= */
+   ========================================================= */
 
-.icon {
-    min-width: 18px;
-    width: 18px;
+.menu li .icon {
+  flex-shrink: 0;
 
-    font-size: 17px;
+  width: 17px;
+  height: 17px;
 
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  font-size: 16px;
+
+  color: #9c8eaa;
+
+  transition:
+    color 0.2s ease,
+    transform 0.2s ease;
+}
+
+
+/* =========================================================
+   HOVER
+   ========================================================= */
+
+.menu li:hover {
+  background: var(--hover-bg);
+
+  color: var(--primary-purple);
+
+  transform: translateX(2px);
+}
+
+.menu li:hover .icon {
+  color: var(--primary-purple);
+
+  transform: scale(1.08);
+}
+
+
+/* =========================================================
+   ACTIVE ITEM
+   ========================================================= */
+
+.menu li.active {
+  color: #ffffff;
+
+  background: linear-gradient(
+    135deg,
+    #8b5cf6,
+    #ec4899
+  );
+
+  box-shadow:
+    0 7px 18px rgba(139, 92, 246, 0.20),
+    0 3px 8px rgba(236, 72, 153, 0.10);
+}
+
+
+/* Active icon */
+
+.menu li.active .icon {
+  color: #ffffff;
+}
+
+
+/* =========================================================
+   ACTIVE LEFT INDICATOR
+   ========================================================= */
+
+.menu li.active::before {
+  content: "";
+
+  position: absolute;
+
+  left: -16px;
+
+  top: 50%;
+
+  transform: translateY(-50%);
+
+  width: 4px;
+  height: 25px;
+
+  border-radius: 0 8px 8px 0;
+
+  background: linear-gradient(
+    180deg,
+    #8b5cf6,
+    #ec4899
+  );
 }
 
 
 /* =========================================================
    LOGOUT
-========================================================= */
+   ========================================================= */
 
 .logout {
-    display: flex;
-    align-items: center;
+  margin-top: auto;
 
-    gap: 14px;
+  display: flex;
+  align-items: center;
 
-    padding: 18px 22px;
+  gap: 13px;
 
-    margin-top: auto;
+  min-height: 47px;
 
-    cursor: pointer;
+  padding: 0 14px;
 
-    border-top: 1px solid #ececec;
+  border-radius: 12px;
 
-    color: #e53935;
+  color: #a07891;
 
-    font-size: 14px;
-    font-weight: 500;
+  font-size: 14px;
 
-    flex-shrink: 0;
+  font-weight: 600;
 
-    transition:
-        background 0.2s ease,
-        color 0.2s ease;
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    color 0.2s ease,
+    transform 0.2s ease;
 }
+
+
+/* Logout icon */
+
+.logout .icon {
+  width: 17px;
+  height: 17px;
+
+  color: #d48aa9;
+
+  transition: color 0.2s ease;
+}
+
+
+/* Logout hover */
 
 .logout:hover {
-    background: #fff4f4;
+  background: #fff2f7;
+
+  color: #d93676;
+
+  transform: translateX(2px);
+}
+
+.logout:hover .icon {
+  color: #e83e82;
 }
 
 
 /* =========================================================
-   MAIN CONTENT
-========================================================= */
+   CLOSE BUTTON
+   ========================================================= */
 
-.main-content {
-    margin-left: 250px;
+.sidebar-close {
+  display: none;
 
-    width: calc(100% - 250px);
+  position: absolute;
 
-    min-height: 100vh;
+  top: 18px;
+  right: 16px;
 
-    box-sizing: border-box;
+  width: 34px;
+  height: 34px;
+
+  border: none;
+
+  border-radius: 10px;
+
+  background: #faf7ff;
+
+  color: #7c6d89;
+
+  align-items: center;
+  justify-content: center;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.sidebar-close:hover {
+  background: #fce7f3;
+
+  color: #db2777;
+
+  transform: rotate(5deg);
 }
 
 
 /* =========================================================
-   APPOINTMENT SUPPORT
-========================================================= */
+   MOBILE OVERLAY
+   ========================================================= */
 
-.appointment-page {
-    width: 100%;
-    min-height: 100vh;
+.sidebar-overlay {
+  position: fixed;
 
-    box-sizing: border-box;
+  inset: 0;
 
-    padding: 30px;
+  background: rgba(45, 35, 64, 0.35);
+
+  backdrop-filter: blur(3px);
+
+  -webkit-backdrop-filter: blur(3px);
+
+  z-index: 999;
+
+  animation: sidebarOverlayFade 0.25s ease;
 }
 
-.appointment-container {
-    width: 100%;
+@keyframes sidebarOverlayFade {
+  from {
+    opacity: 0;
+  }
 
-    max-width: 1500px;
-
-    margin: 0 auto;
-
-    box-sizing: border-box;
+  to {
+    opacity: 1;
+  }
 }
 
-.form-row {
-    display: grid;
 
-    grid-template-columns:
-        repeat(2, minmax(0, 1fr));
+/* =========================================================
+   SCROLLBAR
+   ========================================================= */
 
-    gap: 20px;
-
-    width: 100%;
+.sidebar::-webkit-scrollbar {
+  width: 5px;
 }
 
-.form-group {
-    width: 100%;
-    min-width: 0;
+.sidebar::-webkit-scrollbar-track {
+  background: transparent;
 }
 
-.form-group input,
-.form-group select,
-.form-group textarea {
-    width: 100%;
-    max-width: 100%;
+.sidebar::-webkit-scrollbar-thumb {
+  background: #e9def7;
 
-    box-sizing: border-box;
+  border-radius: 10px;
+}
+
+.sidebar::-webkit-scrollbar-thumb:hover {
+  background: #d8c7ed;
+}
+
+
+/* =========================================================
+   TABLET
+   ========================================================= */
+
+@media (max-width: 1024px) {
+
+  .sidebar {
+    transform: translateX(-100%);
+
+    width: 270px;
+
+    box-shadow:
+      10px 0 35px rgba(45, 35, 64, 0.12);
+  }
+
+  .sidebar.sidebar-open {
+    transform: translateX(0);
+  }
+
+  .sidebar-close {
+    display: flex;
+  }
+
+  .logo {
+    padding-top: 8px;
+    padding-right: 45px;
+  }
+
 }
 
 
 /* =========================================================
    MOBILE
-========================================================= */
+   ========================================================= */
 
-@media (max-width: 700px) {
+@media (max-width: 600px) {
 
-    .sidebar {
-        width: 220px;
-    }
+  .sidebar {
+    width: min(285px, 85vw);
 
-    .main-content {
-        margin-left: 220px;
+    padding: 24px 14px 16px;
+  }
 
-        width: calc(100% - 220px);
-    }
+  .menu {
+    gap: 4px;
+  }
 
-    .appointment-page {
-        padding: 20px;
-    }
+  .menu li,
+  .logout {
+    min-height: 48px;
 
-    .form-row {
-        grid-template-columns: 1fr;
-    }
+    font-size: 14px;
+  }
+
+  .logo h2 {
+    font-size: 23px;
+  }
+
+}
+
+
+/* =========================================================
+   SMALL MOBILE
+   ========================================================= */
+
+@media (max-width: 380px) {
+
+  .sidebar {
+    width: 82vw;
+  }
+
+  .menu li,
+  .logout {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+
 }

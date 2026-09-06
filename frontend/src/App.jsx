@@ -1,32 +1,93 @@
 import React from "react";
+
 import {
   BrowserRouter,
   Routes,
   Route,
+  Navigate,
 } from "react-router-dom";
+
+
+// =============================================================
+// AUTH
+// =============================================================
 
 import Login from "./pages/Login/login.jsx";
 import Register from "./pages/Register/register.jsx";
 
+
+// =============================================================
+// MOTHER DASHBOARD
+// =============================================================
+
 import Dashboard from "./pages/Dashboard/dashboard.jsx";
+
+
+// =============================================================
+// COMMON COMPONENTS
+// =============================================================
 
 import Navbar from "./components/Navbar/Navbar.jsx";
 import Sidebar from "./components/sidebar/Sidebar.jsx";
 
+
+// =============================================================
+// WELCOME
+// =============================================================
+
 import Welcome from "./pages/Welcome page/welcome.jsx";
+
+
+// =============================================================
+// MOTHER FORMS
+// =============================================================
 
 import PersonalInfo from "./pages/Form/PersonalInfo/personalInfo.jsx";
 import PregnancyDetails from "./pages/Form/PregnancyDetails/PregnancyDetails.jsx";
 
+
+// =============================================================
+// APPOINTMENTS
+// =============================================================
+
 import Appointment from "./pages/Appointment/Appointment";
 import AppointmentHistory from "./pages/Appointment/AppointmentHistory.jsx";
 
+
+// =============================================================
+// PROFILE
+// =============================================================
+
 import Profile from "./pages/Profile/Profile.jsx";
+
+
+// =============================================================
+// BABY DEVELOPMENT
+// =============================================================
+
 import BabyDevelopment from "./components/WelcomeCard/BabyDevelopment.jsx";
+
+
+// =============================================================
+// FAMILY MEMBER
+// =============================================================
 
 import FamilyForm from "./pages/FamilyForm/FForm.jsx";
 import FamilyFormDetails from "./pages/FamilyForm/FForm1.jsx";
 import FamilyDashboard from "./pages/FamilyDashboard/familyDashboard.jsx";
+
+
+// =============================================================
+// HEALTH TRACKING
+// =============================================================
+
+import HealthTracking from "./pages/HealthTracking/HealthTracking.jsx";
+import Report from "./pages/Report/Report.jsx";
+
+
+// =============================================================
+// PROTECTED ROUTE
+// =============================================================
 
 import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute.jsx";
 
@@ -65,7 +126,6 @@ function App() {
 
         {/* =====================================================
             MOTHER DASHBOARD
-            ONLY MOTHER CAN ACCESS
         ===================================================== */}
 
         <Route
@@ -85,7 +145,7 @@ function App() {
         ===================================================== */}
 
         <Route
-          path="/Navbar"
+          path="/navbar"
           element={
             <ProtectedRoute
               allowedRoles={["mother", "family member"]}
@@ -96,7 +156,7 @@ function App() {
         />
 
         <Route
-          path="/Sidebar"
+          path="/sidebar"
           element={
             <ProtectedRoute
               allowedRoles={["mother", "family member"]}
@@ -213,6 +273,33 @@ function App() {
 
 
         {/* =====================================================
+            HEALTH TRACKING
+            ONLY MOTHER
+        ===================================================== */}
+
+        <Route
+          path="/health-tracking"
+          element={
+            <ProtectedRoute
+              allowedRoles={["mother"]}
+            >
+              <HealthTracking />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/report"
+          element={
+            <ProtectedRoute
+              allowedRoles={["mother"]}
+            >
+              <Report />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* =====================================================
             FAMILY MEMBER FORM
             ONLY FAMILY MEMBER
         ===================================================== */}
@@ -269,9 +356,7 @@ function App() {
 
         <Route
           path="*"
-          element={
-            <RoleBasedHome />
-          }
+          element={<RoleBasedHome />}
         />
 
       </Routes>
@@ -283,16 +368,20 @@ function App() {
 
 /* =============================================================
    ROLE BASED HOME
+
+   IMPORTANT:
+   We use sessionStorage because the currently logged-in
+   user should be isolated per browser tab.
    ============================================================= */
 
 function RoleBasedHome() {
 
   const userId =
-    localStorage.getItem("userId");
+    sessionStorage.getItem("userId");
 
   const role =
     String(
-      localStorage.getItem("role") || ""
+      sessionStorage.getItem("role") || ""
     )
       .trim()
       .toLowerCase()
@@ -318,6 +407,7 @@ function RoleBasedHome() {
   // -----------------------------------------------------------
 
   if (role === "family member") {
+
     return (
       <Navigate
         to="/family-dashboard"
@@ -332,6 +422,7 @@ function RoleBasedHome() {
   // -----------------------------------------------------------
 
   if (role === "mother") {
+
     return (
       <Navigate
         to="/dashboard"
@@ -355,3 +446,4 @@ function RoleBasedHome() {
 
 
 export default App;
+

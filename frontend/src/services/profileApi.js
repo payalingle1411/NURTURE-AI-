@@ -6,10 +6,12 @@ import API from "./api";
 
 export const getPersonalInfo = async (userId) => {
   return await API.get(
-    `/profile/personal-info/${userId}`
+    `/profile/personal-info/${userId}`,
+    {
+      withCredentials: true,
+    }
   );
 };
-
 
 // =========================================================
 // CREATE PERSONAL INFORMATION
@@ -18,10 +20,12 @@ export const getPersonalInfo = async (userId) => {
 export const savePersonalInfo = async (data) => {
   return await API.post(
     "/profile/personal-info",
-    data
+    data,
+    {
+      withCredentials: true,
+    }
   );
 };
-
 
 // =========================================================
 // UPDATE PERSONAL INFORMATION
@@ -33,6 +37,9 @@ export const updatePersonalInfo = async (
 ) => {
   return await API.put(
     `/profile/personal-info/${userId}`,
-    data
+    data,
+    {
+      withCredentials: true,
+    }
   );
 };

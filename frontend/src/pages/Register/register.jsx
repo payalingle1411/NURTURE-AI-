@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import axios from "axios";
 
 import {
   FaUser,
@@ -8,7 +7,6 @@ import {
   FaPhone,
   FaUserTag,
   FaLock,
-  FaLockOpen,
   FaEye,
   FaEyeSlash,
   FaShieldAlt,
@@ -17,19 +15,17 @@ import {
 
 import { FcGoogle } from "react-icons/fc";
 
+import API from "../../services/api";
+
 import "./Register.css";
 
 function Register() {
   const navigate = useNavigate();
 
   const [showPassword, setShowPassword] = useState(false);
-
   const [loading, setLoading] = useState(false);
-
   const [sendingOtp, setSendingOtp] = useState(false);
-
   const [otpSent, setOtpSent] = useState(false);
-
   const [timer, setTimer] = useState(0);
 
   const [formData, setFormData] = useState({
@@ -43,17 +39,17 @@ function Register() {
   });
 
   // ==========================================
-// FORMAT OTP TIMER
-// ==========================================
+  // FORMAT OTP TIMER
+  // ==========================================
 
-const formatTimer = (seconds) => {
-  const minutes = Math.floor(seconds / 60);
-  const remainingSeconds = seconds % 60;
+  const formatTimer = (seconds) => {
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = seconds % 60;
 
-  return `${minutes}:${remainingSeconds
-    .toString()
-    .padStart(2, "0")}`;
-};
+    return `${minutes}:${remainingSeconds
+      .toString()
+      .padStart(2, "0")}`;
+  };
 
   // ==========================================
   // HANDLE INPUT CHANGE
@@ -117,10 +113,13 @@ const formatTimer = (seconds) => {
       console.log("EMAIL:", email);
       console.log("==============================");
 
-      const response = await axios.post(
-        "http://localhost:8080/api/auth/send-otp",
+      const response = await API.post(
+        "/auth/send-otp",
         {
           email: email,
+        },
+        {
+          withCredentials: true,
         }
       );
 
@@ -162,7 +161,8 @@ const formatTimer = (seconds) => {
         }
       } else if (error.request) {
         alert(
-          "Unable to connect to Spring Boot backend."
+          "Unable to connect to the server.\n\n" +
+            "Please make sure Nurture AI and the backend server are running."
         );
       } else {
         alert(
@@ -199,7 +199,9 @@ const formatTimer = (seconds) => {
     }
 
     if (!otpSent) {
-      alert("Please verify your email with OTP first.");
+      alert(
+        "Please verify your email with OTP first."
+      );
       return;
     }
 
@@ -209,7 +211,9 @@ const formatTimer = (seconds) => {
     }
 
     if (formData.phoneNumber.length !== 10) {
-      alert("Please enter a valid 10-digit phone number.");
+      alert(
+        "Please enter a valid 10-digit phone number."
+      );
       return;
     }
 
@@ -239,9 +243,12 @@ const formatTimer = (seconds) => {
 
       console.log("Request:", requestData);
 
-      const response = await axios.post(
-        "http://localhost:8080/api/auth/register",
-        requestData
+      const response = await API.post(
+        "/auth/register",
+        requestData,
+        {
+          withCredentials: true,
+        }
       );
 
       console.log("REGISTER RESPONSE:");
@@ -253,8 +260,7 @@ const formatTimer = (seconds) => {
 
       if (
         response.status === 200 &&
-        response.data ===
-          "Registration Successful"
+        response.data === "Registration Successful"
       ) {
         alert(
           "Account created successfully. Please login."
@@ -283,7 +289,10 @@ const formatTimer = (seconds) => {
         );
       }
     } catch (error) {
-      console.error("REGISTER ERROR:", error);
+      console.error(
+        "REGISTER ERROR:",
+        error
+      );
 
       if (error.response) {
         console.error(
@@ -296,7 +305,10 @@ const formatTimer = (seconds) => {
           error.response.data
         );
 
-        if (typeof error.response.data === "string") {
+        if (
+          typeof error.response.data ===
+          "string"
+        ) {
           alert(error.response.data);
         } else {
           alert(
@@ -306,7 +318,8 @@ const formatTimer = (seconds) => {
         }
       } else if (error.request) {
         alert(
-          "Unable to connect to Spring Boot backend."
+          "Unable to connect to the server.\n\n" +
+            "Please make sure Nurture AI and the backend server are running."
         );
       } else {
         alert(
@@ -348,6 +361,10 @@ const formatTimer = (seconds) => {
     }));
   };
 
+  // ==========================================
+  // UI
+  // ==========================================
+
   return (
     <div className="register-container">
 
@@ -364,7 +381,6 @@ const formatTimer = (seconds) => {
       ====================================== */}
 
       <div className="register-left">
-
         <div className="overlay">
 
           <h1>🤱 Nurture AI</h1>
@@ -380,7 +396,6 @@ const formatTimer = (seconds) => {
           </p>
 
         </div>
-
       </div>
 
       {/* ======================================
@@ -436,36 +451,40 @@ const formatTimer = (seconds) => {
 
             <div className="input-box">
 
-  <FaEnvelope className="input-icon" />
+              <FaEnvelope className="input-icon" />
 
-  <input
-    type="email"
-    name="email"
-    value={formData.email}
-    onChange={handleChange}
-    placeholder="Enter your email"
-    autoComplete="email"
-    required
-  />
+              <input
+                type="email"
+                name="email"
+                value={formData.email}
+                onChange={handleChange}
+                placeholder="Enter your email"
+                autoComplete="email"
+                required
+              />
 
-  <button
-    type="button"
-    className="otp-btn"
-    disabled={sendingOtp || timer > 0}
-    onClick={handleSendOtp}
-  >
-    {sendingOtp ? (
-  <span className="small-loader"></span>
-) : timer > 0 ? (
-  formatTimer(timer)
-) : otpSent ? (
-  "Resend OTP"
-) : (
-  "Send OTP"
-)}
-  </button>
+              <button
+                type="button"
+                className="otp-btn"
+                disabled={
+                  sendingOtp || timer > 0
+                }
+                onClick={handleSendOtp}
+              >
 
-</div>
+                {sendingOtp ? (
+                  <span className="small-loader"></span>
+                ) : timer > 0 ? (
+                  formatTimer(timer)
+                ) : otpSent ? (
+                  "Resend OTP"
+                ) : (
+                  "Send OTP"
+                )}
+
+              </button>
+
+            </div>
 
           </div>
 
@@ -633,7 +652,9 @@ const formatTimer = (seconds) => {
                     : "password"
                 }
                 name="confirmPassword"
-                value={formData.confirmPassword}
+                value={
+                  formData.confirmPassword
+                }
                 onChange={handleChange}
                 placeholder="Confirm Password"
                 autoComplete="new-password"
@@ -658,7 +679,7 @@ const formatTimer = (seconds) => {
               />
 
               <span>
-                I agree to the{" "}
+                I agree to{" "}
                 <a href="/terms">
                   Terms & Conditions
                 </a>

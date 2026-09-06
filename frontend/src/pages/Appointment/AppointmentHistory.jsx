@@ -4,6 +4,8 @@ import { useNavigate } from "react-router-dom";
 import Sidebar from "../../components/Sidebar/Sidebar";
 import Navbar from "../../components/Navbar/Navbar";
 
+import API from "../../services/api";
+
 import "./AppointmentHistory.css";
 
 function AppointmentHistory() {
@@ -18,12 +20,6 @@ function AppointmentHistory() {
   const [error, setError] = useState("");
 
   // =========================================================
-  // API URL
-  // =========================================================
-
-  const API_URL = "http://localhost:8080/api";
-
-  // =========================================================
   // FETCH CURRENT USER APPOINTMENTS
   // =========================================================
 
@@ -32,25 +28,98 @@ function AppointmentHistory() {
       setLoading(true);
       setError("");
 
-      const response = await fetch(
-        `${API_URL}/appointments/my`,
+      // =======================================================
+      // HTTPS-COMPATIBLE API REQUEST
+      // =======================================================
+      //
+      // Do NOT use:
+      // http://localhost:8080/api
+      //
+      // API service uses:
+      // baseURL: "/api"
+      //
+      // Vite HTTPS proxy forwards /api to Spring Boot.
+      //
+      // withCredentials sends the JSESSIONID session cookie.
+      //
+      // =======================================================
+
+      const response = await API.get(
+        "/appointments/my",
         {
-          method: "GET",
-
-          // Send JSESSIONID session cookie
-          credentials: "include",
-
-          headers: {
-            Accept: "application/json",
-          },
+          withCredentials: true,
         }
+      );
+
+      const data = response.data;
+
+      console.log(
+        "Appointments received:",
+        data
+      );
+
+      // =======================================================
+      // SUPPORT DIFFERENT BACKEND RESPONSE FORMATS
+      // =======================================================
+
+      let appointmentList = [];
+
+      if (Array.isArray(data)) {
+        appointmentList = data;
+      } else if (Array.isArray(data?.appointments)) {
+        appointmentList = data.appointments;
+      } else if (Array.isArray(data?.appointmentHistory)) {
+        appointmentList = data.appointmentHistory;
+      } else if (Array.isArray(data?.upcomingAppointments)) {
+        appointmentList = data.upcomingAppointments;
+      } else if (Array.isArray(data?.upcoming)) {
+        appointmentList = data.upcoming;
+      } else if (Array.isArray(data?.futureAppointments)) {
+        appointmentList = data.futureAppointments;
+      }
+
+      // =======================================================
+      // REMOVE DUPLICATE APPOINTMENTS
+      // =======================================================
+
+      const uniqueAppointments = [];
+      const seenIds = new Set();
+
+      appointmentList.forEach((appointment, index) => {
+        if (!appointment) {
+          return;
+        }
+
+        const appointmentId =
+          appointment.id ??
+          appointment.appointmentId ??
+          `appointment-${index}`;
+
+        if (seenIds.has(appointmentId)) {
+          return;
+        }
+
+        seenIds.add(appointmentId);
+
+        uniqueAppointments.push({
+          ...appointment,
+          id: appointment.id ?? appointment.appointmentId,
+        });
+      });
+
+      setAppointments(uniqueAppointments);
+
+    } catch (err) {
+      console.error(
+        "Appointment fetch error:",
+        err
       );
 
       // =======================================================
       // SESSION EXPIRED
       // =======================================================
 
-      if (response.status === 401) {
+      if (err.response?.status === 401) {
         setError(
           "Your login session has expired. Please login again."
         );
@@ -65,72 +134,56 @@ function AppointmentHistory() {
       }
 
       // =======================================================
+      // FORBIDDEN
+      // =======================================================
+
+      if (err.response?.status === 403) {
+        setError(
+          "You are not authorized to view your appointments."
+        );
+        return;
+      }
+
+      // =======================================================
+      // SERVER ERROR
+      // =======================================================
+
+      if (err.response?.status >= 500) {
+        setError(
+          "The server is currently unavailable. Please try again later."
+        );
+        return;
+      }
+
+      // =======================================================
+      // NETWORK ERROR
+      // =======================================================
+
+      if (!err.response) {
+        setError(
+          "Unable to connect to the server. Please check your connection and make sure the backend is running."
+        );
+        return;
+      }
+
+      // =======================================================
       // BACKEND ERROR
       // =======================================================
 
-      if (!response.ok) {
-        let errorMessage =
-          "Unable to fetch appointments.";
-
-        try {
-          const errorText =
-            await response.text();
-
-          if (errorText) {
-            errorMessage = errorText;
-          }
-        } catch (readError) {
-          console.error(
-            "Error reading backend response:",
-            readError
-          );
-        }
-
-        throw new Error(errorMessage);
-      }
-
-      // =======================================================
-      // SUCCESS
-      // =======================================================
-
-      const data = await response.json();
-
-      console.log(
-        "Appointments received:",
-        data
-      );
-
-      setAppointments(
-        Array.isArray(data)
-          ? data
-          : []
-      );
-
-    } catch (err) {
-      console.error(
-        "Appointment fetch error:",
-        err
-      );
-
-      /*
-       * Network error normally means:
-       *
-       * - Spring Boot is not running
-       * - wrong API URL
-       * - CORS problem
-       * - server unavailable
-       */
-
-      if (err instanceof TypeError) {
-        setError(
-          "Unable to connect to the server. Please make sure the backend is running."
+      const backendMessage =
+        err.response?.data?.message ||
+        err.response?.data?.error ||
+        (
+          typeof err.response?.data === "string"
+            ? err.response.data
+            : null
         );
-      } else {
-        setError(
-          err.message ||
-            "Unable to load your appointments. Please try again."
-        );
-      }
+
+      setError(
+        backendMessage ||
+        err.message ||
+        "Unable to load your appointments. Please try again."
+      );
 
     } finally {
       setLoading(false);
@@ -166,9 +219,8 @@ function AppointmentHistory() {
     // ---------------------------------------------------------
 
     if (
-      appointment.status &&
-      appointment.status.toUpperCase() ===
-        "CANCELLED"
+      appointment?.status &&
+      appointment.status.toUpperCase() === "CANCELLED"
     ) {
       return "CANCELLED";
     }
@@ -178,8 +230,8 @@ function AppointmentHistory() {
     // ---------------------------------------------------------
 
     if (
-      !appointment.appointmentDate ||
-      !appointment.appointmentTime
+      !appointment?.appointmentDate ||
+      !appointment?.appointmentTime
     ) {
       return "UPCOMING";
     }
@@ -188,10 +240,9 @@ function AppointmentHistory() {
     // 3. CREATE DATE/TIME
     // ---------------------------------------------------------
 
-    const appointmentDateTime =
-      new Date(
-        `${appointment.appointmentDate}T${appointment.appointmentTime}`
-      );
+    const appointmentDateTime = new Date(
+      `${appointment.appointmentDate}T${appointment.appointmentTime}`
+    );
 
     // ---------------------------------------------------------
     // 4. INVALID DATE
@@ -205,8 +256,7 @@ function AppointmentHistory() {
       return "UPCOMING";
     }
 
-    const currentDateTime =
-      new Date();
+    const currentDateTime = new Date();
 
     // ---------------------------------------------------------
     // 5. PAST = COMPLETED
@@ -239,7 +289,6 @@ function AppointmentHistory() {
   // =========================================================
 
   const getSortedAppointments = () => {
-
     const statusOrder = {
       COMPLETED: 1,
       UPCOMING: 2,
@@ -290,6 +339,7 @@ function AppointmentHistory() {
           dateB.getTime();
 
         // Invalid dates go to the end
+
         if (Number.isNaN(timeA)) {
           return 1;
         }
@@ -315,7 +365,6 @@ function AppointmentHistory() {
   // =========================================================
 
   const formatDate = (date) => {
-
     if (!date) {
       return "-";
     }
@@ -348,7 +397,6 @@ function AppointmentHistory() {
   // =========================================================
 
   const formatTime = (time) => {
-
     if (!time) {
       return "-";
     }
@@ -381,7 +429,6 @@ function AppointmentHistory() {
   // =========================================================
 
   const getStatusIcon = (status) => {
-
     switch (status) {
 
       case "COMPLETED":
@@ -456,26 +503,37 @@ function AppointmentHistory() {
       // -------------------------------------------------------
 
       const response =
-        await fetch(
-          `${API_URL}/appointments/${appointmentId}/cancel`,
+        await API.put(
+          `/appointments/${appointmentId}/cancel`,
+          null,
           {
-            method: "PUT",
-
-            credentials: "include",
-
-            headers: {
-              Accept: "application/json",
-            },
+            withCredentials: true,
           }
         );
+
+      console.log(
+        "Appointment cancelled successfully:",
+        response.data
+      );
+
+      // -------------------------------------------------------
+      // REFRESH LIST
+      // -------------------------------------------------------
+
+      await fetchAppointments();
+
+    } catch (err) {
+
+      console.error(
+        "Cancel appointment error:",
+        err
+      );
 
       // -------------------------------------------------------
       // SESSION EXPIRED
       // -------------------------------------------------------
 
-      if (
-        response.status === 401
-      ) {
+      if (err.response?.status === 401) {
 
         setError(
           "Your login session has expired. Please login again."
@@ -495,12 +553,12 @@ function AppointmentHistory() {
       // -------------------------------------------------------
 
       if (
-        response.status === 404
+        err.response?.status === 404
       ) {
-
-        throw new Error(
+        setError(
           "Appointment not found."
         );
+        return;
       }
 
       // -------------------------------------------------------
@@ -508,91 +566,43 @@ function AppointmentHistory() {
       // -------------------------------------------------------
 
       if (
-        response.status === 403
+        err.response?.status === 403
       ) {
-
-        throw new Error(
+        setError(
           "You cannot cancel this appointment."
         );
+        return;
       }
 
       // -------------------------------------------------------
-      // OTHER ERROR
+      // NETWORK ERROR
       // -------------------------------------------------------
 
-      if (!response.ok) {
-
-        let errorMessage =
-          "Unable to cancel appointment.";
-
-        try {
-
-          const errorText =
-            await response.text();
-
-          if (errorText) {
-            errorMessage =
-              errorText;
-          }
-
-        } catch (readError) {
-
-          console.error(
-            "Error reading cancel response:",
-            readError
-          );
-
-        }
-
-        throw new Error(
-          errorMessage
-        );
-      }
-
-      // -------------------------------------------------------
-      // SUCCESS
-      // -------------------------------------------------------
-
-      const cancelledAppointment =
-        await response.json();
-
-      console.log(
-        "Appointment cancelled successfully:",
-        cancelledAppointment
-      );
-
-      // -------------------------------------------------------
-      // REFRESH LIST
-      // -------------------------------------------------------
-
-      await fetchAppointments();
-
-    } catch (err) {
-
-      console.error(
-        "Cancel appointment error:",
-        err
-      );
-
-      /*
-       * Handle browser/network failure.
-       */
-
-      if (
-        err instanceof TypeError
-      ) {
-
+      if (!err.response) {
         setError(
-          "Unable to connect to the server. Please make sure the backend is running."
+          "Unable to connect to the server. Please check your connection and make sure the backend is running."
         );
-
-      } else {
-
-        setError(
-          err.message ||
-            "Unable to cancel appointment. Please try again."
-        );
+        return;
       }
+
+      // -------------------------------------------------------
+      // BACKEND ERROR
+      // -------------------------------------------------------
+
+      const backendMessage =
+        err.response?.data?.message ||
+        err.response?.data?.error ||
+        (
+          typeof err.response?.data === "string"
+            ? err.response.data
+            : null
+        );
+
+      setError(
+        backendMessage ||
+        err.message ||
+        "Unable to cancel appointment. Please try again."
+      );
     }
   };
 
@@ -609,7 +619,6 @@ function AppointmentHistory() {
 
       <Sidebar />
 
-
       <div className="appointment-history-main">
 
         {/* ===================================================
@@ -617,7 +626,6 @@ function AppointmentHistory() {
         =================================================== */}
 
         <Navbar />
-
 
         <main className="appointment-history-content">
 
@@ -648,7 +656,6 @@ function AppointmentHistory() {
 
             </div>
 
-
             <button
               type="button"
               className="add-history-btn"
@@ -666,7 +673,6 @@ function AppointmentHistory() {
             </button>
 
           </section>
-
 
           {/* =================================================
               STATISTICS
@@ -700,7 +706,6 @@ function AppointmentHistory() {
 
                 </div>
 
-
                 {/* COMPLETED */}
 
                 <div className="mini-stat completed-stat">
@@ -723,7 +728,6 @@ function AppointmentHistory() {
 
                 </div>
 
-
                 {/* UPCOMING */}
 
                 <div className="mini-stat upcoming-stat">
@@ -745,7 +749,6 @@ function AppointmentHistory() {
                   </div>
 
                 </div>
-
 
                 {/* CANCELLED */}
 
@@ -772,7 +775,6 @@ function AppointmentHistory() {
               </section>
 
             )}
-
 
           {/* =================================================
               ERROR
@@ -809,7 +811,6 @@ function AppointmentHistory() {
 
           )}
 
-
           {/* =================================================
               LOADING
           ================================================= */}
@@ -838,7 +839,6 @@ function AppointmentHistory() {
             </div>
 
           )}
-
 
           {/* =================================================
               EMPTY
@@ -889,7 +889,6 @@ function AppointmentHistory() {
 
             )}
 
-
           {/* =================================================
               APPOINTMENT LIST
           ================================================= */}
@@ -933,7 +932,6 @@ function AppointmentHistory() {
 
                 </div>
 
-
                 {/* =================================================
                     APPOINTMENT LIST
                 ================================================= */}
@@ -941,18 +939,23 @@ function AppointmentHistory() {
                 <div className="appointment-list">
 
                   {sortedAppointments.map(
-                    (appointment) => {
+                    (appointment, index) => {
 
                       const status =
                         getAppointmentStatus(
                           appointment
                         );
 
+                      const appointmentKey =
+                        appointment.id ??
+                        appointment.appointmentId ??
+                        `appointment-${index}`;
+
                       return (
 
                         <article
                           className="history-appointment-card"
-                          key={appointment.id}
+                          key={appointmentKey}
                         >
 
                           {/* =================================================
@@ -978,7 +981,6 @@ function AppointmentHistory() {
                             </span>
 
                           </div>
-
 
                           {/* =================================================
                               MAIN
@@ -1010,7 +1012,6 @@ function AppointmentHistory() {
 
                               </div>
 
-
                               {/* STATUS */}
 
                               <span
@@ -1030,7 +1031,6 @@ function AppointmentHistory() {
                               </span>
 
                             </div>
-
 
                             {/* =================================================
                                 DETAILS
@@ -1061,7 +1061,6 @@ function AppointmentHistory() {
 
                               </div>
 
-
                               {/* LOCATION */}
 
                               <div className="appointment-detail">
@@ -1084,7 +1083,6 @@ function AppointmentHistory() {
                                 </div>
 
                               </div>
-
 
                               {/* PURPOSE */}
 
@@ -1113,7 +1111,6 @@ function AppointmentHistory() {
 
                           </div>
 
-
                           {/* =================================================
                               ACTIONS
                           ================================================= */}
@@ -1140,7 +1137,6 @@ function AppointmentHistory() {
                                   Reschedule
                                 </button>
 
-
                                 <button
                                   type="button"
                                   className="cancel-small-btn"
@@ -1156,7 +1152,6 @@ function AppointmentHistory() {
                               </>
 
                             )}
-
 
                             {/* =================================================
                                 VIEW

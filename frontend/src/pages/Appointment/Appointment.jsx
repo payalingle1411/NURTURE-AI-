@@ -4,10 +4,11 @@ import { useNavigate } from "react-router-dom";
 import Sidebar from "../../components/Sidebar/Sidebar";
 import Navbar from "../../components/Navbar/Navbar";
 
+import API from "../../services/api";
+
 import "./Appointment.css";
 
 function Appointment() {
-
   const navigate = useNavigate();
 
   // =========================================================
@@ -33,21 +34,11 @@ function Appointment() {
   const [error, setError] = useState("");
 
   // =========================================================
-  // API
-  // =========================================================
-
-  const API_URL = "http://localhost:8080/api";
-
-  // =========================================================
   // HANDLE INPUT
   // =========================================================
 
   const handleChange = (e) => {
-
-    const {
-      name,
-      value
-    } = e.target;
+    const { name, value } = e.target;
 
     setFormData((previous) => ({
       ...previous,
@@ -63,7 +54,6 @@ function Appointment() {
   // =========================================================
 
   const handleSubmit = async (e) => {
-
     e.preventDefault();
 
     setError("");
@@ -74,11 +64,7 @@ function Appointment() {
     // =======================================================
 
     if (!formData.doctorName.trim()) {
-
-      setError(
-        "Please enter the doctor's name."
-      );
-
+      setError("Please enter the doctor's name.");
       return;
     }
 
@@ -87,11 +73,7 @@ function Appointment() {
     // =======================================================
 
     if (!formData.appointmentDate) {
-
-      setError(
-        "Please select appointment date."
-      );
-
+      setError("Please select appointment date.");
       return;
     }
 
@@ -100,11 +82,7 @@ function Appointment() {
     // =======================================================
 
     if (!formData.appointmentTime) {
-
-      setError(
-        "Please select appointment time."
-      );
-
+      setError("Please select appointment time.");
       return;
     }
 
@@ -116,16 +94,8 @@ function Appointment() {
       `${formData.appointmentDate}T${formData.appointmentTime}`
     );
 
-    if (
-      Number.isNaN(
-        selectedDateTime.getTime()
-      )
-    ) {
-
-      setError(
-        "Please select a valid appointment date and time."
-      );
-
+    if (Number.isNaN(selectedDateTime.getTime())) {
+      setError("Please select a valid appointment date and time.");
       return;
     }
 
@@ -144,131 +114,52 @@ function Appointment() {
     // =======================================================
 
     try {
-
       setLoading(true);
 
       // =====================================================
       // SEND TO BACKEND
       // =====================================================
 
-      const response = await fetch(
-        `${API_URL}/appointments`,
+      const response = await API.post(
+        "/appointments",
         {
-          method: "POST",
+          doctorName: formData.doctorName.trim(),
 
-          credentials: "include",
+          specialization:
+            formData.specialization.trim(),
 
-          headers: {
-            "Content-Type": "application/json",
-            Accept: "application/json",
-          },
+          appointmentDate:
+            formData.appointmentDate,
 
-          body: JSON.stringify({
+          appointmentTime:
+            formData.appointmentTime,
 
-            doctorName:
-              formData.doctorName.trim(),
+          hospital:
+            formData.hospital.trim(),
 
-            specialization:
-              formData.specialization.trim(),
+          location:
+            formData.location.trim(),
 
-            appointmentDate:
-              formData.appointmentDate,
+          purpose:
+            formData.purpose.trim(),
 
-            appointmentTime:
-              formData.appointmentTime,
-
-            hospital:
-              formData.hospital.trim(),
-
-            location:
-              formData.location.trim(),
-
-            purpose:
-              formData.purpose.trim(),
-
-            // Status is NOT sent.
-            //
-            // Backend automatically decides:
-            //
-            // Past -> COMPLETED
-            // Future -> UPCOMING
-          }),
+          // Status is NOT sent.
+          //
+          // Backend automatically decides:
+          //
+          // Past -> COMPLETED
+          // Future -> UPCOMING
+        },
+        {
+          withCredentials: true,
         }
       );
-
-      // =====================================================
-      // SESSION EXPIRED
-      // =====================================================
-
-      if (response.status === 401) {
-
-        setError(
-          "Your login session has expired. Please login again."
-        );
-
-        setTimeout(() => {
-
-          navigate("/login", {
-            replace: true,
-          });
-
-        }, 1500);
-
-        return;
-      }
-
-      // =====================================================
-      // BACKEND ERROR
-      // =====================================================
-
-      if (!response.ok) {
-
-        let errorMessage =
-          "Unable to save appointment.";
-
-        try {
-
-          const responseText =
-            await response.text();
-
-          if (responseText) {
-
-            try {
-
-              const errorData =
-                JSON.parse(responseText);
-
-              errorMessage =
-                errorData.message ||
-                errorData.error ||
-                responseText;
-
-            } catch {
-
-              errorMessage =
-                responseText;
-            }
-          }
-
-        } catch (readError) {
-
-          console.error(
-            "Error reading backend error:",
-            readError
-          );
-        }
-
-        throw new Error(
-          errorMessage
-        );
-      }
 
       // =====================================================
       // SUCCESS RESPONSE
       // =====================================================
 
-      const data =
-        await response.json();
+      const data = response.data;
 
       console.log(
         "Appointment saved successfully:",
@@ -289,40 +180,25 @@ function Appointment() {
       // SIMPLE SUCCESS POPUP
       // =====================================================
 
-      alert(
-        "✅ Appointment Saved Successfully!"
-      );
+      alert("✅ Appointment Saved Successfully!");
 
       // =====================================================
       // SHOW SUCCESS MESSAGE ON PAGE
       // =====================================================
 
-      if (
-        data.status === "COMPLETED"
-      ) {
-
+      if (data.status === "COMPLETED") {
         setMessage(
           "Appointment added successfully. This appointment has been marked as Completed."
         );
-
-      } else if (
-        data.status === "UPCOMING"
-      ) {
-
+      } else if (data.status === "UPCOMING") {
         setMessage(
           "Appointment added successfully. Your appointment is Upcoming."
         );
-
-      } else if (
-        data.status === "CANCELLED"
-      ) {
-
+      } else if (data.status === "CANCELLED") {
         setMessage(
           "Appointment has been Cancelled."
         );
-
       } else {
-
         setMessage(
           "Appointment added successfully."
         );
@@ -339,19 +215,53 @@ function Appointment() {
       }));
 
     } catch (err) {
+      // =====================================================
+      // APPOINTMENT SAVE ERROR
+      // =====================================================
 
       console.error(
         "Appointment save error:",
         err
       );
 
+      // =====================================================
+      // SESSION EXPIRED
+      // =====================================================
+
+      if (err.response?.status === 401) {
+        setError(
+          "Your login session has expired. Please login again."
+        );
+
+        setTimeout(() => {
+          navigate("/login", {
+            replace: true,
+          });
+        }, 1500);
+
+        return;
+      }
+
+      // =====================================================
+      // BACKEND ERROR MESSAGE
+      // =====================================================
+
+      const backendMessage =
+        err.response?.data?.message ||
+        err.response?.data?.error ||
+        (
+          typeof err.response?.data === "string"
+            ? err.response.data
+            : null
+        );
+
       setError(
+        backendMessage ||
         err.message ||
         "Unable to save appointment. Please check your backend connection."
       );
 
     } finally {
-
       setLoading(false);
     }
   };
@@ -361,10 +271,7 @@ function Appointment() {
   // =========================================================
 
   const handleCancel = () => {
-
-    navigate(
-      "/appointment-history"
-    );
+    navigate("/appointment-history");
   };
 
   // =========================================================
@@ -372,7 +279,6 @@ function Appointment() {
   // =========================================================
 
   return (
-
     <div className="appointment-page-layout">
 
       {/* =====================================================
@@ -422,9 +328,7 @@ function Appointment() {
               type="button"
               className="history-navigation-btn"
               onClick={() =>
-                navigate(
-                  "/appointment-history"
-                )
+                navigate("/appointment-history")
               }
             >
               📋 Appointment History
@@ -437,7 +341,6 @@ function Appointment() {
           ================================================= */}
 
           {message && (
-
             <div className="appointment-success">
 
               <div className="success-icon">
@@ -457,7 +360,6 @@ function Appointment() {
               </div>
 
             </div>
-
           )}
 
           {/* =================================================
@@ -465,7 +367,6 @@ function Appointment() {
           ================================================= */}
 
           {error && (
-
             <div className="appointment-error">
 
               <div className="error-icon">
@@ -485,7 +386,6 @@ function Appointment() {
               </div>
 
             </div>
-
           )}
 
           {/* =================================================
@@ -961,18 +861,14 @@ function Appointment() {
                 >
 
                   {loading ? (
-
                     <>
                       <span className="button-loader"></span>
                       Saving...
                     </>
-
                   ) : (
-
                     <>
                       ✓ Save Appointment
                     </>
-
                   )}
 
                 </button>

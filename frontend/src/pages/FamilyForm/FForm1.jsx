@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+
+import API from "../../services/api";
 
 import {
   FaUser,
@@ -89,17 +90,21 @@ function FForm1() {
         // -----------------------------------------------------
         // GET USER INFORMATION FROM DATABASE
         // -----------------------------------------------------
-        // IMPORTANT:
-        // withCredentials is removed because your backend
-        // currently does not return:
+        // HTTPS COMPATIBLE:
+        // Uses centralized API service.
         //
-        // Access-Control-Allow-Credentials: true
+        // Browser:
+        // https://YOUR-IP:5173/api/users/...
         //
-        // This was causing your CORS error.
+        // Vite proxy:
+        // /api -> http://localhost:8080/api
         // -----------------------------------------------------
 
-        const response = await axios.get(
-          `http://localhost:8080/api/users/${userId}`
+        const response = await API.get(
+          `/users/${userId}`,
+          {
+            withCredentials: true,
+          }
         );
 
         console.log(
@@ -136,9 +141,7 @@ function FForm1() {
 
         setFormData((previous) => ({
           ...previous,
-
           memberName: registeredName,
-
           phoneNumber: registeredPhone,
         }));
 
@@ -151,12 +154,15 @@ function FForm1() {
           "Family member phone:",
           registeredPhone
         );
-
       } catch (error) {
         console.error(
           "Unable to load family member information:",
           error
         );
+
+        // -----------------------------------------------------
+        // BACKEND ERROR
+        // -----------------------------------------------------
 
         if (error.response) {
           console.error(
@@ -168,11 +174,44 @@ function FForm1() {
             "Backend response:",
             error.response.data
           );
+
+          // Session expired
+          if (error.response.status === 401) {
+            alert(
+              "Your session has expired. Please login again."
+            );
+
+            navigate("/login", {
+              replace: true,
+            });
+
+            return;
+          }
+
+          // Forbidden
+          if (error.response.status === 403) {
+            alert(
+              "You are not authorized to access this information."
+            );
+
+            return;
+          }
         }
 
-        alert(
-          "Unable to load your registered name and phone number. Please try again."
-        );
+        // -----------------------------------------------------
+        // NETWORK / CONNECTION ERROR
+        // -----------------------------------------------------
+
+        else if (error.request) {
+          alert(
+            "Unable to connect to the backend.\n\n" +
+              "Please make sure your Spring Boot server is running."
+          );
+        } else {
+          alert(
+            "Unable to load your registered name and phone number. Please try again."
+          );
+        }
       } finally {
         setLoadingUser(false);
       }
@@ -235,7 +274,9 @@ function FForm1() {
         "Your session has expired. Please login again."
       );
 
-      navigate("/login");
+      navigate("/login", {
+        replace: true,
+      });
 
       return;
     }
@@ -335,9 +376,12 @@ function FForm1() {
       // =====================================================
       // SAVE FAMILY MEMBER PROFILE
       // =====================================================
+      // HTTPS COMPATIBLE:
+      // Uses centralized API service.
+      // =====================================================
 
-      const response = await axios.post(
-        "http://localhost:8080/api/family-members/create-profile",
+      const response = await API.post(
+        "/family-members/create-profile",
         {
           // -------------------------------------------------
           // FAMILY MEMBER LOGIN USER ID
@@ -366,6 +410,9 @@ function FForm1() {
           relationship: relationship,
 
           age: numericAge,
+        },
+        {
+          withCredentials: true,
         }
       );
 
@@ -449,7 +496,6 @@ function FForm1() {
           }
         );
       }
-
     } catch (error) {
       console.error(
         "Family Member Profile Error:",
@@ -466,19 +512,49 @@ function FForm1() {
           error.response.data
         );
 
-        if (
-          typeof error.response.data === "string"
-        ) {
+        const status = error.response.status;
+        const data = error.response.data;
+
+        // ---------------------------------------------------
+        // SESSION EXPIRED
+        // ---------------------------------------------------
+
+        if (status === 401) {
           alert(
-            error.response.data
+            "Your session has expired. Please login again."
           );
+
+          navigate("/login", {
+            replace: true,
+          });
+
+          return;
+        }
+
+        // ---------------------------------------------------
+        // FORBIDDEN
+        // ---------------------------------------------------
+
+        if (status === 403) {
+          alert(
+            "You are not authorized to create this profile."
+          );
+
+          return;
+        }
+
+        // ---------------------------------------------------
+        // BACKEND MESSAGE
+        // ---------------------------------------------------
+
+        if (typeof data === "string") {
+          alert(data);
         } else {
           alert(
-            error.response.data?.message ||
+            data?.message ||
               "Unable to save family member details."
           );
         }
-
       }
 
       // -----------------------------------------------------
@@ -487,8 +563,8 @@ function FForm1() {
 
       else if (error.request) {
         alert(
-          "Unable to connect to Spring Boot backend.\n\n" +
-            "Please make sure your backend is running on port 8080."
+          "Unable to connect to the backend.\n\n" +
+            "Please make sure your Spring Boot server is running."
         );
       }
 
@@ -501,7 +577,6 @@ function FForm1() {
           "Something went wrong. Please try again."
         );
       }
-
     } finally {
       setLoading(false);
     }

@@ -6,8 +6,6 @@ import React, {
 
 import { useNavigate } from "react-router-dom";
 
-import axios from "axios";
-
 import {
   FaUserCircle,
   FaPhone,
@@ -28,6 +26,8 @@ import {
   FaTimesCircle,
   FaHourglassHalf,
 } from "react-icons/fa";
+
+import API from "../../services/api";
 
 import "./FamilyDashboard.css";
 
@@ -151,6 +151,7 @@ function FamilyDashboard() {
             );
 
             setLoading(false);
+
           }
 
           return;
@@ -158,25 +159,33 @@ function FamilyDashboard() {
 
 
         // =====================================================
-        // API URL
+        // HTTPS-COMPATIBLE API REQUEST
         // =====================================================
-
-        const apiUrl =
-          `http://localhost:8080/api/family-members/dashboard/${familyMemberUserId}`;
-
-
-        console.log(
-          "Calling Family Dashboard API:",
-          apiUrl
-        );
-
-
-        // =====================================================
-        // API REQUEST
+        //
+        // IMPORTANT:
+        //
+        // Do NOT use:
+        //
+        // http://localhost:8080/api
+        //
+        // API service already uses:
+        //
+        // baseURL: "/api"
+        //
+        // Vite HTTPS proxy forwards the request
+        // to Spring Boot.
+        //
+        // withCredentials sends the session cookie.
+        //
         // =====================================================
 
         const response =
-          await axios.get(apiUrl);
+          await API.get(
+            `/family-members/dashboard/${familyMemberUserId}`,
+            {
+              withCredentials: true,
+            }
+          );
 
 
         console.log(
@@ -196,7 +205,8 @@ function FamilyDashboard() {
         );
 
 
-        const data = response.data;
+        const data =
+          response.data;
 
 
         // =====================================================
@@ -218,6 +228,7 @@ function FamilyDashboard() {
         if (isMounted) {
 
           setMother({
+
             name:
               data.name ??
               "Not available",
@@ -233,7 +244,9 @@ function FamilyDashboard() {
             age:
               data.age ??
               "Not available",
+
           });
+
         }
 
 
@@ -268,14 +281,16 @@ function FamilyDashboard() {
             highRisk:
               data.highRisk ??
               null,
+
           });
+
         }
 
 
         // =====================================================
         // ALL APPOINTMENTS
         //
-        // Backend now sends:
+        // Backend response:
         //
         // {
         //    appointments: [...]
@@ -364,7 +379,9 @@ function FamilyDashboard() {
                     appointment.status ??
                     appointment.appointmentStatus ??
                     "UPCOMING",
+
                 };
+
               }
             );
 
@@ -387,6 +404,7 @@ function FamilyDashboard() {
                     String(key),
                     appointment,
                   ];
+
                 }
               )
             ).values()
@@ -402,6 +420,7 @@ function FamilyDashboard() {
           setAppointments(
             uniqueAppointments
           );
+
         }
 
 
@@ -415,6 +434,7 @@ function FamilyDashboard() {
             data.healthScore ??
             null
           );
+
         }
 
 
@@ -435,6 +455,7 @@ function FamilyDashboard() {
         console.log(
           "========================================"
         );
+
 
       } catch (requestError) {
 
@@ -459,6 +480,7 @@ function FamilyDashboard() {
             "Backend response:",
             requestError.response.data
           );
+
         }
 
 
@@ -468,25 +490,80 @@ function FamilyDashboard() {
             "Unable to load mother's information. Please try again.";
 
 
+          // ===================================================
+          // UNAUTHORIZED
+          // ===================================================
+
           if (
+            requestError.response?.status === 401
+          ) {
+
+            errorMessage =
+              "Your login session has expired. Please login again.";
+
+          }
+
+
+          // ===================================================
+          // NOT FOUND
+          // ===================================================
+
+          else if (
             requestError.response?.status === 404
           ) {
 
             errorMessage =
               "Family member or mother's profile was not found.";
+
           }
 
 
-          if (
-            requestError.response?.status === 500
+          // ===================================================
+          // FORBIDDEN
+          // ===================================================
+
+          else if (
+            requestError.response?.status === 403
+          ) {
+
+            errorMessage =
+              "You are not authorized to access the family dashboard.";
+
+          }
+
+
+          // ===================================================
+          // SERVER ERROR
+          // ===================================================
+
+          else if (
+            requestError.response?.status >= 500
           ) {
 
             errorMessage =
               "Server error. Please check the backend.";
+
           }
 
 
-          setError(errorMessage);
+          // ===================================================
+          // NETWORK ERROR
+          // ===================================================
+
+          else if (
+            !requestError.response
+          ) {
+
+            errorMessage =
+              "Unable to connect to the server. Please check your connection and make sure the backend is running.";
+
+          }
+
+
+          setError(
+            errorMessage
+          );
+
         }
 
       } finally {
@@ -494,8 +571,11 @@ function FamilyDashboard() {
         if (isMounted) {
 
           setLoading(false);
+
         }
+
       }
+
     };
 
 
@@ -562,6 +642,7 @@ function FamilyDashboard() {
         replace: true,
       }
     );
+
   };
 
 
@@ -574,6 +655,7 @@ function FamilyDashboard() {
     if (!date) {
 
       return "Not available";
+
     }
 
 
@@ -590,6 +672,7 @@ function FamilyDashboard() {
       ) {
 
         return String(date);
+
       }
 
 
@@ -605,7 +688,9 @@ function FamilyDashboard() {
     } catch {
 
       return String(date);
+
     }
+
   };
 
 
@@ -618,6 +703,7 @@ function FamilyDashboard() {
     if (!time) {
 
       return "Not available";
+
     }
 
 
@@ -632,6 +718,7 @@ function FamilyDashboard() {
     if (parts.length < 2) {
 
       return timeString;
+
     }
 
 
@@ -651,6 +738,7 @@ function FamilyDashboard() {
     ) {
 
       return timeString;
+
     }
 
 
@@ -665,6 +753,7 @@ function FamilyDashboard() {
 
 
     return `${displayHour}:${minutes} ${period}`;
+
   };
 
 
@@ -677,6 +766,7 @@ function FamilyDashboard() {
     if (!status) {
 
       return "";
+
     }
 
 
@@ -684,6 +774,7 @@ function FamilyDashboard() {
       .trim()
       .toLowerCase()
       .replace(/[\s-]+/g, "_");
+
   };
 
 
@@ -696,6 +787,7 @@ function FamilyDashboard() {
     if (!status) {
 
       return "Upcoming";
+
     }
 
 
@@ -707,6 +799,7 @@ function FamilyDashboard() {
         (letter) =>
           letter.toUpperCase()
       );
+
   };
 
 
@@ -723,6 +816,7 @@ function FamilyDashboard() {
       appointment?.date ??
       null
     );
+
   };
 
 
@@ -739,6 +833,7 @@ function FamilyDashboard() {
       appointment?.time ??
       null
     );
+
   };
 
 
@@ -765,6 +860,7 @@ function FamilyDashboard() {
     if (!date) {
 
       return null;
+
     }
 
 
@@ -788,6 +884,7 @@ function FamilyDashboard() {
 
       dateString =
         `${dateString}T${String(time).trim()}`;
+
     }
 
 
@@ -802,10 +899,12 @@ function FamilyDashboard() {
     ) {
 
       return null;
+
     }
 
 
     return result;
+
   };
 
 
@@ -834,6 +933,7 @@ function FamilyDashboard() {
     ) {
 
       return "cancelled";
+
     }
 
 
@@ -849,6 +949,7 @@ function FamilyDashboard() {
     ) {
 
       return "completed";
+
     }
 
 
@@ -868,6 +969,7 @@ function FamilyDashboard() {
     ) {
 
       return "completed";
+
     }
 
 
@@ -876,6 +978,7 @@ function FamilyDashboard() {
     // =====================================================
 
     return "upcoming";
+
   };
 
 
@@ -928,6 +1031,7 @@ function FamilyDashboard() {
 
 
             return dateA - dateB;
+
           }
         );
 
@@ -978,6 +1082,7 @@ function FamilyDashboard() {
     ) {
 
       return "appointment-status completed";
+
     }
 
 
@@ -987,6 +1092,7 @@ function FamilyDashboard() {
     ) {
 
       return "appointment-status cancelled";
+
     }
 
 
@@ -995,6 +1101,7 @@ function FamilyDashboard() {
     ) {
 
       return "appointment-status pending";
+
     }
 
 
@@ -1003,10 +1110,12 @@ function FamilyDashboard() {
     ) {
 
       return "appointment-status confirmed";
+
     }
 
 
     return "appointment-status upcoming";
+
   };
 
 
@@ -1027,6 +1136,7 @@ function FamilyDashboard() {
     ) {
 
       return <FaCheckCircle />;
+
     }
 
 
@@ -1036,6 +1146,7 @@ function FamilyDashboard() {
     ) {
 
       return <FaTimesCircle />;
+
     }
 
 
@@ -1044,10 +1155,12 @@ function FamilyDashboard() {
     ) {
 
       return <FaHourglassHalf />;
+
     }
 
 
     return <FaCalendarAlt />;
+
   };
 
 
@@ -1068,7 +1181,9 @@ function FamilyDashboard() {
         </p>
 
       </div>
+
     );
+
   }
 
 
@@ -1124,7 +1239,9 @@ function FamilyDashboard() {
         </button>
 
       </div>
+
     );
+
   }
 
 
@@ -1496,11 +1613,13 @@ function FamilyDashboard() {
                 </span>
 
                 <strong>
+
                   {pregnancy.dueDate
                     ? formatDate(
                         pregnancy.dueDate
                       )
                     : "--"}
+
                 </strong>
 
                 <small>
@@ -1684,7 +1803,6 @@ function FamilyDashboard() {
             </div>
 
           ) : (
-
 
             /* =================================================
                NEXT APPOINTMENT DETAILS
@@ -2078,6 +2196,7 @@ function FamilyDashboard() {
       </main>
 
     </div>
+
   );
 }
 

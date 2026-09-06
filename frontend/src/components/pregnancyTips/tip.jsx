@@ -10,13 +10,21 @@ import {
   FaHeartbeat,
   FaBaby,
   FaLeaf,
-  FaUtensils,
-  FaDumbbell,
   FaBed,
   FaCalendarCheck,
 } from "react-icons/fa";
 
 function Tip({ pregnancyWeek = 7 }) {
+
+  // =========================================================
+  // SAFE WEEK VALUE
+  // =========================================================
+
+  const safeWeek = Math.min(
+    Math.max(Number(pregnancyWeek) || 1, 1),
+    40
+  );
+
 
   // =========================================================
   // DETERMINE TRIMESTER
@@ -34,7 +42,7 @@ function Tip({ pregnancyWeek = 7 }) {
     return "Third Trimester";
   };
 
-  const trimester = getTrimester(pregnancyWeek);
+  const trimester = getTrimester(safeWeek);
 
 
   // =========================================================
@@ -48,7 +56,8 @@ function Tip({ pregnancyWeek = 7 }) {
     // =======================================================
 
     "First Trimester": {
-      subtitle: "Supporting you and your baby during early pregnancy",
+      subtitle:
+        "Supporting you and your baby during early pregnancy",
 
       badge: "Early Pregnancy",
 
@@ -59,28 +68,32 @@ function Tip({ pregnancyWeek = 7 }) {
         {
           icon: <FaTint />,
           title: "Stay Hydrated",
-          text: "Drink enough water throughout the day to stay hydrated.",
+          text:
+            "Drink enough water throughout the day to stay hydrated.",
           className: "tip-water",
         },
 
         {
           icon: <FaAppleAlt />,
           title: "Eat Nutritious Food",
-          text: "Choose fruits, vegetables, whole grains and protein-rich foods.",
+          text:
+            "Choose fruits, vegetables, whole grains and protein-rich foods.",
           className: "tip-food",
         },
 
         {
           icon: <FaMoon />,
           title: "Get Enough Rest",
-          text: "Fatigue is common early in pregnancy, so give your body enough rest.",
+          text:
+            "Fatigue is common early in pregnancy, so give your body enough rest.",
           className: "tip-rest",
         },
 
         {
           icon: <FaHeartbeat />,
           title: "Take Care of Yourself",
-          text: "Follow your healthcare provider's advice and attend scheduled checkups.",
+          text:
+            "Follow your healthcare provider's advice and attend scheduled checkups.",
           className: "tip-health",
         },
       ],
@@ -92,7 +105,8 @@ function Tip({ pregnancyWeek = 7 }) {
     // =======================================================
 
     "Second Trimester": {
-      subtitle: "Supporting your growing baby during the middle of pregnancy",
+      subtitle:
+        "Supporting your growing baby during the middle of pregnancy",
 
       badge: "Growing Baby",
 
@@ -103,28 +117,32 @@ function Tip({ pregnancyWeek = 7 }) {
         {
           icon: <FaAppleAlt />,
           title: "Balanced Nutrition",
-          text: "Include protein, iron, calcium and fresh fruits and vegetables in your meals.",
+          text:
+            "Include protein, iron, calcium and fresh fruits and vegetables in your meals.",
           className: "tip-food",
         },
 
         {
           icon: <FaWalking />,
           title: "Stay Active",
-          text: "Take comfortable walks and stay physically active as recommended by your doctor.",
+          text:
+            "Take comfortable walks and stay physically active as recommended by your doctor.",
           className: "tip-active",
         },
 
         {
           icon: <FaTint />,
           title: "Keep Hydrated",
-          text: "Drink plenty of fluids, especially during warm weather or physical activity.",
+          text:
+            "Drink plenty of fluids, especially during warm weather or physical activity.",
           className: "tip-water",
         },
 
         {
           icon: <FaCalendarCheck />,
           title: "Attend Checkups",
-          text: "Keep your regular prenatal appointments and discuss any concerns with your doctor.",
+          text:
+            "Keep your regular prenatal appointments and discuss any concerns with your doctor.",
           className: "tip-health",
         },
       ],
@@ -136,7 +154,8 @@ function Tip({ pregnancyWeek = 7 }) {
     // =======================================================
 
     "Third Trimester": {
-      subtitle: "Preparing you and your baby for the final stage",
+      subtitle:
+        "Preparing you and your baby for the final stage",
 
       badge: "Almost There",
 
@@ -147,28 +166,32 @@ function Tip({ pregnancyWeek = 7 }) {
         {
           icon: <FaBed />,
           title: "Prioritize Rest",
-          text: "Take regular breaks and get enough sleep as your body needs more rest.",
+          text:
+            "Take regular breaks and get enough sleep as your body needs more rest.",
           className: "tip-rest",
         },
 
         {
           icon: <FaAppleAlt />,
           title: "Eat Well",
-          text: "Continue eating balanced meals with protein, iron, calcium and vegetables.",
+          text:
+            "Continue eating balanced meals with protein, iron, calcium and vegetables.",
           className: "tip-food",
         },
 
         {
           icon: <FaWalking />,
           title: "Gentle Activity",
-          text: "Stay comfortably active if approved by your healthcare provider.",
+          text:
+            "Stay comfortably active if approved by your healthcare provider.",
           className: "tip-active",
         },
 
         {
           icon: <FaBaby />,
           title: "Prepare for Baby",
-          text: "Start preparing your hospital bag and important items for your baby's arrival.",
+          text:
+            "Start preparing your hospital bag and important items for your baby's arrival.",
           className: "tip-baby",
         },
       ],
@@ -184,17 +207,12 @@ function Tip({ pregnancyWeek = 7 }) {
 
 
   // =========================================================
-  // SAFE WEEK VALUE
+  // PREGNANCY PROGRESS
   // =========================================================
 
-  const safeWeek = Math.min(Math.max(Number(pregnancyWeek), 1), 40);
-
-
-  // =========================================================
-  // PROGRESS
-  // =========================================================
-
-  const progress = Math.round((safeWeek / 40) * 100);
+  const progress = Math.round(
+    (safeWeek / 40) * 100
+  );
 
 
   // =========================================================
@@ -205,7 +223,7 @@ function Tip({ pregnancyWeek = 7 }) {
     <section className="pregnancy-tips">
 
       {/* =====================================================
-          TOP HEADER
+          HEADER
       ===================================================== */}
 
       <div className="tips-top">
@@ -220,7 +238,9 @@ function Tip({ pregnancyWeek = 7 }) {
 
             <div className="tips-title-row">
 
-              <h2>Today's Pregnancy Tips</h2>
+              <h2>
+                Today's Pregnancy Tips
+              </h2>
 
               <span className="trimester-badge">
                 {currentData.badge}
@@ -238,7 +258,7 @@ function Tip({ pregnancyWeek = 7 }) {
 
 
         {/* =================================================
-            WEEK INFORMATION
+            PREGNANCY WEEK
         ================================================= */}
 
         <div className="pregnancy-week-box">
@@ -282,7 +302,14 @@ function Tip({ pregnancyWeek = 7 }) {
 
         </div>
 
-        <div className="progress-bar">
+        <div
+          className="progress-bar"
+          role="progressbar"
+          aria-valuenow={progress}
+          aria-valuemin="0"
+          aria-valuemax="100"
+          aria-label="Pregnancy progress"
+        >
 
           <div
             className="progress-fill"
@@ -319,11 +346,13 @@ function Tip({ pregnancyWeek = 7 }) {
 
         {currentData.tips.map((tip, index) => (
 
-          <React.Fragment key={index}>
+          <React.Fragment key={`${tip.title}-${index}`}>
 
             <div className="tip-item">
 
-              <div className={`tip-icon ${tip.className}`}>
+              <div
+                className={`tip-icon ${tip.className}`}
+              >
                 {tip.icon}
               </div>
 
@@ -342,7 +371,10 @@ function Tip({ pregnancyWeek = 7 }) {
             </div>
 
             {index !== currentData.tips.length - 1 && (
-              <div className="tip-divider" />
+              <div
+                className="tip-divider"
+                aria-hidden="true"
+              />
             )}
 
           </React.Fragment>

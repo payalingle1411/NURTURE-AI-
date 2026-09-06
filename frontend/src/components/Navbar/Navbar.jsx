@@ -2,16 +2,24 @@ import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 
 import {
+  FaBars,
   FaBell,
   FaSearch,
   FaUserCircle,
 } from "react-icons/fa";
 
+import Sidebar from "../sidebar/Sidebar";
+
 import "./Navbar.css";
 
 function Navbar() {
-
   const location = useLocation();
+
+  // =========================================================
+  // SIDEBAR
+  // =========================================================
+
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   // =========================================================
   // USER DATA
@@ -19,7 +27,7 @@ function Navbar() {
 
   const [user, setUser] = useState({
     userId: "",
-    name: "",
+    name: "User",
     email: "",
     role: "",
   });
@@ -29,50 +37,52 @@ function Navbar() {
   // =========================================================
 
   useEffect(() => {
+    const loadUser = () => {
+      const userId =
+        localStorage.getItem("userId") || "";
 
-    const userId =
-      localStorage.getItem("userId");
+      const fullName =
+        localStorage.getItem("fullName") || "";
 
-    const fullName =
-      localStorage.getItem("fullName");
+      const email =
+        localStorage.getItem("email") || "";
 
-    const email =
-      localStorage.getItem("email");
+      const role =
+        localStorage.getItem("role") || "";
 
-    const role =
-      localStorage.getItem("role");
+      console.log("========== NAVBAR USER ==========");
+      console.log("User ID:", userId);
+      console.log("Full Name:", fullName);
+      console.log("Email:", email);
+      console.log("Role:", role);
 
-    console.log(
-      "========== NAVBAR USER =========="
-    );
+      setUser({
+        userId,
+        name: fullName || "User",
+        email,
+        role,
+      });
+    };
 
-    console.log(
-      "User ID:",
-      userId
-    );
+    loadUser();
 
-    console.log(
-      "Full Name:",
-      fullName
-    );
+    // Update navbar if another tab/window changes localStorage
+    window.addEventListener("storage", loadUser);
 
-    console.log(
-      "Email:",
-      email
-    );
+    return () => {
+      window.removeEventListener(
+        "storage",
+        loadUser
+      );
+    };
+  }, [location.pathname]);
 
-    console.log(
-      "Role:",
-      role
-    );
+  // =========================================================
+  // CLOSE SIDEBAR WHEN PAGE CHANGES
+  // =========================================================
 
-    setUser({
-      userId: userId || "",
-      name: fullName || "User",
-      email: email || "",
-      role: role || "",
-    });
-
+  useEffect(() => {
+    setIsSidebarOpen(false);
   }, [location.pathname]);
 
   // =========================================================
@@ -80,73 +90,55 @@ function Navbar() {
   // =========================================================
 
   const getNavbarTitle = () => {
+    const path = location.pathname;
 
     if (
-      location.pathname === "/appointment" ||
-      location.pathname === "/appointment-history" ||
-      location.pathname.startsWith("/appointment/")
+      path === "/appointment" ||
+      path === "/appointments" ||
+      path === "/appointment-history" ||
+      path.startsWith("/appointment/")
     ) {
       return "Appointments";
     }
 
-    if (
-      location.pathname === "/ai-assistant"
-    ) {
+    if (path === "/ai-assistant") {
       return "AI Assistant";
     }
 
-    if (
-      location.pathname === "/pregnancy-profile"
-    ) {
+    if (path === "/pregnancy-profile") {
       return "Pregnancy Profile";
     }
 
-    if (
-      location.pathname === "/nutrition"
-    ) {
+    if (path === "/nutrition") {
       return "Nutrition";
     }
 
-    if (
-      location.pathname === "/medicine"
-    ) {
+    if (path === "/medicine") {
       return "Medicine";
     }
 
-    if (
-      location.pathname === "/reports"
-    ) {
+    if (path === "/reports") {
       return "Reports";
     }
 
-    if (
-      location.pathname === "/family-dashboard"
-    ) {
+    if (path === "/family-dashboard") {
       return "Family Dashboard";
     }
 
-    if (
-      location.pathname === "/settings"
-    ) {
+    if (path === "/settings") {
       return "Settings";
     }
 
-    if (
-      location.pathname === "/dashboard"
-    ) {
-      return "Dashboard";
-    }
-
-    if (
-      location.pathname === "/personal-info"
-    ) {
+    if (path === "/personal-info") {
       return "Personal Information";
     }
 
-    if (
-      location.pathname === "/pregnancy-details"
-    ) {
+    if (path === "/pregnancy-details") {
       return "Pregnancy Details";
+    }
+
+    if (path === "/dashboard") {
+      return "Dashboard";
     }
 
     return "Dashboard";
@@ -157,19 +149,28 @@ function Navbar() {
   // =========================================================
 
   const formatRole = (role) => {
-
     if (!role) {
       return "";
     }
 
-    return role
+    return String(role)
       .toLowerCase()
       .split("_")
-      .map((word) =>
-        word.charAt(0).toUpperCase() +
-        word.slice(1)
-      )
+      .map((word) => {
+        return (
+          word.charAt(0).toUpperCase() +
+          word.slice(1)
+        );
+      })
       .join(" ");
+  };
+
+  // =========================================================
+  // TOGGLE SIDEBAR
+  // =========================================================
+
+  const toggleSidebar = () => {
+    setIsSidebarOpen((previous) => !previous);
   };
 
   // =========================================================
@@ -177,92 +178,126 @@ function Navbar() {
   // =========================================================
 
   return (
-
-    <header className="navbar">
-
+    <>
       {/* =====================================================
-          LEFT
+          NAVBAR
       ===================================================== */}
 
-      <div className="navbar-left">
-
-        <h2>
-          {getNavbarTitle()}
-        </h2>
-
-      </div>
-
-
-      {/* =====================================================
-          SEARCH
-      ===================================================== */}
-
-      <div className="navbar-search">
-
-        <FaSearch
-          className="search-icon"
-        />
-
-        <input
-          type="text"
-          placeholder="Search..."
-        />
-
-      </div>
-
-
-      {/* =====================================================
-          RIGHT
-      ===================================================== */}
-
-      <div className="navbar-right">
+      <header className="navbar">
 
         {/* ===================================================
-            NOTIFICATION
+            LEFT
         =================================================== */}
 
-        <div className="notification">
+        <div className="navbar-left">
 
-          <FaBell />
+          {/* HAMBURGER */}
 
-          <span className="badge">
-            3
-          </span>
+          <button
+            type="button"
+            className="hamburger-btn"
+            onClick={toggleSidebar}
+            aria-label={
+              isSidebarOpen
+                ? "Close Sidebar"
+                : "Open Sidebar"
+            }
+            aria-expanded={isSidebarOpen}
+          >
+            <FaBars />
+          </button>
+
+          {/* PAGE TITLE */}
+
+          <h2>
+            {getNavbarTitle()}
+          </h2>
 
         </div>
 
 
         {/* ===================================================
-            PROFILE
+            SEARCH
         =================================================== */}
 
-        <div className="profile">
+        <div className="navbar-search">
 
-          <FaUserCircle
-            className="profile-icon"
+          <FaSearch
+            className="search-icon"
           />
 
-          <div className="profile-info">
+          <input
+            type="search"
+            placeholder="Search..."
+            aria-label="Search"
+          />
 
-            <h4>
-              {user.name}
-            </h4>
+        </div>
 
-            {user.role && (
 
-              <p>
-                {formatRole(user.role)}
-              </p>
+        {/* ===================================================
+            RIGHT
+        =================================================== */}
 
-            )}
+        <div className="navbar-right">
+
+          {/* =================================================
+              NOTIFICATION
+          ================================================= */}
+
+          <button
+            type="button"
+            className="notification"
+            aria-label="Notifications"
+          >
+            <FaBell />
+
+            <span className="badge">
+              3
+            </span>
+          </button>
+
+
+          {/* =================================================
+              PROFILE
+          ================================================= */}
+
+          <div className="profile">
+
+            <FaUserCircle
+              className="profile-icon"
+            />
+
+            <div className="profile-info">
+
+              <h4>
+                {user.name}
+              </h4>
+
+              {user.role && (
+                <p>
+                  {formatRole(user.role)}
+                </p>
+              )}
+
+            </div>
 
           </div>
 
         </div>
 
-      </div>
+      </header>
 
-    </header>
+
+      {/* =====================================================
+          SIDEBAR
+      ===================================================== */}
+
+      <Sidebar
+        isOpen={isSidebarOpen}
+        setIsOpen={setIsSidebarOpen}
+      />
+    </>
   );
 }
 

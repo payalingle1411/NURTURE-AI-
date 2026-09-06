@@ -1,16 +1,8 @@
-import axios from "axios";
+import API from "./api";
 
 /* =========================================================
    NURTURE AI - PREGNANCY DETAILS API
 ========================================================= */
-
-const API = axios.create({
-  baseURL: "http://10.157.64.217:8080/api",
-  headers: {
-    "Content-Type": "application/json",
-  },
-  timeout: 10000,
-});
 
 /* =========================================================
    SAVE PREGNANCY DETAILS
@@ -23,7 +15,10 @@ export const savePregnancyDetails = async (data) => {
 
     const response = await API.post(
       "/pregnancy",
-      data
+      data,
+      {
+        withCredentials: true,
+      }
     );
 
     console.log(
@@ -55,7 +50,10 @@ export const getPregnancyDetails = async (userId) => {
     );
 
     const response = await API.get(
-      `/pregnancy/user/${userId}`
+      `/pregnancy/user/${userId}`,
+      {
+        withCredentials: true,
+      }
     );
 
     console.log(
@@ -96,7 +94,10 @@ export const updatePregnancyDetails = async (
 
     const response = await API.put(
       `/pregnancy/user/${userId}`,
-      data
+      data,
+      {
+        withCredentials: true,
+      }
     );
 
     console.log(

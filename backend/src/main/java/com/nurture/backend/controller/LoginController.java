@@ -14,19 +14,19 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/auth")
 @CrossOrigin(
-        origins = "http://localhost:5173",
+        origins = {
+                "http://localhost:5173",
+                "http://10.157.64.217:5173"
+        },
         allowCredentials = "true"
 )
 public class LoginController {
 
     private final UserService userService;
 
-
     public LoginController(UserService userService) {
-
         this.userService = userService;
     }
-
 
     // =========================================================
     // LOGIN
@@ -38,21 +38,17 @@ public class LoginController {
             HttpSession session
     ) {
 
-        Login user =
-                userService.login(request);
-
+        Login user = userService.login(request);
 
         // =====================================================
         // INVALID LOGIN
         // =====================================================
 
         if (user == null) {
-
             return ResponseEntity
                     .status(HttpStatus.UNAUTHORIZED)
                     .body("Invalid Email or Password");
         }
-
 
         // =====================================================
         // STORE USER ID IN SESSION
@@ -63,31 +59,15 @@ public class LoginController {
                 user.getId()
         );
 
-
         System.out.println(
                 "========================================"
         );
 
-        System.out.println(
-                "LOGIN SUCCESS"
-        );
-
-        System.out.println(
-                "USER ID: " + user.getId()
-        );
-
-        System.out.println(
-                "NAME: " + user.getFullName()
-        );
-
-        System.out.println(
-                "EMAIL: " + user.getEmail()
-        );
-
-        System.out.println(
-                "ROLE: " + user.getRole()
-        );
-
+        System.out.println("LOGIN SUCCESS");
+        System.out.println("USER ID: " + user.getId());
+        System.out.println("NAME: " + user.getFullName());
+        System.out.println("EMAIL: " + user.getEmail());
+        System.out.println("ROLE: " + user.getRole());
 
         // =====================================================
         // CHECK MOTHER PROFILE
@@ -98,7 +78,6 @@ public class LoginController {
                         user.getId()
                 );
 
-
         // =====================================================
         // CHECK FAMILY MEMBER PROFILE
         // =====================================================
@@ -108,21 +87,17 @@ public class LoginController {
                         user.getId()
                 );
 
-
         System.out.println(
-                "PROFILE COMPLETED: "
-                        + profileCompleted
+                "PROFILE COMPLETED: " + profileCompleted
         );
 
         System.out.println(
-                "FAMILY VERIFIED: "
-                        + familyVerified
+                "FAMILY VERIFIED: " + familyVerified
         );
 
         System.out.println(
                 "========================================"
         );
-
 
         // =====================================================
         // CREATE RESPONSE
@@ -130,26 +105,17 @@ public class LoginController {
 
         LoginResponse response =
                 new LoginResponse(
-
                         user.getId(),
-
                         user.getFullName(),
-
                         user.getEmail(),
-
                         user.getRole(),
-
                         "Login Successful",
-
                         profileCompleted,
-
                         familyVerified
                 );
 
-
         return ResponseEntity.ok(response);
     }
-
 
     // =========================================================
     // LOGOUT

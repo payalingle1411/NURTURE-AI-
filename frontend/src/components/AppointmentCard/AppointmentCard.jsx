@@ -1,593 +1,598 @@
-import "./AppointmentCard.css";
-
-import {
-  Chart as ChartJS,
-  ArcElement,
-  Tooltip,
-} from "chart.js";
-
-import { Doughnut } from "react-chartjs-2";
-
-import {
+import React, {
+  useCallback,
   useEffect,
+  useMemo,
   useState,
 } from "react";
 
 import { useNavigate } from "react-router-dom";
 
-ChartJS.register(
-  ArcElement,
-  Tooltip
-);
+import API from "../../services/api";
 
+import "./AppointmentCard.css";
 
-// =========================================================
-// API
-// =========================================================
-
-const API_BASE_URL = "http://localhost:8080/api";
-
-
-// =========================================================
-// APPOINTMENT CARD
-// =========================================================
-
-function AppointmentCard() {
-
+const AppointmentCard = () => {
   const navigate = useNavigate();
 
-  // =======================================================
-  // STATE
-  // =======================================================
-
   const [appointments, setAppointments] = useState([]);
-
   const [loading, setLoading] = useState(true);
-
   const [error, setError] = useState("");
 
+  // =========================================================
+  // FETCH APPOINTMENTS
+  // =========================================================
 
-  // =======================================================
-  // FETCH CURRENT USER'S APPOINTMENTS
-  // =======================================================
-
-  const fetchAppointments = async () => {
-
+  const fetchAppointments = useCallback(async () => {
     try {
-
       setLoading(true);
       setError("");
 
-
-      const response = await fetch(
-        `${API_BASE_URL}/appointments/my`,
+      const response = await API.get(
+        "/appointments/my",
         {
-          method: "GET",
-
-          // IMPORTANT:
-          // Sends the Spring Boot session cookie
-          credentials: "include",
-
-          headers: {
-            "Content-Type": "application/json",
-          },
+          withCredentials: true,
         }
       );
 
-
-      // ===================================================
-      // NOT LOGGED IN / SESSION EXPIRED
-      // ===================================================
-
-      if (response.status === 401) {
-
-        setError(
-          "Your login session has expired. Please login again."
-        );
-
-        setTimeout(() => {
-
-          navigate("/login", {
-            replace: true,
-          });
-
-        }, 1500);
-
-        return;
-      }
-
-
-      // ===================================================
-      // OTHER BACKEND ERROR
-      // ===================================================
-
-      if (!response.ok) {
-
-        let message =
-          "Unable to load appointment data.";
-
-        try {
-
-          const text =
-            await response.text();
-
-          if (text) {
-            message = text;
-          }
-
-        } catch (readError) {
-
-          console.error(
-            "Unable to read backend error:",
-            readError
-          );
-
-        }
-
-        throw new Error(message);
-      }
-
-
-      // ===================================================
-      // SUCCESS
-      // ===================================================
-
-      const data =
-        await response.json();
-
+      const data = response.data;
 
       console.log(
         "Appointments received:",
         data
       );
 
+      let appointmentList = [];
+
+      if (Array.isArray(data)) {
+        appointmentList = data;
+      } else if (
+        Array.isArray(data?.appointments)
+      ) {
+        appointmentList = data.appointments;
+      } else if (
+        Array.isArray(data?.appointmentHistory)
+      ) {
+        appointmentList =
+          data.appointmentHistory;
+      } else if (
+        Array.isArray(data?.upcomingAppointments)
+      ) {
+        appointmentList =
+          data.upcomingAppointments;
+      } else if (
+        Array.isArray(data?.upcoming)
+      ) {
+        appointmentList =
+          data.upcoming;
+      } else if (
+        Array.isArray(data?.futureAppointments)
+      ) {
+        appointmentList =
+          data.futureAppointments;
+      }
+
+      // Remove duplicate appointments
+      const uniqueAppointments =
+        appointmentList.filter(
+          (appointment, index, array) => {
+
+            const id =
+              appointment?.id ??
+              appointment?.appointmentId;
+
+            if (id === undefined) {
+              return index ===
+                array.findIndex(
+                  (item) =>
+                    JSON.stringify(item) ===
+                    JSON.stringify(appointment)
+                );
+            }
+
+            return (
+              index ===
+              array.findIndex(
+                (item) =>
+                  (item?.id ??
+                    item?.appointmentId) ===
+                  id
+              )
+            );
+          }
+        );
 
       setAppointments(
-        Array.isArray(data)
-          ? data
-          : []
+        uniqueAppointments
       );
 
     } catch (err) {
-
       console.error(
         "Appointment fetch error:",
         err
       );
 
+      if (
+        err.response?.status === 401
+      ) {
+        setError(
+          "Your login session has expired. Please login again."
+        );
+
+        setTimeout(() => {
+          navigate("/login", {
+            replace: true,
+          });
+        }, 1500);
+
+        return;
+      }
 
       setError(
-        err.message ||
-        "Unable to load appointment data."
+        err.response?.data?.message ||
+          err.message ||
+          "Unable to load appointment data."
       );
 
     } finally {
-
       setLoading(false);
-
     }
+  }, [navigate]);
 
-  };
-
-
-  // =======================================================
+  // =========================================================
   // LOAD APPOINTMENTS
-  // =======================================================
+  // =========================================================
 
   useEffect(() => {
-
     fetchAppointments();
+  }, [fetchAppointments]);
 
-  }, []);
+  // =========================================================
+  // FORMAT DATE
+  // =========================================================
 
-
-  // =======================================================
-  // AUTOMATIC APPOINTMENT STATUS
-  // =======================================================
-
-  const getAppointmentStatus = (
-    appointment
-  ) => {
-
-    // -----------------------------------------------
-    // Manually cancelled appointment
-    // -----------------------------------------------
-
-    if (
-      appointment.status?.toUpperCase() ===
-      "CANCELLED"
-    ) {
-
-      return "CANCELLED";
-
+  const formatDate = (date) => {
+    if (!date) {
+      return "Date not available";
     }
 
+    try {
+      const parsedDate = new Date(date);
 
-    // -----------------------------------------------
-    // Missing date/time
-    // -----------------------------------------------
+      if (Number.isNaN(parsedDate.getTime())) {
+        return date;
+      }
 
-    if (
-      !appointment.appointmentDate ||
-      !appointment.appointmentTime
-    ) {
-
-      return "UPCOMING";
-
-    }
-
-
-    // -----------------------------------------------
-    // Appointment date/time
-    // -----------------------------------------------
-
-    const appointmentDateTime =
-      new Date(
-        `${appointment.appointmentDate}T${appointment.appointmentTime}`
-      );
-
-
-    const currentDateTime =
-      new Date();
-
-
-    // -----------------------------------------------
-    // Past appointment
-    // -----------------------------------------------
-
-    if (
-      appointmentDateTime <
-      currentDateTime
-    ) {
-
-      return "COMPLETED";
-
-    }
-
-
-    // -----------------------------------------------
-    // Future appointment
-    // -----------------------------------------------
-
-    return "UPCOMING";
-
-  };
-
-
-  // =======================================================
-  // ADD CALCULATED STATUS
-  // =======================================================
-
-  const appointmentsWithStatus =
-    appointments.map(
-      (appointment) => ({
-
-        ...appointment,
-
-        calculatedStatus:
-          getAppointmentStatus(
-            appointment
-          ),
-
-      })
-    );
-
-
-  // =======================================================
-  // COUNTS
-  // =======================================================
-
-  const completedCount =
-    appointmentsWithStatus.filter(
-      (appointment) =>
-        appointment.calculatedStatus ===
-        "COMPLETED"
-    ).length;
-
-
-  const upcomingCount =
-    appointmentsWithStatus.filter(
-      (appointment) =>
-        appointment.calculatedStatus ===
-        "UPCOMING"
-    ).length;
-
-
-  const cancelledCount =
-    appointmentsWithStatus.filter(
-      (appointment) =>
-        appointment.calculatedStatus ===
-        "CANCELLED"
-    ).length;
-
-
-  const totalCount =
-    appointmentsWithStatus.length;
-
-
-  // =======================================================
-  // FIND NEXT UPCOMING APPOINTMENT
-  // =======================================================
-
-  const upcomingAppointments =
-    appointmentsWithStatus
-      .filter(
-        (appointment) =>
-          appointment.calculatedStatus ===
-          "UPCOMING" &&
-          appointment.appointmentDate &&
-          appointment.appointmentTime
-      )
-      .sort(
-        (a, b) => {
-
-          const dateA =
-            new Date(
-              `${a.appointmentDate}T${a.appointmentTime}`
-            );
-
-
-          const dateB =
-            new Date(
-              `${b.appointmentDate}T${b.appointmentTime}`
-            );
-
-
-          return dateA - dateB;
-
+      return parsedDate.toLocaleDateString(
+        "en-IN",
+        {
+          day: "numeric",
+          month: "short",
+          year: "numeric",
         }
       );
 
+    } catch {
+      return date;
+    }
+  };
 
-  const nextAppointment =
+  // =========================================================
+  // FORMAT TIME
+  // =========================================================
+
+  const formatTime = (time) => {
+    if (!time) {
+      return "Time not available";
+    }
+
+    try {
+      const timeString =
+        String(time);
+
+      // HH:mm or HH:mm:ss
+      const match =
+        timeString.match(
+          /^(\d{1,2}):(\d{2})/
+        );
+
+      if (match) {
+        const hours =
+          Number(match[1]);
+
+        const minutes =
+          Number(match[2]);
+
+        const date =
+          new Date();
+
+        date.setHours(
+          hours,
+          minutes,
+          0,
+          0
+        );
+
+        return date.toLocaleTimeString(
+          "en-IN",
+          {
+            hour: "numeric",
+            minute: "2-digit",
+          }
+        );
+      }
+
+      const parsed =
+        new Date(time);
+
+      if (!Number.isNaN(parsed.getTime())) {
+        return parsed.toLocaleTimeString(
+          "en-IN",
+          {
+            hour: "numeric",
+            minute: "2-digit",
+          }
+        );
+      }
+
+      return timeString;
+
+    } catch {
+      return String(time);
+    }
+  };
+
+  // =========================================================
+  // NORMALIZE STATUS
+  // =========================================================
+
+  const normalizeStatus = (status) => {
+    if (!status) {
+      return "";
+    }
+
+    return String(status)
+      .trim()
+      .toLowerCase()
+      .replace(/[\s_-]+/g, "");
+  };
+
+  // =========================================================
+  // DISPLAY STATUS
+  // =========================================================
+
+  const displayStatus = (status) => {
+    if (!status) {
+      return "Scheduled";
+    }
+
+    const normalized =
+      normalizeStatus(status);
+
+    if (
+      normalized === "cancelled" ||
+      normalized === "canceled"
+    ) {
+      return "Cancelled";
+    }
+
+    if (
+      normalized === "completed" ||
+      normalized === "complete"
+    ) {
+      return "Completed";
+    }
+
+    if (
+      normalized === "confirmed"
+    ) {
+      return "Confirmed";
+    }
+
+    if (
+      normalized === "pending"
+    ) {
+      return "Pending";
+    }
+
+    return String(status)
+      .charAt(0)
+      .toUpperCase() +
+      String(status)
+        .slice(1)
+        .toLowerCase();
+  };
+
+  // =========================================================
+  // GET APPOINTMENT DATE
+  // =========================================================
+
+  const getAppointmentDateObject =
+    (appointment) => {
+
+      if (!appointment) {
+        return null;
+      }
+
+      const date =
+        appointment.date ??
+        appointment.appointmentDate ??
+        appointment.appointment_date ??
+        appointment.scheduledDate;
+
+      const time =
+        appointment.time ??
+        appointment.appointmentTime ??
+        appointment.appointment_time ??
+        appointment.scheduledTime;
+
+      if (!date) {
+        return null;
+      }
+
+      try {
+
+        if (time) {
+          const dateString =
+            `${date}T${time}`;
+
+          const combined =
+            new Date(dateString);
+
+          if (
+            !Number.isNaN(
+              combined.getTime()
+            )
+          ) {
+            return combined;
+          }
+        }
+
+        const parsed =
+          new Date(date);
+
+        if (
+          !Number.isNaN(
+            parsed.getTime()
+          )
+        ) {
+          return parsed;
+        }
+
+      } catch {
+        return null;
+      }
+
+      return null;
+    };
+
+  // =========================================================
+  // GET APPOINTMENT CATEGORY
+  // =========================================================
+
+  const getAppointmentCategory =
+    (appointment) => {
+
+      const normalizedStatus =
+        normalizeStatus(
+          appointment?.status
+        );
+
+      if (
+        normalizedStatus ===
+          "cancelled" ||
+        normalizedStatus ===
+          "canceled"
+      ) {
+        return "cancelled";
+      }
+
+      if (
+        normalizedStatus ===
+          "completed" ||
+        normalizedStatus ===
+          "complete"
+      ) {
+        return "completed";
+      }
+
+      const appointmentDate =
+        getAppointmentDateObject(
+          appointment
+        );
+
+      if (
+        appointmentDate &&
+        appointmentDate < new Date()
+      ) {
+        return "completed";
+      }
+
+      return "upcoming";
+    };
+
+  // =========================================================
+  // COMPLETED
+  // =========================================================
+
+  const completedAppointments =
+    useMemo(() => {
+
+      return appointments.filter(
+        (appointment) =>
+          getAppointmentCategory(
+            appointment
+          ) === "completed"
+      );
+
+    }, [appointments]);
+
+  // =========================================================
+  // UPCOMING
+  // =========================================================
+
+  const upcomingAppointments =
+    useMemo(() => {
+
+      return appointments
+        .filter(
+          (appointment) =>
+            getAppointmentCategory(
+              appointment
+            ) === "upcoming"
+        )
+        .sort((a, b) => {
+
+          const dateA =
+            getAppointmentDateObject(a);
+
+          const dateB =
+            getAppointmentDateObject(b);
+
+          if (!dateA && !dateB) {
+            return 0;
+          }
+
+          if (!dateA) {
+            return 1;
+          }
+
+          if (!dateB) {
+            return -1;
+          }
+
+          return (
+            dateA.getTime() -
+            dateB.getTime()
+          );
+        });
+
+    }, [appointments]);
+
+  // =========================================================
+  // CANCELLED
+  // =========================================================
+
+  const cancelledAppointments =
+    useMemo(() => {
+
+      return appointments.filter(
+        (appointment) =>
+          getAppointmentCategory(
+            appointment
+          ) === "cancelled"
+      );
+
+    }, [appointments]);
+
+  // =========================================================
+  // NEXT APPOINTMENT
+  // =========================================================
+
+  const nextUpcomingAppointment =
     upcomingAppointments.length > 0
       ? upcomingAppointments[0]
       : null;
 
+  // =========================================================
+  // APPOINTMENT NAME
+  // =========================================================
 
-  // =======================================================
-  // FORMAT DATE
-  // =======================================================
+  const getAppointmentTitle =
+    (appointment) => {
 
-  const formatDate = (date) => {
+      return (
+        appointment?.title ||
+        appointment?.appointmentType ||
+        appointment?.type ||
+        appointment?.reason ||
+        appointment?.purpose ||
+        "Doctor Appointment"
+      );
+    };
 
-    if (!date) {
-      return "Not available";
-    }
+  // =========================================================
+  // DOCTOR NAME
+  // =========================================================
 
+  const getDoctorName =
+    (appointment) => {
 
-    return new Date(
-      `${date}T00:00:00`
-    ).toLocaleDateString(
-      "en-IN",
-      {
-        day: "2-digit",
-        month: "long",
-        year: "numeric",
-      }
-    );
+      return (
+        appointment?.doctorName ||
+        appointment?.doctor?.name ||
+        appointment?.doctor ||
+        appointment?.providerName ||
+        "Doctor"
+      );
+    };
 
-  };
+  // =========================================================
+  // LOCATION
+  // =========================================================
 
+  const getLocation =
+    (appointment) => {
 
-  // =======================================================
-  // FORMAT TIME
-  // =======================================================
+      return (
+        appointment?.location ||
+        appointment?.hospitalName ||
+        appointment?.clinicName ||
+        appointment?.hospital ||
+        "Location not available"
+      );
+    };
 
-  const formatTime = (time) => {
-
-    if (!time) {
-      return "Not available";
-    }
-
-
-    const [
-      hours,
-      minutes,
-    ] = time.split(":");
-
-
-    const date =
-      new Date();
-
-
-    date.setHours(
-      Number(hours),
-      Number(minutes),
-      0,
-      0
-    );
-
-
-    return date.toLocaleTimeString(
-      "en-IN",
-      {
-        hour: "numeric",
-        minute: "2-digit",
-      }
-    );
-
-  };
-
-
-  // =======================================================
-  // CHART DATA
-  // =======================================================
-
-  const chartData = {
-
-    labels: [
-      "Completed",
-      "Upcoming",
-      "Cancelled",
-    ],
-
-    datasets: [
-
-      {
-        data: [
-          completedCount,
-          upcomingCount,
-          cancelledCount,
-        ],
-
-        backgroundColor: [
-          "#22c55e",
-          "#f59e0b",
-          "#ef4444",
-        ],
-
-        borderWidth: 0,
-
-        hoverOffset: 5,
-      },
-
-    ],
-
-  };
-
-
-  // =======================================================
-  // CHART OPTIONS
-  // =======================================================
-
-  const chartOptions = {
-
-    responsive: true,
-
-    maintainAspectRatio: false,
-
-    cutout: "70%",
-
-    plugins: {
-
-      legend: {
-        display: false,
-      },
-
-      tooltip: {
-
-        enabled: true,
-
-        padding: 10,
-
-        backgroundColor: "#1e293b",
-
-        titleFont: {
-          size: 13,
-        },
-
-        bodyFont: {
-          size: 12,
-        },
-
-        cornerRadius: 8,
-
-      },
-
-    },
-
-  };
-
-
-  // =======================================================
+  // =========================================================
   // LOADING
-  // =======================================================
+  // =========================================================
 
   if (loading) {
-
     return (
+      <div className="appointment-card">
 
-      <section className="appointment-dashboard">
-
-        <div className="appointment-section-header">
+        <div className="appointment-header">
 
           <div>
-
             <h2>
-              Appointments
+              📅 Appointments
             </h2>
 
             <p>
-              Manage your pregnancy consultations
-              and upcoming visits.
+              Your upcoming appointments
             </p>
-
           </div>
 
         </div>
 
-
         <div className="appointment-loading">
-
-          <div className="loading-spinner"></div>
-
-          <span>
-            Loading appointments...
-          </span>
-
+          Loading appointments...
         </div>
-
-      </section>
-
-    );
-
-  }
-
-
-  // =======================================================
-  // MAIN UI
-  // =======================================================
-
-  return (
-
-    <section className="appointment-dashboard">
-
-
-      {/* =================================================
-          HEADER
-      ================================================= */}
-
-      <div className="appointment-section-header">
-
-        <div>
-
-          <h2>
-            Appointments
-          </h2>
-
-          <p>
-            Manage your pregnancy consultations
-            and upcoming visits.
-          </p>
-
-        </div>
-
-
-        <button
-          type="button"
-          className="history-btn"
-          onClick={() =>
-            navigate("/appointment")
-          }
-        >
-
-          <span>
-            📋
-          </span>
-
-          Appointment History
-
-        </button>
 
       </div>
+    );
+  }
 
+  // =========================================================
+  // ERROR
+  // =========================================================
 
-      {/* =================================================
-          ERROR
-      ================================================= */}
+  if (error) {
+    return (
+      <div className="appointment-card">
 
-      {error && (
+        <div className="appointment-header">
+
+          <div>
+            <h2>
+              📅 Appointments
+            </h2>
+
+            <p>
+              Your upcoming appointments
+            </p>
+          </div>
+
+        </div>
 
         <div className="appointment-error">
 
@@ -595,451 +600,382 @@ function AppointmentCard() {
             ⚠️
           </span>
 
-          <span>
+          <p>
             {error}
-          </span>
+          </p>
+
+          <button
+            onClick={fetchAppointments}
+          >
+            Try Again
+          </button>
 
         </div>
 
-      )}
+      </div>
+    );
+  }
+
+  // =========================================================
+  // MAIN UI
+  // =========================================================
+
+  return (
+    <div className="appointment-card">
+
+      {/* HEADER */}
+
+      <div className="appointment-header">
+
+        <div>
+
+          <h2>
+            📅 Appointments
+          </h2>
+
+          <p>
+            Manage your pregnancy appointments
+          </p>
+
+        </div>
+
+        <button
+  className="view-all-button"
+  onClick={() => navigate("/appointment-history")}
+>
+  View All
+</button>
+
+      </div>
 
 
-      {/* =================================================
-          TWO CARDS
-      ================================================= */}
+      {/* STATS */}
 
-      <div className="appointment-grid">
+      <div className="appointment-stats">
 
+        <div className="appointment-stat">
 
-        {/* =================================================
-            STATISTICS CARD
-        ================================================= */}
-
-        <div className="appointment-card statistics-card">
-
-
-          {/* CARD HEADER */}
-
-          <div className="card-header">
-
-            <div className="card-icon statistics-icon">
-              📊
-            </div>
-
-
-            <div>
-
-              <h3>
-                Appointment Statistics
-              </h3>
-
-              <p>
-                Your appointment overview
-              </p>
-
-            </div>
-
+          <div className="stat-icon">
+            ✅
           </div>
 
+          <div>
 
-          {/* STATISTICS BODY */}
+            <strong>
+              {completedAppointments.length}
+            </strong>
 
-          <div className="statistics-content">
-
-
-            {/* DOUGHNUT */}
-
-            <div className="appointment-chart">
-
-              <Doughnut
-                data={chartData}
-                options={chartOptions}
-              />
-
-
-              {/* CENTER TOTAL */}
-
-              <div className="chart-center">
-
-                <strong>
-                  {totalCount}
-                </strong>
-
-                <span>
-                  Total
-                </span>
-
-              </div>
-
-            </div>
-
-
-            {/* SUMMARY */}
-
-            <div className="statistics-summary">
-
-
-              {/* COMPLETED */}
-
-              <div className="summary-item">
-
-                <span className="summary-dot completed-dot"></span>
-
-                <div className="summary-text">
-
-                  <strong>
-                    {completedCount}
-                  </strong>
-
-                  <small>
-                    Completed
-                  </small>
-
-                </div>
-
-              </div>
-
-
-              {/* UPCOMING */}
-
-              <div className="summary-item">
-
-                <span className="summary-dot upcoming-dot"></span>
-
-                <div className="summary-text">
-
-                  <strong>
-                    {upcomingCount}
-                  </strong>
-
-                  <small>
-                    Upcoming
-                  </small>
-
-                </div>
-
-              </div>
-
-
-              {/* CANCELLED */}
-
-              <div className="summary-item">
-
-                <span className="summary-dot cancelled-dot"></span>
-
-                <div className="summary-text">
-
-                  <strong>
-                    {cancelledCount}
-                  </strong>
-
-                  <small>
-                    Cancelled
-                  </small>
-
-                </div>
-
-              </div>
-
-            </div>
+            <span>
+              Completed
+            </span>
 
           </div>
 
         </div>
 
 
-        {/* =================================================
-            UPCOMING APPOINTMENT CARD
-        ================================================= */}
+        <div className="appointment-stat">
 
-        <div className="appointment-card upcoming-card">
+          <div className="stat-icon">
+            📅
+          </div>
 
+          <div>
 
-          {/* CARD HEADER */}
+            <strong>
+              {upcomingAppointments.length}
+            </strong>
 
-          <div className="card-header">
-
-            <div className="card-icon upcoming-icon">
-              📅
-            </div>
-
-
-            <div>
-
-              <h3>
-                Upcoming Appointment
-              </h3>
-
-              <p>
-                Your next scheduled consultation
-              </p>
-
-            </div>
+            <span>
+              Upcoming
+            </span>
 
           </div>
 
+        </div>
 
-          {/* =================================================
-              UPCOMING APPOINTMENT EXISTS
-          ================================================= */}
 
-          {nextAppointment ? (
+        <div className="appointment-stat">
 
-            <>
+          <div className="stat-icon">
+            ❌
+          </div>
 
+          <div>
 
-              {/* DOCTOR */}
+            <strong>
+              {cancelledAppointments.length}
+            </strong>
 
-              <div className="doctor-info">
+            <span>
+              Cancelled
+            </span>
 
-                <div className="doctor-avatar">
-                  👩‍⚕️
-                </div>
-
-
-                <div className="doctor-details">
-
-                  <h4>
-                    {nextAppointment.doctorName ||
-                      "Dr. Priya Sharma"}
-                  </h4>
-
-                  <p>
-                    {nextAppointment.specialization ||
-                      "Gynecologist"}
-                  </p>
-
-                </div>
-
-
-                <span className="appointment-status">
-                  Upcoming
-                </span>
-
-              </div>
-
-
-              {/* INFORMATION */}
-
-              <div className="appointment-info">
-
-
-                {/* DATE */}
-
-                <div className="info-item">
-
-                  <span className="info-icon">
-                    📅
-                  </span>
-
-                  <div>
-
-                    <small>
-                      Date
-                    </small>
-
-                    <strong>
-                      {formatDate(
-                        nextAppointment.appointmentDate
-                      )}
-                    </strong>
-
-                  </div>
-
-                </div>
-
-
-                {/* TIME */}
-
-                <div className="info-item">
-
-                  <span className="info-icon">
-                    🕐
-                  </span>
-
-                  <div>
-
-                    <small>
-                      Time
-                    </small>
-
-                    <strong>
-                      {formatTime(
-                        nextAppointment.appointmentTime
-                      )}
-                    </strong>
-
-                  </div>
-
-                </div>
-
-
-                {/* HOSPITAL */}
-
-                <div className="info-item">
-
-                  <span className="info-icon">
-                    🏥
-                  </span>
-
-                  <div>
-
-                    <small>
-                      Hospital
-                    </small>
-
-                    <strong>
-                      {nextAppointment.hospital ||
-                        "Not specified"}
-                    </strong>
-
-                  </div>
-
-                </div>
-
-
-                {/* LOCATION */}
-
-                <div className="info-item">
-
-                  <span className="info-icon">
-                    📍
-                  </span>
-
-                  <div>
-
-                    <small>
-                      Location
-                    </small>
-
-                    <strong>
-                      {nextAppointment.location ||
-                        "Not specified"}
-                    </strong>
-
-                  </div>
-
-                </div>
-
-              </div>
-
-
-              {/* PURPOSE */}
-
-              <div className="appointment-purpose">
-
-                <span>
-                  Purpose
-                </span>
-
-                <strong>
-                  {nextAppointment.purpose ||
-                    "Pregnancy Check-up"}
-                </strong>
-
-              </div>
-
-
-              {/* ACTIONS */}
-
-              <div className="appointment-actions">
-
-
-                <button
-                  type="button"
-                  className="view-btn"
-                  onClick={() =>
-                    navigate(
-                      `/appointment/${nextAppointment.id}`
-                    )
-                  }
-                >
-                  View Details
-                </button>
-
-
-                <button
-                  type="button"
-                  className="reschedule-btn"
-                  onClick={() =>
-                    navigate(
-                      `/appointment/${nextAppointment.id}`
-                    )
-                  }
-                >
-                  Reschedule
-                </button>
-
-
-                <button
-                  type="button"
-                  className="reminder-btn"
-                  onClick={() =>
-                    alert(
-                      "Reminder feature will be added later."
-                    )
-                  }
-                >
-                  🔔 Reminder
-                </button>
-
-              </div>
-
-            </>
-
-          ) : (
-
-            /* =================================================
-                NO UPCOMING APPOINTMENT
-            ================================================= */
-
-            <div className="no-upcoming-appointment">
-
-              <div className="no-appointment-icon">
-                📅
-              </div>
-
-
-              <h4>
-                No Upcoming Appointment
-              </h4>
-
-
-              <p>
-                You don't have any upcoming
-                pregnancy consultations.
-              </p>
-
-
-              <button
-                type="button"
-                className="add-appointment-btn"
-                onClick={() =>
-                  navigate("/appointment")
-                }
-              >
-
-                <span>
-                  +
-                </span>
-
-                Add Appointment
-
-              </button>
-
-            </div>
-
-          )}
+          </div>
 
         </div>
 
       </div>
 
-    </section>
 
+      {/* NEXT APPOINTMENT */}
+
+      <div className="next-appointment-section">
+
+        <div className="section-title">
+
+          <h3>
+            Upcoming Appointment
+          </h3>
+
+        </div>
+
+
+        {nextUpcomingAppointment ? (
+
+          <div className="next-appointment">
+
+            <div className="appointment-date-box">
+
+              <span>
+                {(() => {
+
+                  const date =
+                    getAppointmentDateObject(
+                      nextUpcomingAppointment
+                    );
+
+                  return date
+                    ? date.toLocaleDateString(
+                        "en-IN",
+                        {
+                          day: "2-digit",
+                        }
+                      )
+                    : "--";
+
+                })()}
+              </span>
+
+              <small>
+                {(() => {
+
+                  const date =
+                    getAppointmentDateObject(
+                      nextUpcomingAppointment
+                    );
+
+                  return date
+                    ? date.toLocaleDateString(
+                        "en-IN",
+                        {
+                          month: "short",
+                        }
+                      )
+                    : "";
+
+                })()}
+              </small>
+
+            </div>
+
+
+            <div className="appointment-details">
+
+              <h4>
+                {getAppointmentTitle(
+                  nextUpcomingAppointment
+                )}
+              </h4>
+
+              <p>
+                👨‍⚕️{" "}
+                {getDoctorName(
+                  nextUpcomingAppointment
+                )}
+              </p>
+
+              <p>
+                📅{" "}
+                {formatDate(
+                  nextUpcomingAppointment.date ??
+                    nextUpcomingAppointment.appointmentDate ??
+                    nextUpcomingAppointment.appointment_date ??
+                    nextUpcomingAppointment.scheduledDate
+                )}
+              </p>
+
+              <p>
+                🕐{" "}
+                {formatTime(
+                  nextUpcomingAppointment.time ??
+                    nextUpcomingAppointment.appointmentTime ??
+                    nextUpcomingAppointment.appointment_time ??
+                    nextUpcomingAppointment.scheduledTime
+                )}
+              </p>
+
+              <p>
+                📍{" "}
+                {getLocation(
+                  nextUpcomingAppointment
+                )}
+              </p>
+
+            </div>
+
+
+            <div
+              className={`appointment-status ${normalizeStatus(
+                nextUpcomingAppointment.status
+              )}`}
+            >
+              {displayStatus(
+                nextUpcomingAppointment.status
+              )}
+            </div>
+
+          </div>
+
+        ) : (
+
+          <div className="no-appointment">
+
+            <div className="no-appointment-icon">
+              📅
+            </div>
+
+            <h4>
+              No upcoming appointments
+            </h4>
+
+            <p>
+              You don't have any upcoming appointments.
+            </p>
+
+          </div>
+
+        )}
+
+      </div>
+
+
+      {/* UPCOMING LIST */}
+
+      {upcomingAppointments.length > 1 && (
+
+        <div className="appointment-list-section">
+
+          <div className="section-title">
+
+            <h3>
+              More Upcoming Appointments
+            </h3>
+
+          </div>
+
+
+          <div className="appointment-list">
+
+            {upcomingAppointments
+              .slice(1, 4)
+              .map(
+                (appointment, index) => {
+
+                  const id =
+                    appointment?.id ??
+                    appointment?.appointmentId ??
+                    index;
+
+                  return (
+                    <div
+                      className="appointment-list-item"
+                      key={id}
+                    >
+
+                      <div className="list-date">
+
+                        <strong>
+                          {(() => {
+
+                            const date =
+                              getAppointmentDateObject(
+                                appointment
+                              );
+
+                            return date
+                              ? date.getDate()
+                              : "--";
+
+                          })()}
+                        </strong>
+
+                        <span>
+                          {(() => {
+
+                            const date =
+                              getAppointmentDateObject(
+                                appointment
+                              );
+
+                            return date
+                              ? date.toLocaleDateString(
+                                  "en-IN",
+                                  {
+                                    month: "short",
+                                  }
+                                )
+                              : "";
+
+                          })()}
+                        </span>
+
+                      </div>
+
+
+                      <div className="list-details">
+
+                        <h4>
+                          {getAppointmentTitle(
+                            appointment
+                          )}
+                        </h4>
+
+                        <p>
+                          {getDoctorName(
+                            appointment
+                          )}
+                        </p>
+
+                      </div>
+
+
+                      <div className="list-time">
+
+                        <span>
+                          {formatTime(
+                            appointment.time ??
+                              appointment.appointmentTime ??
+                              appointment.appointment_time ??
+                              appointment.scheduledTime
+                          )}
+                        </span>
+
+                      </div>
+
+                    </div>
+                  );
+                }
+              )}
+
+          </div>
+
+        </div>
+
+      )}
+
+    </div>
   );
-
-}
-
+};
 
 export default AppointmentCard;

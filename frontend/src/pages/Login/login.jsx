@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-
 import { Link, useNavigate } from "react-router-dom";
 
 import {
@@ -11,7 +10,7 @@ import {
 
 import { FcGoogle } from "react-icons/fc";
 
-import axios from "axios";
+import API from "../../services/api";
 
 import "./login.css";
 
@@ -19,7 +18,6 @@ function Login() {
   const navigate = useNavigate();
 
   const [showPassword, setShowPassword] = useState(false);
-
   const [loading, setLoading] = useState(false);
 
   const [formData, setFormData] = useState({
@@ -72,14 +70,12 @@ function Login() {
       // LOGIN API
       // =====================================================
 
-      const response = await axios.post(
-        "http://localhost:8080/api/auth/login",
-
+      const response = await API.post(
+        "/auth/login",
         {
           email: formData.email.trim(),
           password: formData.password,
         },
-
         {
           withCredentials: true,
         }
@@ -271,7 +267,7 @@ function Login() {
 
         // ===================================================
         // ROLE-BASED NAVIGATION
-        // =========================================================
+        // ===================================================
 
         // ---------------------------------------------------
         // FAMILY MEMBER
@@ -467,7 +463,6 @@ function Login() {
   // =========================================================
 
   return (
-
     <div className="login-container">
 
       {/* =====================================================
