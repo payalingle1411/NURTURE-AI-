@@ -1,3 +1,4 @@
+
 import React, { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -25,7 +26,6 @@ import {
   FaTint,
   FaClock,
   FaRoad,
-  FaUserMd,
 } from "react-icons/fa";
 
 import Sidebar from "../../components/sidebar/Sidebar";
@@ -348,6 +348,8 @@ const Report = () => {
 
   /* =========================================================
      PREGNANCY INFORMATION
+     Only information needed for the report overview.
+     Detailed pregnancy profile is shown separately.
   ========================================================= */
 
   const pregnancyWeek =
@@ -367,29 +369,6 @@ const Report = () => {
   const dueDate =
     data.pregnancy?.dueDate ||
     data.pregnancy?.expectedDueDate;
-
-  const pregnancyType =
-    data.pregnancy?.pregnancyType ||
-    "Not available";
-
-  const firstPregnancy =
-    data.pregnancy?.firstPregnancy;
-
-  const previousPregnancies =
-    data.pregnancy?.previousPregnancies;
-
-  const liveBirths =
-    data.pregnancy?.liveBirths;
-
-  const miscarriages =
-    data.pregnancy?.miscarriages;
-
-  const highRisk =
-    data.pregnancy?.highRisk;
-
-  const doctorNotes =
-    data.pregnancy?.doctorNotes ||
-    "No doctor notes recorded.";
 
   /* =========================================================
      WEEKLY AVERAGE HEALTH DATA
@@ -549,6 +528,7 @@ const Report = () => {
 
                 <div className="hero-brand-text">
                   <span>NURTURE AI</span>
+
                   <small>
                     Pregnancy Wellness Platform
                   </small>
@@ -584,8 +564,13 @@ const Report = () => {
                 <FaCalendarAlt />
 
                 <div>
+
                   <span>REPORT PERIOD</span>
-                  <strong>{reportPeriod}</strong>
+
+                  <strong>
+                    {reportPeriod}
+                  </strong>
+
                 </div>
 
               </div>
@@ -616,7 +601,9 @@ const Report = () => {
                   PATIENT
                 </span>
 
-                <h2>{patientName}</h2>
+                <h2>
+                  {patientName}
+                </h2>
 
                 <div className="patient-meta">
 
@@ -639,23 +626,41 @@ const Report = () => {
             <div className="patient-pregnancy">
 
               <div>
-                <span>Pregnancy</span>
+
+                <span>
+                  Pregnancy
+                </span>
 
                 <strong>
                   {pregnancyWeek !== "--"
                     ? `Week ${pregnancyWeek}`
                     : "--"}
                 </strong>
+
               </div>
 
               <div>
-                <span>Trimester</span>
-                <strong>{trimester}</strong>
+
+                <span>
+                  Trimester
+                </span>
+
+                <strong>
+                  {trimester}
+                </strong>
+
               </div>
 
               <div>
-                <span>Baby Count</span>
-                <strong>{babyCount}</strong>
+
+                <span>
+                  Baby Count
+                </span>
+
+                <strong>
+                  {babyCount}
+                </strong>
+
               </div>
 
             </div>
@@ -677,6 +682,7 @@ const Report = () => {
                 </span>
 
                 <div>
+
                   <span className="section-label">
                     PREGNANCY OVERVIEW
                   </span>
@@ -684,6 +690,7 @@ const Report = () => {
                   <h2>
                     Your Pregnancy Journey
                   </h2>
+
                 </div>
 
               </div>
@@ -701,7 +708,10 @@ const Report = () => {
                 </div>
 
                 <div>
-                  <span>Pregnancy Week</span>
+
+                  <span>
+                    Pregnancy Week
+                  </span>
 
                   <strong>
                     {pregnancyWeek !== "--"
@@ -712,6 +722,7 @@ const Report = () => {
                   <small>
                     Current pregnancy progress
                   </small>
+
                 </div>
 
               </div>
@@ -723,13 +734,19 @@ const Report = () => {
                 </div>
 
                 <div>
-                  <span>Trimester</span>
 
-                  <strong>{trimester}</strong>
+                  <span>
+                    Trimester
+                  </span>
+
+                  <strong>
+                    {trimester}
+                  </strong>
 
                   <small>
                     Current stage of pregnancy
                   </small>
+
                 </div>
 
               </div>
@@ -741,13 +758,19 @@ const Report = () => {
                 </div>
 
                 <div>
-                  <span>Baby Count</span>
 
-                  <strong>{babyCount}</strong>
+                  <span>
+                    Baby Count
+                  </span>
+
+                  <strong>
+                    {babyCount}
+                  </strong>
 
                   <small>
                     Number of babies recorded
                   </small>
+
                 </div>
 
               </div>
@@ -759,7 +782,10 @@ const Report = () => {
                 </div>
 
                 <div>
-                  <span>Expected Due Date</span>
+
+                  <span>
+                    Expected Due Date
+                  </span>
 
                   <strong>
                     {formatDate(dueDate)}
@@ -768,6 +794,7 @@ const Report = () => {
                   <small>
                     Recorded expected delivery date
                   </small>
+
                 </div>
 
               </div>
@@ -791,6 +818,7 @@ const Report = () => {
                 </span>
 
                 <div>
+
                   <span className="section-label">
                     WELLNESS SCORE
                   </span>
@@ -798,6 +826,7 @@ const Report = () => {
                   <h2>
                     Overall Wellness
                   </h2>
+
                 </div>
 
               </div>
@@ -822,7 +851,9 @@ const Report = () => {
 
                   <div className="score-ring-inner">
 
-                    <span>WELLNESS</span>
+                    <span>
+                      WELLNESS
+                    </span>
 
                     <strong>
                       {overallScore !== null
@@ -830,7 +861,9 @@ const Report = () => {
                         : "--"}
                     </strong>
 
-                    <small>/ 100</small>
+                    <small>
+                      / 100
+                    </small>
 
                   </div>
 
@@ -843,11 +876,15 @@ const Report = () => {
                 <div className="wellness-heading">
 
                   <div>
-                    <span>WEEKLY ASSESSMENT</span>
+
+                    <span>
+                      WEEKLY ASSESSMENT
+                    </span>
 
                     <h3>
                       Your Overall Wellness
                     </h3>
+
                   </div>
 
                   <div
@@ -866,11 +903,13 @@ const Report = () => {
 
                 {data.scoreChange !== null &&
                   data.scoreChange !== undefined && (
+
                     <div className="score-comparison">
 
                       <FaChartLine />
 
                       <div>
+
                         <span>
                           Change from previous report
                         </span>
@@ -884,9 +923,11 @@ const Report = () => {
                           )}
                           %
                         </strong>
+
                       </div>
 
                     </div>
+
                   )}
 
               </div>
@@ -910,6 +951,7 @@ const Report = () => {
                 </span>
 
                 <div>
+
                   <span className="section-label">
                     WEEKLY AVERAGES
                   </span>
@@ -917,6 +959,7 @@ const Report = () => {
                   <h2>
                     Health Summary
                   </h2>
+
                 </div>
 
               </div>
@@ -934,6 +977,8 @@ const Report = () => {
 
             <div className="average-health-grid">
 
+              {/* STEPS */}
+
               <div className="average-card">
 
                 <div className="average-icon">
@@ -941,7 +986,10 @@ const Report = () => {
                 </div>
 
                 <div className="average-card-content">
-                  <span>Average Steps</span>
+
+                  <span>
+                    Average Steps
+                  </span>
 
                   <strong>
                     {formatNumber(avgSteps)}
@@ -950,9 +998,12 @@ const Report = () => {
                   <small>
                     steps per day
                   </small>
+
                 </div>
 
               </div>
+
+              {/* ACTIVE TIME */}
 
               <div className="average-card">
 
@@ -961,7 +1012,10 @@ const Report = () => {
                 </div>
 
                 <div className="average-card-content">
-                  <span>Average Active Time</span>
+
+                  <span>
+                    Average Active Time
+                  </span>
 
                   <strong>
                     {formatNumber(avgActiveMinutes)}
@@ -970,9 +1024,12 @@ const Report = () => {
                   <small>
                     minutes per day
                   </small>
+
                 </div>
 
               </div>
+
+              {/* DISTANCE */}
 
               <div className="average-card">
 
@@ -981,7 +1038,10 @@ const Report = () => {
                 </div>
 
                 <div className="average-card-content">
-                  <span>Average Distance</span>
+
+                  <span>
+                    Average Distance
+                  </span>
 
                   <strong>
                     {formatNumber(avgDistance, 1)}
@@ -990,9 +1050,12 @@ const Report = () => {
                   <small>
                     km per day
                   </small>
+
                 </div>
 
               </div>
+
+              {/* CALORIES */}
 
               <div className="average-card">
 
@@ -1001,7 +1064,10 @@ const Report = () => {
                 </div>
 
                 <div className="average-card-content">
-                  <span>Average Calories</span>
+
+                  <span>
+                    Average Calories
+                  </span>
 
                   <strong>
                     {formatNumber(avgCalories)}
@@ -1010,9 +1076,12 @@ const Report = () => {
                   <small>
                     calories per day
                   </small>
+
                 </div>
 
               </div>
+
+              {/* SLEEP */}
 
               <div className="average-card">
 
@@ -1021,7 +1090,10 @@ const Report = () => {
                 </div>
 
                 <div className="average-card-content">
-                  <span>Average Sleep</span>
+
+                  <span>
+                    Average Sleep
+                  </span>
 
                   <strong>
                     {formatNumber(avgSleep, 1)}
@@ -1030,9 +1102,12 @@ const Report = () => {
                   <small>
                     hours per day
                   </small>
+
                 </div>
 
               </div>
+
+              {/* WATER */}
 
               <div className="average-card">
 
@@ -1041,7 +1116,10 @@ const Report = () => {
                 </div>
 
                 <div className="average-card-content">
-                  <span>Average Water</span>
+
+                  <span>
+                    Average Water
+                  </span>
 
                   <strong>
                     {formatNumber(avgWater)}
@@ -1050,6 +1128,7 @@ const Report = () => {
                   <small>
                     glasses per day
                   </small>
+
                 </div>
 
               </div>
@@ -1059,7 +1138,7 @@ const Report = () => {
           </section>
 
           {/* =================================================
-              04 PREGNANCY HEALTH
+              04 WELLNESS SUMMARY
           ================================================= */}
 
           <section className="report-section">
@@ -1073,137 +1152,7 @@ const Report = () => {
                 </span>
 
                 <div>
-                  <span className="section-label">
-                    PREGNANCY INFORMATION
-                  </span>
 
-                  <h2>
-                    Pregnancy Health Summary
-                  </h2>
-                </div>
-
-              </div>
-
-              <FaUserMd className="section-header-icon" />
-
-            </div>
-
-            <div className="pregnancy-health-box">
-
-              <div className="pregnancy-info-row">
-
-                <div className="pregnancy-info-item">
-                  <span>Pregnancy Type</span>
-
-                  <strong>
-                    {pregnancyType}
-                  </strong>
-                </div>
-
-                <div className="pregnancy-info-item">
-                  <span>First Pregnancy</span>
-
-                  <strong>
-                    {firstPregnancy === true
-                      ? "Yes"
-                      : firstPregnancy === false
-                      ? "No"
-                      : "Not recorded"}
-                  </strong>
-                </div>
-
-              </div>
-
-              <div className="pregnancy-info-row">
-
-                <div className="pregnancy-info-item">
-                  <span>Previous Pregnancies</span>
-
-                  <strong>
-                    {previousPregnancies ??
-                      "Not recorded"}
-                  </strong>
-                </div>
-
-                <div className="pregnancy-info-item">
-                  <span>Live Births</span>
-
-                  <strong>
-                    {liveBirths ??
-                      "Not recorded"}
-                  </strong>
-                </div>
-
-              </div>
-
-              <div className="pregnancy-info-row">
-
-                <div className="pregnancy-info-item">
-                  <span>Miscarriages</span>
-
-                  <strong>
-                    {miscarriages ??
-                      "Not recorded"}
-                  </strong>
-                </div>
-
-                <div className="pregnancy-info-item">
-                  <span>High-Risk Pregnancy</span>
-
-                  <strong
-                    className={
-                      highRisk === true
-                        ? "risk-yes"
-                        : highRisk === false
-                        ? "risk-no"
-                        : ""
-                    }
-                  >
-                    {highRisk === true
-                      ? "Yes"
-                      : highRisk === false
-                      ? "No"
-                      : "Not recorded"}
-                  </strong>
-                </div>
-
-              </div>
-
-            </div>
-
-            <div className="doctor-notes">
-
-              <div className="doctor-notes-icon">
-                <FaNotesMedical />
-              </div>
-
-              <div className="doctor-notes-content">
-
-                <span>DOCTOR NOTES</span>
-
-                <p>{doctorNotes}</p>
-
-              </div>
-
-            </div>
-
-          </section>
-
-          {/* =================================================
-              05 WELLNESS SUMMARY
-          ================================================= */}
-
-          <section className="report-section">
-
-            <div className="section-header">
-
-              <div className="section-title-group">
-
-                <span className="section-number">
-                  05
-                </span>
-
-                <div>
                   <span className="section-label">
                     WELLNESS SUMMARY
                   </span>
@@ -1211,6 +1160,7 @@ const Report = () => {
                   <h2>
                     Nutrition, Mood & Symptoms
                   </h2>
+
                 </div>
 
               </div>
@@ -1229,7 +1179,9 @@ const Report = () => {
 
                 <div className="summary-card-content">
 
-                  <span>Nutrition</span>
+                  <span>
+                    Nutrition
+                  </span>
 
                   <strong>
                     {formatNumber(nutritionScore)}
@@ -1295,7 +1247,9 @@ const Report = () => {
 
                 <div className="summary-card-content">
 
-                  <span>Symptoms</span>
+                  <span>
+                    Symptoms
+                  </span>
 
                   <strong>
                     {symptomStatus}
@@ -1317,7 +1271,7 @@ const Report = () => {
           </section>
 
           {/* =================================================
-              06 AI INSIGHT
+              05 AI INSIGHT
           ================================================= */}
 
           <section className="ai-report-section">
@@ -1333,11 +1287,15 @@ const Report = () => {
                 <div className="ai-report-heading">
 
                   <div>
-                    <span>NURTURE AI</span>
+
+                    <span>
+                      NURTURE AI
+                    </span>
 
                     <h2>
                       Personalized Wellness Insight
                     </h2>
+
                   </div>
 
                   <FaLightbulb />
@@ -1367,7 +1325,7 @@ const Report = () => {
           </section>
 
           {/* =================================================
-              07 RECOMMENDATIONS
+              06 RECOMMENDATIONS
           ================================================= */}
 
           <section className="recommendation-section">
@@ -1440,11 +1398,15 @@ const Report = () => {
               </div>
 
               <div>
-                <strong>Nurture AI</strong>
+
+                <strong>
+                  Nurture AI
+                </strong>
 
                 <span>
                   Personalized pregnancy wellness support
                 </span>
+
               </div>
 
             </div>

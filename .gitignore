@@ -56,3 +56,10 @@ target/
 .DS_Store
 Thumbs.db
 >>>>>>> 097c57d872c73051a578e3fbb084490a88079bdb
+
+# Playwright
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
+/playwright/.auth/

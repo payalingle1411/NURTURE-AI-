@@ -7,7 +7,6 @@ import {
   Navigate,
 } from "react-router-dom";
 
-
 // =============================================================
 // AUTH
 // =============================================================
@@ -15,13 +14,11 @@ import {
 import Login from "./pages/Login/login.jsx";
 import Register from "./pages/Register/register.jsx";
 
-
 // =============================================================
 // MOTHER DASHBOARD
 // =============================================================
 
 import Dashboard from "./pages/Dashboard/dashboard.jsx";
-
 
 // =============================================================
 // COMMON COMPONENTS
@@ -30,13 +27,11 @@ import Dashboard from "./pages/Dashboard/dashboard.jsx";
 import Navbar from "./components/Navbar/Navbar.jsx";
 import Sidebar from "./components/sidebar/Sidebar.jsx";
 
-
 // =============================================================
 // WELCOME
 // =============================================================
 
 import Welcome from "./pages/Welcome page/welcome.jsx";
-
 
 // =============================================================
 // MOTHER FORMS
@@ -45,7 +40,6 @@ import Welcome from "./pages/Welcome page/welcome.jsx";
 import PersonalInfo from "./pages/Form/PersonalInfo/personalInfo.jsx";
 import PregnancyDetails from "./pages/Form/PregnancyDetails/PregnancyDetails.jsx";
 
-
 // =============================================================
 // APPOINTMENTS
 // =============================================================
@@ -53,20 +47,17 @@ import PregnancyDetails from "./pages/Form/PregnancyDetails/PregnancyDetails.jsx
 import Appointment from "./pages/Appointment/Appointment";
 import AppointmentHistory from "./pages/Appointment/AppointmentHistory.jsx";
 
-
 // =============================================================
 // PROFILE
 // =============================================================
 
 import Profile from "./pages/Profile/Profile.jsx";
 
-
 // =============================================================
 // BABY DEVELOPMENT
 // =============================================================
 
 import BabyDevelopment from "./components/WelcomeCard/BabyDevelopment.jsx";
-
 
 // =============================================================
 // FAMILY MEMBER
@@ -76,7 +67,6 @@ import FamilyForm from "./pages/FamilyForm/FForm.jsx";
 import FamilyFormDetails from "./pages/FamilyForm/FForm1.jsx";
 import FamilyDashboard from "./pages/FamilyDashboard/familyDashboard.jsx";
 
-
 // =============================================================
 // HEALTH TRACKING
 // =============================================================
@@ -84,6 +74,11 @@ import FamilyDashboard from "./pages/FamilyDashboard/familyDashboard.jsx";
 import HealthTracking from "./pages/HealthTracking/HealthTracking.jsx";
 import Report from "./pages/Report/Report.jsx";
 
+// =============================================================
+// AI ASSISTANT
+// =============================================================
+
+import Assistant from "./pages/AIAssistant/Assistant.jsx";
 
 // =============================================================
 // PROTECTED ROUTE
@@ -92,8 +87,11 @@ import Report from "./pages/Report/Report.jsx";
 import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute.jsx";
 
 
-function App() {
+// =============================================================
+// APP
+// =============================================================
 
+function App() {
   return (
     <BrowserRouter>
 
@@ -162,6 +160,23 @@ function App() {
               allowedRoles={["mother", "family member"]}
             >
               <Sidebar />
+            </ProtectedRoute>
+          }
+        />
+
+
+        {/* =====================================================
+            AI ASSISTANT
+            ONLY MOTHER
+        ===================================================== */}
+
+        <Route
+          path="/ai-assistant"
+          element={
+            <ProtectedRoute
+              allowedRoles={["mother"]}
+            >
+              <Assistant />
             </ProtectedRoute>
           }
         />
@@ -288,6 +303,12 @@ function App() {
           }
         />
 
+
+        {/* =====================================================
+            REPORT
+            ONLY MOTHER
+        ===================================================== */}
+
         <Route
           path="/report"
           element={
@@ -298,6 +319,7 @@ function App() {
             </ProtectedRoute>
           }
         />
+
 
         {/* =====================================================
             FAMILY MEMBER FORM
@@ -366,13 +388,9 @@ function App() {
 }
 
 
-/* =============================================================
-   ROLE BASED HOME
-
-   IMPORTANT:
-   We use sessionStorage because the currently logged-in
-   user should be isolated per browser tab.
-   ============================================================= */
+// =============================================================
+// ROLE BASED HOME
+// =============================================================
 
 function RoleBasedHome() {
 
@@ -389,9 +407,9 @@ function RoleBasedHome() {
       .replace(/\s+/g, " ");
 
 
-  // -----------------------------------------------------------
+  // ===========================================================
   // NOT LOGGED IN
-  // -----------------------------------------------------------
+  // ===========================================================
 
   if (
     !userId ||
@@ -402,9 +420,9 @@ function RoleBasedHome() {
   }
 
 
-  // -----------------------------------------------------------
+  // ===========================================================
   // FAMILY MEMBER
-  // -----------------------------------------------------------
+  // ===========================================================
 
   if (role === "family member") {
 
@@ -417,9 +435,9 @@ function RoleBasedHome() {
   }
 
 
-  // -----------------------------------------------------------
+  // ===========================================================
   // MOTHER
-  // -----------------------------------------------------------
+  // ===========================================================
 
   if (role === "mother") {
 
@@ -432,9 +450,9 @@ function RoleBasedHome() {
   }
 
 
-  // -----------------------------------------------------------
+  // ===========================================================
   // UNKNOWN ROLE
-  // -----------------------------------------------------------
+  // ===========================================================
 
   return (
     <Navigate
@@ -445,5 +463,8 @@ function RoleBasedHome() {
 }
 
 
-export default App;
+// =============================================================
+// EXPORT
+// =============================================================
 
+export default App;

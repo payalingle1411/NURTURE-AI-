@@ -9,6 +9,8 @@
     "react-router-dom": "^7.18.1"
   },
   "devDependencies": {
+    "@playwright/test": "^1.63.0",
+    "@types/node": "^26.4.1",
     "concurrently": "^10.0.3"
   }
 }
