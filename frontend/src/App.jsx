@@ -1,3 +1,4 @@
+
 import React from "react";
 
 import {
@@ -39,12 +40,13 @@ import Welcome from "./pages/Welcome page/welcome.jsx";
 
 import PersonalInfo from "./pages/Form/PersonalInfo/personalInfo.jsx";
 import PregnancyDetails from "./pages/Form/PregnancyDetails/PregnancyDetails.jsx";
+import MedicalHistory from "./pages/Form/MedicalHistory/MedicalHistory.jsx";
 
 // =============================================================
 // APPOINTMENTS
 // =============================================================
 
-import Appointment from "./pages/Appointment/Appointment";
+import Appointment from "./pages/Appointment/Appointment.jsx";
 import AppointmentHistory from "./pages/Appointment/AppointmentHistory.jsx";
 
 // =============================================================
@@ -81,11 +83,19 @@ import Report from "./pages/Report/Report.jsx";
 import Assistant from "./pages/AIAssistant/Assistant.jsx";
 
 // =============================================================
+// MEDICINE & VACCINATION
+// IMPORTANT:
+// Folder must be:
+// src/pages/MedicineVaccination/Healthcare.jsx
+// =============================================================
+
+import Healthcare from "./pages/MedicineVaccination/HealthCare.jsx";
+
+// =============================================================
 // PROTECTED ROUTE
 // =============================================================
 
 import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute.jsx";
-
 
 // =============================================================
 // APP
@@ -94,7 +104,6 @@ import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute.jsx";
 function App() {
   return (
     <BrowserRouter>
-
       <Routes>
 
         {/* =====================================================
@@ -105,7 +114,6 @@ function App() {
           path="/"
           element={<Welcome />}
         />
-
 
         {/* =====================================================
             AUTHENTICATION
@@ -121,7 +129,6 @@ function App() {
           element={<Register />}
         />
 
-
         {/* =====================================================
             MOTHER DASHBOARD
         ===================================================== */}
@@ -129,14 +136,11 @@ function App() {
         <Route
           path="/dashboard"
           element={
-            <ProtectedRoute
-              allowedRoles={["mother"]}
-            >
+            <ProtectedRoute allowedRoles={["mother"]}>
               <Dashboard />
             </ProtectedRoute>
           }
         />
-
 
         {/* =====================================================
             COMMON COMPONENTS
@@ -164,7 +168,6 @@ function App() {
           }
         />
 
-
         {/* =====================================================
             AI ASSISTANT
             ONLY MOTHER
@@ -173,14 +176,25 @@ function App() {
         <Route
           path="/ai-assistant"
           element={
-            <ProtectedRoute
-              allowedRoles={["mother"]}
-            >
+            <ProtectedRoute allowedRoles={["mother"]}>
               <Assistant />
             </ProtectedRoute>
           }
         />
 
+        {/* =====================================================
+            MEDICINE & VACCINATION
+            ONLY MOTHER
+        ===================================================== */}
+
+        <Route
+          path="/medicine"
+          element={
+            <ProtectedRoute allowedRoles={["mother"]}>
+              <Healthcare />
+            </ProtectedRoute>
+          }
+        />
 
         {/* =====================================================
             MOTHER PERSONAL INFORMATION
@@ -189,14 +203,11 @@ function App() {
         <Route
           path="/personal-info"
           element={
-            <ProtectedRoute
-              allowedRoles={["mother"]}
-            >
+            <ProtectedRoute allowedRoles={["mother"]}>
               <PersonalInfo />
             </ProtectedRoute>
           }
         />
-
 
         {/* =====================================================
             PREGNANCY DETAILS
@@ -205,9 +216,7 @@ function App() {
         <Route
           path="/pregnancy-details"
           element={
-            <ProtectedRoute
-              allowedRoles={["mother"]}
-            >
+            <ProtectedRoute allowedRoles={["mother"]}>
               <PregnancyDetails />
             </ProtectedRoute>
           }
@@ -216,14 +225,24 @@ function App() {
         <Route
           path="/pregnancy-profile"
           element={
-            <ProtectedRoute
-              allowedRoles={["mother"]}
-            >
+            <ProtectedRoute allowedRoles={["mother"]}>
               <PregnancyDetails />
             </ProtectedRoute>
           }
         />
 
+        {/* =====================================================
+            MEDICAL HISTORY
+        ===================================================== */}
+
+        <Route
+          path="/medical-history"
+          element={
+            <ProtectedRoute allowedRoles={["mother"]}>
+              <MedicalHistory />
+            </ProtectedRoute>
+          }
+        />
 
         {/* =====================================================
             APPOINTMENTS
@@ -233,9 +252,7 @@ function App() {
         <Route
           path="/appointment"
           element={
-            <ProtectedRoute
-              allowedRoles={["mother"]}
-            >
+            <ProtectedRoute allowedRoles={["mother"]}>
               <Appointment />
             </ProtectedRoute>
           }
@@ -244,14 +261,11 @@ function App() {
         <Route
           path="/appointment-history"
           element={
-            <ProtectedRoute
-              allowedRoles={["mother"]}
-            >
+            <ProtectedRoute allowedRoles={["mother"]}>
               <AppointmentHistory />
             </ProtectedRoute>
           }
         />
-
 
         {/* =====================================================
             PROFILE
@@ -261,14 +275,11 @@ function App() {
         <Route
           path="/profile"
           element={
-            <ProtectedRoute
-              allowedRoles={["mother"]}
-            >
+            <ProtectedRoute allowedRoles={["mother"]}>
               <Profile />
             </ProtectedRoute>
           }
         />
-
 
         {/* =====================================================
             BABY DEVELOPMENT
@@ -278,14 +289,11 @@ function App() {
         <Route
           path="/baby-development"
           element={
-            <ProtectedRoute
-              allowedRoles={["mother"]}
-            >
+            <ProtectedRoute allowedRoles={["mother"]}>
               <BabyDevelopment />
             </ProtectedRoute>
           }
         />
-
 
         {/* =====================================================
             HEALTH TRACKING
@@ -295,14 +303,11 @@ function App() {
         <Route
           path="/health-tracking"
           element={
-            <ProtectedRoute
-              allowedRoles={["mother"]}
-            >
+            <ProtectedRoute allowedRoles={["mother"]}>
               <HealthTracking />
             </ProtectedRoute>
           }
         />
-
 
         {/* =====================================================
             REPORT
@@ -312,14 +317,11 @@ function App() {
         <Route
           path="/report"
           element={
-            <ProtectedRoute
-              allowedRoles={["mother"]}
-            >
+            <ProtectedRoute allowedRoles={["mother"]}>
               <Report />
             </ProtectedRoute>
           }
         />
-
 
         {/* =====================================================
             FAMILY MEMBER FORM
@@ -329,14 +331,11 @@ function App() {
         <Route
           path="/family-form"
           element={
-            <ProtectedRoute
-              allowedRoles={["family member"]}
-            >
+            <ProtectedRoute allowedRoles={["family member"]}>
               <FamilyForm />
             </ProtectedRoute>
           }
         />
-
 
         {/* =====================================================
             FAMILY MEMBER DETAILS FORM
@@ -346,14 +345,11 @@ function App() {
         <Route
           path="/family-form-details"
           element={
-            <ProtectedRoute
-              allowedRoles={["family member"]}
-            >
+            <ProtectedRoute allowedRoles={["family member"]}>
               <FamilyFormDetails />
             </ProtectedRoute>
           }
         />
-
 
         {/* =====================================================
             FAMILY DASHBOARD
@@ -363,14 +359,11 @@ function App() {
         <Route
           path="/family-dashboard"
           element={
-            <ProtectedRoute
-              allowedRoles={["family member"]}
-            >
+            <ProtectedRoute allowedRoles={["family member"]}>
               <FamilyDashboard />
             </ProtectedRoute>
           }
         />
-
 
         {/* =====================================================
             UNKNOWN ROUTE
@@ -382,11 +375,9 @@ function App() {
         />
 
       </Routes>
-
     </BrowserRouter>
   );
 }
-
 
 // =============================================================
 // ROLE BASED HOME
@@ -394,18 +385,15 @@ function App() {
 
 function RoleBasedHome() {
 
-  const userId =
-    sessionStorage.getItem("userId");
+  const userId = sessionStorage.getItem("userId");
 
-  const role =
-    String(
-      sessionStorage.getItem("role") || ""
-    )
-      .trim()
-      .toLowerCase()
-      .replace(/_/g, " ")
-      .replace(/\s+/g, " ");
-
+  const role = String(
+    sessionStorage.getItem("role") || ""
+  )
+    .trim()
+    .toLowerCase()
+    .replace(/_/g, " ")
+    .replace(/\s+/g, " ");
 
   // ===========================================================
   // NOT LOGGED IN
@@ -419,13 +407,11 @@ function RoleBasedHome() {
     return <Welcome />;
   }
 
-
   // ===========================================================
   // FAMILY MEMBER
   // ===========================================================
 
   if (role === "family member") {
-
     return (
       <Navigate
         to="/family-dashboard"
@@ -434,13 +420,11 @@ function RoleBasedHome() {
     );
   }
 
-
   // ===========================================================
   // MOTHER
   // ===========================================================
 
   if (role === "mother") {
-
     return (
       <Navigate
         to="/dashboard"
@@ -448,7 +432,6 @@ function RoleBasedHome() {
       />
     );
   }
-
 
   // ===========================================================
   // UNKNOWN ROLE
@@ -462,9 +445,9 @@ function RoleBasedHome() {
   );
 }
 
-
 // =============================================================
 // EXPORT
 // =============================================================
 
 export default App;
+

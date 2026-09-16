@@ -3,8 +3,10 @@ package com.nurture.backend.service;
 import com.nurture.backend.dto.ProfileResponse;
 import com.nurture.backend.entity.Login;
 import com.nurture.backend.entity.PregnancyProfile;
+import com.nurture.backend.entity.UserProfile;
 import com.nurture.backend.repository.PregnancyProfileRepository;
 import com.nurture.backend.repository.ProfileRepository;
+import com.nurture.backend.repository.UserProfileRepository;
 
 import org.springframework.stereotype.Service;
 
@@ -15,6 +17,7 @@ public class ProfileService {
 
     private final ProfileRepository profileRepository;
     private final PregnancyProfileRepository pregnancyProfileRepository;
+    private final UserProfileRepository userProfileRepository;
 
 
     // =========================================================
@@ -23,12 +26,17 @@ public class ProfileService {
 
     public ProfileService(
             ProfileRepository profileRepository,
-            PregnancyProfileRepository pregnancyProfileRepository
+            PregnancyProfileRepository pregnancyProfileRepository,
+            UserProfileRepository userProfileRepository
     ) {
 
         this.profileRepository = profileRepository;
+
         this.pregnancyProfileRepository =
                 pregnancyProfileRepository;
+
+        this.userProfileRepository =
+                userProfileRepository;
     }
 
 
@@ -135,6 +143,32 @@ public class ProfileService {
                 user.getRole(),
 
                 pregnancyData
+        );
+    }
+
+
+    // =========================================================
+    // CHECK PERSONAL INFO COMPLETION
+    // =========================================================
+    //
+    // Returns true only when:
+    // 1. UserProfile exists
+    // 2. profile_completed = true
+    //
+    // =========================================================
+
+    public boolean exists(Long userId) {
+
+        Optional<UserProfile> profile =
+                userProfileRepository
+                        .findByUser_Id(userId);
+
+        if (profile.isEmpty()) {
+            return false;
+        }
+
+        return Boolean.TRUE.equals(
+                profile.get().getProfileCompleted()
         );
     }
 }

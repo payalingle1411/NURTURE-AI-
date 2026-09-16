@@ -971,7 +971,7 @@ const PregnancyDetails = () => {
       );
 
       navigate(
-        "/dashboard"
+        "/medical-history"
       );
 
     } catch (err) {

@@ -27,6 +27,11 @@ public class ProfileController {
     }
 
 
+    // =========================================================
+    // GET MY COMPLETE PROFILE
+    // GET /api/profile/me
+    // =========================================================
+
     @GetMapping("/me")
     public ResponseEntity<?> getMyProfile(
             HttpSession session
@@ -100,5 +105,22 @@ public class ProfileController {
                             e.getMessage()
                     );
         }
+    }
+
+
+    // =========================================================
+    // CHECK IF PERSONAL INFO IS COMPLETED
+    // GET /api/profile/exists/{userId}
+    // =========================================================
+
+    @GetMapping("/exists/{userId}")
+    public ResponseEntity<Boolean> profileExists(
+            @PathVariable Long userId
+    ) {
+
+        boolean exists =
+                profileService.exists(userId);
+
+        return ResponseEntity.ok(exists);
     }
 }

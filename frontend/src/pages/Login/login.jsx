@@ -1,3 +1,11 @@
+/*
+=========================================================
+NURTURE AI - LOGIN PAGE
+Premium Lavender + Pink Theme
+Mother & Baby • Modern • Elegant • Responsive
+=========================================================
+*/
+
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
@@ -27,7 +35,7 @@ function Login() {
   });
 
   // =========================================================
-  // HANDLE INPUT
+  // HANDLE INPUT CHANGE
   // =========================================================
 
   const handleChange = (e) => {
@@ -40,7 +48,6 @@ function Login() {
 
     setFormData((previous) => ({
       ...previous,
-
       [name]:
         type === "checkbox"
           ? checked
@@ -49,17 +56,141 @@ function Login() {
   };
 
   // =========================================================
-  // LOGIN
+  // CHECK PERSONAL INFORMATION
+  // =========================================================
+
+  const checkPersonalInfo = async (userId) => {
+    try {
+      console.log(
+        "Checking Personal Info for user:",
+        userId
+      );
+
+      const response = await API.get(
+        `/profile/exists/${userId}`
+      );
+
+      console.log(
+        "Personal Info Completed:",
+        response.data
+      );
+
+      return response.data === true;
+
+    } catch (error) {
+      console.error(
+        "Personal Info Check Error:",
+        error
+      );
+
+      if (error.response) {
+        console.error(
+          "Personal Info Backend Error:",
+          error.response.data
+        );
+      }
+
+      return false;
+    }
+  };
+
+  // =========================================================
+  // CHECK PREGNANCY DETAILS
+  // =========================================================
+
+  const checkPregnancyDetails = async (userId) => {
+    try {
+      console.log(
+        "Checking Pregnancy Details for user:",
+        userId
+      );
+
+      const response = await API.get(
+        `/pregnancy/exists/${userId}`
+      );
+
+      console.log(
+        "Pregnancy Details Completed:",
+        response.data
+      );
+
+      return response.data === true;
+
+    } catch (error) {
+      console.error(
+        "Pregnancy Details Check Error:",
+        error
+      );
+
+      if (error.response) {
+        console.error(
+          "Pregnancy Backend Error:",
+          error.response.data
+        );
+      }
+
+      return false;
+    }
+  };
+
+  // =========================================================
+  // CHECK MEDICAL HISTORY
+  // =========================================================
+
+  const checkMedicalHistory = async (userId) => {
+    try {
+      console.log(
+        "Checking Medical History for user:",
+        userId
+      );
+
+      const response = await API.get(
+        `/medical-history/exists/${userId}`
+      );
+
+      console.log(
+        "Medical History Completed:",
+        response.data
+      );
+
+      return response.data === true;
+
+    } catch (error) {
+      console.error(
+        "Medical History Check Error:",
+        error
+      );
+
+      if (error.response) {
+        console.error(
+          "Medical History Backend Error:",
+          error.response.data
+        );
+      }
+
+      return false;
+    }
+  };
+
+  // =========================================================
+  // HANDLE LOGIN
   // =========================================================
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    // =======================================================
+    // VALIDATION
+    // =======================================================
+
     if (
       !formData.email.trim() ||
       !formData.password.trim()
     ) {
-      alert("Please enter email and password.");
+      alert(
+        "Please enter email and password."
+      );
+
       return;
     }
 
@@ -91,7 +222,7 @@ function Login() {
         const data = response.data;
 
         // ===================================================
-        // GET DYNAMIC USER ID
+        // GET USER ID
         // ===================================================
 
         const userId = data.userId;
@@ -100,10 +231,6 @@ function Login() {
           "User ID received from backend:",
           userId
         );
-
-        // ===================================================
-        // CHECK USER ID
-        // ===================================================
 
         if (
           userId === undefined ||
@@ -123,17 +250,13 @@ function Login() {
         }
 
         // ===================================================
-        // SAVE USER ID
+        // STORE USER INFORMATION
         // ===================================================
 
         localStorage.setItem(
           "userId",
           String(userId)
         );
-
-        // ===================================================
-        // SAVE USER INFORMATION
-        // ===================================================
 
         if (data.fullName) {
           localStorage.setItem(
@@ -156,10 +279,6 @@ function Login() {
           );
         }
 
-        // ===================================================
-        // SAVE FAMILY VERIFICATION STATUS
-        // ===================================================
-
         if (
           data.familyVerified !== undefined &&
           data.familyVerified !== null
@@ -174,27 +293,9 @@ function Login() {
         // NORMALIZE ROLE
         // ===================================================
 
-        /*
-          Examples:
-
-          "Family Member"
-              ↓
-          "family member"
-
-          "FAMILY_MEMBER"
-              ↓
-          "family member"
-
-          "Mother"
-              ↓
-          "mother"
-
-          "MOTHER"
-              ↓
-          "mother"
-        */
-
-        const role = String(data.role || "")
+        const role = String(
+          data.role || ""
+        )
           .trim()
           .toLowerCase()
           .replace(/_/g, " ")
@@ -211,7 +312,7 @@ function Login() {
         );
 
         // ===================================================
-        // FAMILY MEMBER VERIFICATION STATUS
+        // FAMILY VERIFICATION
         // ===================================================
 
         const familyVerified =
@@ -223,7 +324,7 @@ function Login() {
         );
 
         // ===================================================
-        // VERIFY STORED INFORMATION
+        // DEBUG INFORMATION
         // ===================================================
 
         console.log(
@@ -257,7 +358,7 @@ function Login() {
         );
 
         // ===================================================
-        // LOGIN SUCCESS
+        // SUCCESS MESSAGE
         // ===================================================
 
         alert(
@@ -266,27 +367,19 @@ function Login() {
         );
 
         // ===================================================
-        // ROLE-BASED NAVIGATION
+        // FAMILY MEMBER FLOW
         // ===================================================
 
-        // ---------------------------------------------------
-        // FAMILY MEMBER
-        // ---------------------------------------------------
-
         if (role === "family member") {
-
-          // =================================================
-          // ALREADY VERIFIED / LINKED WITH LADY
-          // =================================================
 
           if (familyVerified) {
 
             console.log(
-              "Family member already verified with lady."
+              "Family member already verified with mother."
             );
 
             console.log(
-              "Navigating directly to Family Dashboard..."
+              "Navigating to Family Dashboard..."
             );
 
             navigate(
@@ -296,16 +389,10 @@ function Login() {
               }
             );
 
-          }
-
-          // =================================================
-          // NOT VERIFIED YET
-          // =================================================
-
-          else {
+          } else {
 
             console.log(
-              "Family member is not verified yet."
+              "Family member is not verified."
             );
 
             console.log(
@@ -320,42 +407,48 @@ function Login() {
             );
           }
 
+          return;
         }
 
-        // ---------------------------------------------------
-        // MOTHER
-        // ---------------------------------------------------
+        // ===================================================
+        // MOTHER FLOW
+        // ===================================================
 
-        else if (role === "mother") {
-
-          console.log(
-            "Navigating Mother..."
-          );
+        if (role === "mother") {
 
           console.log(
-            "Profile Completed:",
-            data.profileCompleted
+            "Mother login detected."
           );
 
-          if (
-            data.profileCompleted === true
-          ) {
+          const numericUserId =
+            Number(userId);
 
-            console.log(
-              "Mother profile completed → Dashboard"
+          console.log(
+            "Checking mother onboarding..."
+          );
+
+          // =================================================
+          // STEP 1 - PERSONAL INFORMATION
+          // =================================================
+
+          const personalInfoCompleted =
+            await checkPersonalInfo(
+              numericUserId
             );
 
-            navigate(
-              "/dashboard",
-              {
-                replace: true,
-              }
-            );
+          console.log(
+            "Personal Info Completed:",
+            personalInfoCompleted
+          );
 
-          } else {
+          if (!personalInfoCompleted) {
 
             console.log(
-              "Mother profile incomplete → Personal Info"
+              "❌ Personal information is incomplete."
+            );
+
+            console.log(
+              "Navigating → /personal-info"
             );
 
             navigate(
@@ -364,33 +457,124 @@ function Login() {
                 replace: true,
               }
             );
+
+            return;
           }
 
+          // =================================================
+          // STEP 2 - PREGNANCY DETAILS
+          // =================================================
+
+          const pregnancyDetailsCompleted =
+            await checkPregnancyDetails(
+              numericUserId
+            );
+
+          console.log(
+            "Pregnancy Details Completed:",
+            pregnancyDetailsCompleted
+          );
+
+          if (!pregnancyDetailsCompleted) {
+
+            console.log(
+              "❌ Pregnancy details are incomplete."
+            );
+
+            console.log(
+              "Navigating → /pregnancy-details"
+            );
+
+            navigate(
+              "/pregnancy-details",
+              {
+                replace: true,
+              }
+            );
+
+            return;
+          }
+
+          // =================================================
+          // STEP 3 - MEDICAL HISTORY
+          // =================================================
+
+          const medicalHistoryCompleted =
+            await checkMedicalHistory(
+              numericUserId
+            );
+
+          console.log(
+            "Medical History Completed:",
+            medicalHistoryCompleted
+          );
+
+          if (!medicalHistoryCompleted) {
+
+            console.log(
+              "❌ Medical history is incomplete."
+            );
+
+            console.log(
+              "Navigating → /medical-history"
+            );
+
+            navigate(
+              "/medical-history",
+              {
+                replace: true,
+              }
+            );
+
+            return;
+          }
+
+          // =================================================
+          // EVERYTHING COMPLETED
+          // =================================================
+
+          console.log(
+            "✅ All onboarding forms completed."
+          );
+
+          console.log(
+            "Navigating → /dashboard"
+          );
+
+          navigate(
+            "/dashboard",
+            {
+              replace: true,
+            }
+          );
+
+          return;
         }
 
-        // ---------------------------------------------------
+        // ===================================================
         // UNKNOWN ROLE
-        // ---------------------------------------------------
+        // ===================================================
 
-        else {
+        console.error(
+          "Unknown user role:",
+          data.role
+        );
 
-          console.error(
-            "Unknown user role:",
-            data.role
-          );
+        console.error(
+          "Normalized role:",
+          role
+        );
 
-          console.error(
-            "Normalized role:",
-            role
-          );
-
-          alert(
-            `Unknown user role: ${data.role}`
-          );
-        }
+        alert(
+          `Unknown user role: ${data.role}`
+        );
       }
 
     } catch (error) {
+
+      // =====================================================
+      // LOGIN ERROR
+      // =====================================================
 
       console.error(
         "Login Error:",
@@ -454,7 +638,6 @@ function Login() {
     } finally {
 
       setLoading(false);
-
     }
   };
 
@@ -474,25 +657,26 @@ function Login() {
         <div className="overlay">
 
           <h1>
-            🤱 Nurture AI
+            NurtureAI
           </h1>
 
           <h2>
-            Welcome Back!
+            Caring for You,
+            <br />
+            Caring for Baby
           </h2>
 
           <p>
-            Your trusted pregnancy wellness
-            companion. Stay healthy, track
-            your baby's growth, receive
-            AI-powered guidance, and keep
-            your family connected throughout
-            your motherhood journey.
+            Your intelligent pregnancy wellness
+            companion designed to support you
+            through every stage of your pregnancy
+            journey.
           </p>
 
         </div>
 
       </div>
+
 
       {/* =====================================================
           RIGHT SECTION
@@ -505,13 +689,18 @@ function Login() {
           onSubmit={handleSubmit}
         >
 
+          {/* =================================================
+              LOGIN HEADING
+          ================================================= */}
+
           <h2>
-            Login
+            Welcome Back
           </h2>
 
           <p className="subtitle">
-            Sign in to continue your pregnancy journey.
+            Login to continue your NurtureAI journey
           </p>
+
 
           {/* =================================================
               EMAIL
@@ -519,7 +708,7 @@ function Login() {
 
           <div className="input-group">
 
-            <label>
+            <label htmlFor="email">
               Email Address
             </label>
 
@@ -530,18 +719,20 @@ function Login() {
               />
 
               <input
+                id="email"
                 type="email"
                 name="email"
                 placeholder="Enter your email"
                 value={formData.email}
                 onChange={handleChange}
                 autoComplete="email"
-                required
+                disabled={loading}
               />
 
             </div>
 
           </div>
+
 
           {/* =================================================
               PASSWORD
@@ -549,7 +740,7 @@ function Login() {
 
           <div className="input-group">
 
-            <label>
+            <label htmlFor="password">
               Password
             </label>
 
@@ -560,6 +751,7 @@ function Login() {
               />
 
               <input
+                id="password"
                 type={
                   showPassword
                     ? "text"
@@ -570,7 +762,7 @@ function Login() {
                 value={formData.password}
                 onChange={handleChange}
                 autoComplete="current-password"
-                required
+                disabled={loading}
               />
 
               <button
@@ -578,8 +770,15 @@ function Login() {
                 className="show-btn"
                 onClick={() =>
                   setShowPassword(
-                    !showPassword
+                    (previous) =>
+                      !previous
                   )
+                }
+                disabled={loading}
+                aria-label={
+                  showPassword
+                    ? "Hide password"
+                    : "Show password"
                 }
               >
 
@@ -595,8 +794,9 @@ function Login() {
 
           </div>
 
+
           {/* =================================================
-              REMEMBER ME
+              REMEMBER + FORGOT PASSWORD
           ================================================= */}
 
           <div className="remember">
@@ -609,13 +809,12 @@ function Login() {
                 checked={
                   formData.remember
                 }
-                onChange={
-                  handleChange
-                }
+                onChange={handleChange}
+                disabled={loading}
               />
 
               <span>
-                Remember Me
+                Remember me
               </span>
 
             </label>
@@ -626,6 +825,7 @@ function Login() {
 
           </div>
 
+
           {/* =================================================
               LOGIN BUTTON
           ================================================= */}
@@ -635,12 +835,11 @@ function Login() {
             className="login-btn"
             disabled={loading}
           >
-
             {loading
               ? "Logging in..."
               : "Login"}
-
           </button>
+
 
           {/* =================================================
               DIVIDER
@@ -654,13 +853,15 @@ function Login() {
 
           </div>
 
+
           {/* =================================================
-              GOOGLE
+              GOOGLE LOGIN
           ================================================= */}
 
           <button
             type="button"
             className="google-btn"
+            disabled={loading}
           >
 
             <FcGoogle
@@ -673,6 +874,7 @@ function Login() {
 
           </button>
 
+
           {/* =================================================
               REGISTER
           ================================================= */}
@@ -682,7 +884,6 @@ function Login() {
             Don't have an account?
 
             <Link to="/register">
-              {" "}
               Create Account
             </Link>
 
